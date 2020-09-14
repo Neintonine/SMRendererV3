@@ -10,6 +10,7 @@ namespace SM_TEST
     {
         static void Main(string[] args)
         {
+            Console.Write("");
         }
     }
 }
