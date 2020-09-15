@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SM.Base;
 
 namespace SM_TEST
 {
@@ -10,7 +11,8 @@ namespace SM_TEST
     {
         static void Main(string[] args)
         {
-            Console.Write("");
+            GenericWindow window = new GenericWindow();
+            window.Run();
         }
     }
 }
