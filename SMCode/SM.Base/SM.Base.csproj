@@ -55,7 +55,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SM.Core\SM.OGL.csproj">
+    <ProjectReference Include="..\SM.OGL\SM.OGL.csproj">
       <Project>{f604d684-bc1d-4819-88b5-8b5d03a17be0}</Project>
       <Name>SM.OGL</Name>
     </ProjectReference>

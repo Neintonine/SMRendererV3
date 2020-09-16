@@ -34,7 +34,7 @@ namespace SM.OGL.Shaders
                 GL.ShaderSource(_id, _data);
                 GL.CompileShader(_id);
             }
-            GL.AttachShader(_id, shader);
+            GL.AttachShader(shader, _id);
         }
     }
 }

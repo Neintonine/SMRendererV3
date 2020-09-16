@@ -41,7 +41,7 @@ namespace SM.OGL.Shaders
 
         }
 
-        public void DrawObject(Mesh.Mesh mesh, bool bindVAO)
+        public void DrawObject(Mesh.Mesh mesh, bool bindVAO = false)
         {
             if (bindVAO) GL.BindVertexArray(mesh);
             GL.DrawArrays(mesh.PrimitiveType, 0, mesh.Vertex.Count);
