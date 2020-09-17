@@ -45,14 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericWindow.cs" />
+    <Compile Include="Scene\IShowCollection.cs" />
+    <Compile Include="Scene\IShowItem.cs" />
+    <Compile Include="Shader\InstanceShader.cs" />
+    <Compile Include="Shader\Shaders.cs" />
+    <Compile Include="Window\Contexts\DrawContext.cs" />
+    <Compile Include="Window\Contexts\UpdateContext.cs" />
+    <Compile Include="Window\GenericWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scene\GenericCamera.cs" />
+    <Compile Include="Scene\GenericScene.cs" />
     <Compile Include="StaticObjects\Plate.cs" />
-    <Compile Include="TestShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shader\Files\default.frag" />
+    <EmbeddedResource Include="Shader\Files\default.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.OGL\SM.OGL.csproj">
@@ -60,6 +69,8 @@
       <Name>SM.OGL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Types\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

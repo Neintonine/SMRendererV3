@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL.Shaders
@@ -9,6 +10,8 @@ namespace SM.OGL.Shaders
         public ShaderFile Geometry;
         public ShaderFile Fragment;
 
+        public Action<UniformCollection> SetUniforms;
+
         public ShaderFileCollection(string vertex, string fragment) : this(new ShaderFile(vertex), new ShaderFile(fragment)) {}
 
         public ShaderFileCollection(ShaderFile vertex, ShaderFile fragment, ShaderFile geometry = default)
@@ -16,6 +19,8 @@ namespace SM.OGL.Shaders
             Vertex = vertex;
             Geometry = geometry;
             Fragment = fragment;
+
+            SetUniforms = u => { };
         }
 
         internal void Append(GenericShader shader)

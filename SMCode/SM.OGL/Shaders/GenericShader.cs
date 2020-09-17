@@ -15,7 +15,7 @@ namespace SM.OGL.Shaders
             ShaderFileFiles = shaderFileFiles;
         }
 
-        public void Compile()
+        public void Load()
         {
             
             _id = GL.CreateProgram();
@@ -39,6 +39,11 @@ namespace SM.OGL.Shaders
                 Uniforms.Add(key, loc);
             }
 
+        }
+
+        protected override void Compile()
+        {
+            Load();
         }
 
         public void DrawObject(Mesh.Mesh mesh, bool bindVAO = false)
