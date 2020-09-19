@@ -14,5 +14,7 @@ namespace SM.Base.Contexts
 
         public Mesh Mesh;
         public Material Material;
+
+        public Vector2 WorldScale;
     }
 }

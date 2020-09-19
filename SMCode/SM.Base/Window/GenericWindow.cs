@@ -19,6 +19,10 @@ namespace SM.Base
         public TScene CurrentScene { get; private set; }
         public bool ForceViewportCamera { get; set; } = false;
 
+        public Vector2? Scaling { get; set; }
+        public Vector2 WorldScale { get; private set; }= Vector2.Zero;
+        public float Aspect { get; private set; } = 0f;
+
         public GenericWindow() : base(1280, 720, GraphicsMode.Default, "Testing", GameWindowFlags.Default, DisplayDevice.Default, 0, 0, GraphicsContextFlags.Default, null, true)
         {
             _viewportCamera = new TCamera();
@@ -37,7 +41,8 @@ namespace SM.Base
                 View = _viewportCamera.CalculateViewMatrix(),
                 ModelMatrix = Matrix4.Identity,
                 Mesh = Plate.Object,
-                ForceViewport = ForceViewportCamera
+                ForceViewport = ForceViewportCamera,
+                WorldScale = WorldScale
             };
 
             base.OnRenderFrame(e);
@@ -53,13 +58,30 @@ namespace SM.Base
         {
             base.OnResize(e);
 
+            Aspect = (float)Width / Height;
+            WorldScale = new Vector2(Width, Height);
+            if (Scaling.HasValue)
+            {
+                if (Scaling.Value.X > 0 && Scaling.Value.Y > 0) WorldScale = Scaling.Value;
+                else if(Scaling.Value.X > 0) WorldScale = new Vector2(Scaling.Value.X, Scaling.Value.X / Aspect);
+                else if(Scaling.Value.Y > 0) WorldScale = new Vector2(Aspect * Scaling.Value.Y, Scaling.Value.Y);
+            }
+
             GL.Viewport(ClientRectangle);
-            _viewportCamera.RecalculateWorld(Width, Height);
+            _viewportCamera.RecalculateWorld(WorldScale, Aspect);
         }
 
         public virtual void SetScene(TScene scene)
         {
             CurrentScene = scene;
         }
+    }
+
+    public enum WindowScaling
+    {
+        None,
+        Width,
+        Height,
+        FixedSize
     }
 }

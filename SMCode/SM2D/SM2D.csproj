@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawing\DrawBackground.cs" />
     <Compile Include="Drawing\DrawEmpty.cs" />
     <Compile Include="Drawing\DrawTexture.cs" />
     <Compile Include="GLWindow2D.cs" />

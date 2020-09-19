@@ -162,6 +162,17 @@ namespace SM.OGL.Shaders
 
         #endregion
 
+        public void SetTexture(TextureBase texture, Uniform checkUniform)
+        {
+            checkUniform.SetUniform1(texture != null);
+            if (texture != null) SetTexture(texture);
+        }
+
+        public void SetTexture(TextureBase texture, int pos, Uniform checkUniform)
+        {
+            checkUniform.SetUniform1(texture != null);
+            if (texture != null) SetTexture(texture);
+        }
         public void SetTexture(TextureBase texture) => SetTexture(texture, Parent.NextTexture++);
 
         public void SetTexture(TextureBase texture, int texturePos)

@@ -1,11 +1,12 @@
 ﻿using OpenTK;
 using SM.Base.Scene;
+using Vector2 = SM.Base.Types.Vector2;
 
 namespace SM2D.Types
 {
     public class Transformation : GenericTransformation
     {
-        public Vector2 Position;
+        public Vector2 Position = new Vector2(0);
         public Vector2 Size = new Vector2(50);
         public float Rotation;
 

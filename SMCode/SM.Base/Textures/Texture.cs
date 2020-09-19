@@ -47,5 +47,9 @@ namespace SM.Base.Textures
             GL.BindTexture(TextureTarget.Texture2D, 0);
             Map.UnlockBits(data);
         }
+
+        public static implicit operator Texture(Bitmap map) => new Texture(map);
+        public override TextureMinFilter Filter { get; set; }
+        public override TextureWrapMode WrapMode { get; set; }
     }
 }

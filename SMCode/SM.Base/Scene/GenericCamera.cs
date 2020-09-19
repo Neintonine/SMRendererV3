@@ -18,9 +18,9 @@ namespace SM.Base.Scene
             return ViewMatrix;
         }
 
-        public abstract Matrix4 ViewCalculation();
+        protected abstract Matrix4 ViewCalculation();
 
         public abstract bool Orthographic { get; }
-        public abstract void RecalculateWorld(float width, float height);
+        public abstract void RecalculateWorld(Vector2 world, float aspect);
     }
 }

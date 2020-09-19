@@ -2,12 +2,12 @@
 
 namespace SM.OGL.Texture
 {
-    public class TextureBase : GLObject
+    public abstract class TextureBase : GLObject
     {
         protected override bool AutoCompile { get; } = true;
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Texture;
 
-        public virtual TextureMinFilter Filter { get; set; }
-        public virtual TextureWrapMode WrapMode { get; set; }
+        public abstract TextureMinFilter Filter { get; set; }
+        public abstract TextureWrapMode WrapMode { get; set; }
     }
 }

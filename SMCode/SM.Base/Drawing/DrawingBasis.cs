@@ -4,13 +4,10 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Scene
 {
-    public class DrawingBasis<TTransformation> : IShowItem
-        where TTransformation : GenericTransformation, new()
+    public class DrawingBasis : IShowItem
     {
         protected Material _material = new Material();
         protected Mesh _mesh = Plate.Object;
-
-        public TTransformation Transform = new TTransformation();
         public virtual void Update(UpdateContext context)
         {
 
@@ -24,5 +21,11 @@ namespace SM.Base.Scene
             context.Material = _material;
             context.Mesh = _mesh;
         }
+    }
+    public class DrawingBasis<TTransformation> : DrawingBasis
+        where TTransformation : GenericTransformation, new()
+    {
+
+        public TTransformation Transform = new TTransformation();
     }
 }
