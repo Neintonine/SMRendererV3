@@ -7,12 +7,24 @@ namespace SM.OGL.Mesh
 {
     public class VBO : List<float>
     {
-        public BufferUsageHint BufferUsageHint = BufferUsageHint.StaticDraw;
-        public VertexAttribPointerType PointerType = VertexAttribPointerType.Float;
-        public int PointerSize = 3;
-        public bool Normalised = false;
-        public int PointerStride = 0;
-        public int PointerOffset = 0;
+        public BufferUsageHint BufferUsageHint;
+        public VertexAttribPointerType PointerType;
+        public int PointerSize;
+        public bool Normalised;
+        public int PointerStride;
+        public int PointerOffset;
+
+        public VBO(BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw,
+            VertexAttribPointerType pointerType = VertexAttribPointerType.Float, int pointerSize = 3,
+            int pointerStride = 0, int pointerOffset = 0, bool normalised = false)
+        {
+            BufferUsageHint = bufferUsageHint;
+            PointerType = pointerType;
+            PointerSize = pointerSize;
+            PointerStride = pointerStride;
+            PointerOffset = pointerOffset;
+            Normalised = normalised;
+        }
 
         public void Add(float x, float y) => AddRange(new[] {x,y});
         public void Add(float x, float y, float z) => AddRange(new[] {x,y,z});

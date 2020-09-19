@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace SM_TEST
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
-            scene.Objects.Add(new DrawEmpty());
+            scene.Objects.Add(new DrawTexture(new Bitmap("draconier_logo.png")));
         }
     }
 }

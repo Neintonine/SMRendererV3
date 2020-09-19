@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using SM.OGL.Texture;
 
 namespace SM.OGL.Shaders
 {
@@ -160,5 +161,14 @@ namespace SM.OGL.Shaders
         public void SetMatrix4(int count, float[] value, bool transpose = false) { GL.UniformMatrix4(Location, count, transpose, value); }
 
         #endregion
+
+        public void SetTexture(TextureBase texture) => SetTexture(texture, Parent.NextTexture++);
+
+        public void SetTexture(TextureBase texture, int texturePos)
+        {
+            GL.ActiveTexture(TextureUnit.Texture0 + texturePos);
+            GL.BindTexture(TextureTarget.Texture2D, texture);
+            SetUniform1(texturePos);
+        }
     }
 }

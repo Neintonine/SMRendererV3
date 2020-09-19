@@ -30,6 +30,7 @@ namespace SM.OGL.Shaders
                 throw new Exception("[Critical] No uniforms has been found.");
 
             Uniforms = new UniformCollection();
+            Uniforms._parentShader = this;
             for (int i = 0; i < uniformCount; i++)
             {
                 string key = GL.GetActiveUniform(_id, i, out _, out _);

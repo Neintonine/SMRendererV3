@@ -16,7 +16,7 @@ namespace SM2D.Scene
 
         public override void RecalculateWorld(float width, float height)
         {
-            OrthographicWorld = Matrix4.CreateOrthographic(width, height, 0.1f, 100);
+            OrthographicWorld = Matrix4.CreateOrthographicOffCenter(-width / 2, width / 2, height / 2, -height / 2, 0.1f, 100);
         }
     }
 }

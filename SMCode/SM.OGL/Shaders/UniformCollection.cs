@@ -6,6 +6,8 @@ namespace SM.OGL.Shaders
 {
     public class UniformCollection : Dictionary<string, Uniform>
     {
+        internal int NextTexture = 0;
+
         internal GenericShader _parentShader;
 
         public new Uniform this[string key]

@@ -17,6 +17,16 @@ namespace SM.Base.StaticObjects
             {0,0,0},
         };
 
+        public override VBO UVs { get; } = new VBO(pointerSize: 2)
+        {
+            {0, 0},
+            {0, 1},
+            {1, 1},
+            {1, 0},
+            {0, 0},
+            {0, 0},
+        };
+
         public override PrimitiveType PrimitiveType { get; } = PrimitiveType.Quads;
 
         private Plate() {}

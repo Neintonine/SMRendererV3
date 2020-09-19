@@ -13,6 +13,6 @@ namespace SM.Base.Contexts
         public Matrix4 ModelMatrix;
 
         public Mesh Mesh;
-
+        public Material Material;
     }
 }

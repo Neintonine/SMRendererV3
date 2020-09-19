@@ -55,6 +55,7 @@
     <Compile Include="Shaders\ShaderFile.cs" />
     <Compile Include="Shaders\Uniform.cs" />
     <Compile Include="Shaders\UniformCollection.cs" />
+    <Compile Include="Texture\TextureBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

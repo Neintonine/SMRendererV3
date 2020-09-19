@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,10 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\DrawEmpty.cs" />
+    <Compile Include="Drawing\DrawTexture.cs" />
     <Compile Include="GLWindow2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\Scene.cs" />
+    <Compile Include="Types\Transformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.Base\SM.Base.csproj">

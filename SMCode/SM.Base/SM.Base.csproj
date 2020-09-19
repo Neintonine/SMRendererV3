@@ -45,10 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scene\IShowCollection.cs" />
-    <Compile Include="Scene\IShowItem.cs" />
+    <Compile Include="Drawing\DrawingBasis.cs" />
+    <Compile Include="Drawing\GenericTransformation.cs" />
+    <Compile Include="Drawing\IShader.cs" />
+    <Compile Include="Drawing\IShowCollection.cs" />
+    <Compile Include="Drawing\IShowItem.cs" />
+    <Compile Include="Drawing\Material.cs" />
     <Compile Include="Shader\InstanceShader.cs" />
     <Compile Include="Shader\Shaders.cs" />
+    <Compile Include="Textures\Texture.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
     <Compile Include="Window\GenericWindow.cs" />
