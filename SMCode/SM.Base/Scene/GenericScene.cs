@@ -8,7 +8,7 @@ namespace SM.Base.Scene
         where TCamera : GenericCamera, new()
     {
 
-        public IShowItem Background;
+        protected IBackgroundItem _background;
         public List<IShowItem> HUD { get; } = new List<IShowItem>();
         public List<IShowItem> Objects { get; } = new List<IShowItem>();
         public TCamera Camera { get; set; }
@@ -21,7 +21,7 @@ namespace SM.Base.Scene
 
             DrawContext backgroundDrawContext = context;
             backgroundDrawContext.View = BackgroundCamera.CalculateViewMatrix();
-            Background?.Draw(backgroundDrawContext);
+            _background?.Draw(backgroundDrawContext);
 
             for(int i = 0; i < Objects.Count; i++)
                 Objects[i].Draw(context);

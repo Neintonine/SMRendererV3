@@ -3,14 +3,17 @@ using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Contexts;
 using SM.Base.Scene;
+using SM.Base.StaticObjects;
 using SM.Base.Textures;
 using SM.OGL.Texture;
 using SM2D.Types;
 
 namespace SM2D.Drawing
 {
-    public class DrawBackground : DrawingBasis
+    public class DrawBackground : IBackgroundItem
     {
+        private Material _material = new Material();
+
         public Color4 Color
         {
             get => _material.Tint;
@@ -38,11 +41,17 @@ namespace SM2D.Drawing
             Texture = (Texture) texture;
         }
 
-        public override void Draw(DrawContext context)
+        public void Update(UpdateContext context)
         {
-            ApplyContext(ref context);
+            throw new System.NotImplementedException();
+        }
 
-            context.ModelMatrix = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
+        public void Draw(DrawContext context)
+        {
+            context.Material = _material;
+            context.Mesh = Plate.Object;
+
+            context.Instances[0].ModelMatrix = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
             _material.Shader.Draw(context);
         }
     }

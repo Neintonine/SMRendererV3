@@ -4,7 +4,7 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Scene
 {
-    public class DrawingBasis : IShowItem
+    public abstract class DrawingBasis : IShowItem
     {
         protected Material _material = new Material();
         protected Mesh _mesh = Plate.Object;
@@ -22,10 +22,9 @@ namespace SM.Base.Scene
             context.Mesh = _mesh;
         }
     }
-    public class DrawingBasis<TTransformation> : DrawingBasis
+    public abstract class DrawingBasis<TTransformation> : DrawingBasis
         where TTransformation : GenericTransformation, new()
     {
-
         public TTransformation Transform = new TTransformation();
     }
 }

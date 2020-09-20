@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\DrawBackground.cs" />
-    <Compile Include="Drawing\DrawEmpty.cs" />
+    <Compile Include="Drawing\DrawText.cs" />
     <Compile Include="Drawing\DrawTexture.cs" />
     <Compile Include="GLWindow2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

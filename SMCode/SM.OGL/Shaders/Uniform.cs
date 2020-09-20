@@ -181,5 +181,7 @@ namespace SM.OGL.Shaders
             GL.BindTexture(TextureTarget.Texture2D, texture);
             SetUniform1(texturePos);
         }
+
+        public static implicit operator int(Uniform u) => u.Location;
     }
 }

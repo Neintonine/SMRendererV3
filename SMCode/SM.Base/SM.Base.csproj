@@ -47,13 +47,19 @@
   <ItemGroup>
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
+    <Compile Include="Drawing\Instance.cs" />
     <Compile Include="Drawing\IShader.cs" />
-    <Compile Include="Drawing\IShowCollection.cs" />
-    <Compile Include="Drawing\IShowItem.cs" />
+    <Compile Include="Scene\IShowCollection.cs" />
+    <Compile Include="Scene\IShowItem.cs" />
     <Compile Include="Drawing\Material.cs" />
+    <Compile Include="Scene\IBackgroundItem.cs" />
     <Compile Include="Shader\InstanceShader.cs" />
     <Compile Include="Shader\Shaders.cs" />
     <Compile Include="Textures\Texture.cs" />
+    <Compile Include="Text\CharParameter.cs" />
+    <Compile Include="Text\Font.cs" />
+    <Compile Include="Text\FontCharStorage.cs" />
+    <Compile Include="Text\TextDrawingBasis.cs" />
     <Compile Include="Types\Vector.cs" />
     <Compile Include="Types\Vector2.cs" />
     <Compile Include="Types\Vector3.cs" />

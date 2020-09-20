@@ -39,7 +39,7 @@ namespace SM.Base
             {
                 World = _viewportCamera.World,
                 View = _viewportCamera.CalculateViewMatrix(),
-                ModelMatrix = Matrix4.Identity,
+                Instances = new[] { new Instance {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One } },
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,
                 WorldScale = WorldScale

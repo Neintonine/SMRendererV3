@@ -9,6 +9,7 @@ namespace SM.Base.Textures
     public class Texture : TextureBase
     {
         public Bitmap Map;
+        public bool AutoDispose = false;
 
         public Texture(Bitmap map) : this(map, TextureMinFilter.Linear, TextureWrapMode.Repeat) {}
 
@@ -23,29 +24,38 @@ namespace SM.Base.Textures
         {
             base.Compile();
 
-            _id = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, _id);
+            _id = GenerateTexture(Map, Filter, WrapMode, AutoDispose);
+        }
 
-            BitmapData data = Map.LockBits(new Rectangle(0, 0, Map.Width, Map.Height), ImageLockMode.ReadOnly,
-                Map.PixelFormat);
+        public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode, bool dispose = false)
+        {
+            int id = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, id);
 
-            bool transparenz = Map.PixelFormat == PixelFormat.Format32bppArgb;
+            BitmapData data = map.LockBits(new Rectangle(0, 0, map.Width, map.Height), ImageLockMode.ReadOnly,
+                map.PixelFormat);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, 
+            bool transparenz = map.PixelFormat == PixelFormat.Format32bppArgb;
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0,
                 transparenz ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb,
                 data.Width, data.Height, 0,
                 transparenz ? OpenTK.Graphics.OpenGL4.PixelFormat.Bgra : OpenTK.Graphics.OpenGL4.PixelFormat.Bgr,
                 PixelType.UnsignedByte, data.Scan0);
 
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)Filter);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)Filter);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) WrapMode);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) WrapMode);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)filter);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)filter);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrapMode);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrapMode);
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            Map.UnlockBits(data);
+            map.UnlockBits(data);
+
+            if (dispose) map.Dispose();
+
+            return id;
         }
 
         public static implicit operator Texture(Bitmap map) => new Texture(map);

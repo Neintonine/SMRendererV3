@@ -7,6 +7,8 @@ namespace SM.OGL
         protected int _id = -1;
         protected virtual bool AutoCompile { get; } = false;
 
+        public bool WasCompiled => _id > 0;
+
         public virtual int ID
         {
             get

@@ -44,7 +44,7 @@ namespace SM2D.Drawing
             ApplyContext(ref context);
 
             Transform.Size = new Vector2(Texture.Map.Width * MasterScale * Scale, Texture.Map.Height  * MasterScale * Scale);
-            context.ModelMatrix = Transform.GetMatrix();
+            context.Instances[0].ModelMatrix = Transform.GetMatrix();
 
             _material.Shader.Draw(context);
         }

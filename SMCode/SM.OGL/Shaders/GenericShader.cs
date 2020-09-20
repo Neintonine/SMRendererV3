@@ -36,7 +36,8 @@ namespace SM.OGL.Shaders
                 string key = GL.GetActiveUniform(_id, i, out _, out _);
                 int loc = GL.GetUniformLocation(_id, key);
 
-                if (key.StartsWith("[")) key = key.Split('[', ']')[0];
+                if (key.EndsWith("]")) 
+                    key = key.Split('[', ']')[0];
                 Uniforms.Add(key, loc);
             }
 
@@ -47,10 +48,10 @@ namespace SM.OGL.Shaders
             Load();
         }
 
-        public void DrawObject(Mesh.Mesh mesh, bool bindVAO = false)
+        public void DrawObject(Mesh.Mesh mesh, int amount, bool bindVAO = false)
         {
             if (bindVAO) GL.BindVertexArray(mesh);
-            GL.DrawArrays(mesh.PrimitiveType, 0, mesh.Vertex.Count);
-        } 
+            GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
+        }
     }
 }

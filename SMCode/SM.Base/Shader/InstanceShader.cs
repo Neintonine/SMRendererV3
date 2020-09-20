@@ -13,26 +13,25 @@ namespace SM.Base.Shader
     {
         protected override bool AutoCompile { get; } = true;
 
-        public Action<UniformCollection, DrawContext> SetUniform;
+        public Action<UniformCollection, DrawContext, int> SetUniformVertex;
+        public Action<UniformCollection, DrawContext> SetUniformFragment;
 
-        public InstanceShader(string vertex, string fragment, Action<UniformCollection, DrawContext> setUniform) : base(new ShaderFileCollection(vertex, fragment))
+        public InstanceShader(string vertex, string fragment) : base(new ShaderFileCollection(vertex, fragment))
         {
-            SetUniform = setUniform;
         }
         public void Draw(DrawContext context)
         {
             GL.UseProgram(this);
 
-            SetUniform.Invoke(Uniforms, context);
+            Uniforms["MVP"].SetMatrix4(context.View * context.World);
 
-            DrawObject(context.Mesh, true);
+            for (int i = 0; i < context.Instances.Length; i++) SetUniformVertex?.Invoke(Uniforms, context, i);
+            
+            SetUniformFragment?.Invoke(Uniforms, context);
+
+            DrawObject(context.Mesh, context.Instances.Length, true);
 
             GL.UseProgram(0);
-        }
-
-        public void DrawInstanced(DrawContext context, ICollection<Matrix4> instanceCollection)
-        {
-            throw new NotImplementedException();
         }
     }
 }
