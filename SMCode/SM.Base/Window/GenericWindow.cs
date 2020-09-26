@@ -4,14 +4,16 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Contexts;
+using SM.Base.Objects.Static;
 using SM.Base.Scene;
-using SM.Base.StaticObjects;
+using SM.OGL;
 using SM.OGL.Shaders;
 
 namespace SM.Base
 {
-    public class GenericWindow<TScene, TCamera> : GameWindow
-        where TScene : GenericScene<TCamera>, new()
+    public class GenericWindow<TScene, TItem, TCamera> : GameWindow
+        where TScene : GenericScene<TCamera, TItem>, new()
+        where TItem : IShowItem
         where TCamera : GenericCamera, new()
     {
         private TCamera _viewportCamera;
@@ -30,6 +32,17 @@ namespace SM.Base
 
         protected override void OnLoad(EventArgs e)
         {
+            GLSystem.INIT_SYSTEM();
+
+            Console.Write("----------------------\n" +
+                          "--- OpenGL Loading ---\n" +
+                          "----------------------------------\n" +
+                          $"--- {"DeviceVersion",14}: {GLSystem.DeviceVersion,-10} ---\n" +
+                          $"--- {"ForcedVersion",14}: {GLSystem.ForcedVersion,-10} ---\n" +
+                          $"--- {"ShadingVersion",14}: {GLSystem.ShadingVersion,-10} ---\n" +
+                          $"--- {"Debugging",14}: {GLSystem.Debugging,-10} ---\n" +
+                          $"----------------------------------\n");
+
             base.OnLoad(e);
         }
 

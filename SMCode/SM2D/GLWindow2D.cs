@@ -6,7 +6,7 @@ using SM2D.Scene;
 
 namespace SM2D
 {
-    public class GLWindow2D : GenericWindow<Scene.Scene, Camera>
+    public class GLWindow2D : GenericWindow<Scene.Scene, I2DShowItem, Camera>
     {
 
 

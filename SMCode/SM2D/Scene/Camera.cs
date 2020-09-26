@@ -12,12 +12,12 @@ namespace SM2D.Scene
 
         protected override Matrix4 ViewCalculation()
         {
-            return Matrix4.LookAt(Position.X, Position.Y, -1, Position.X, Position.Y, 0, 0, 1, 0);
+            return Matrix4.LookAt(Position.X, Position.Y, 2, Position.X, Position.Y, 0, 0, 1, 0);
         }
 
         public override void RecalculateWorld(OpenTK.Vector2 world, float aspect)
         {
-            OrthographicWorld = Matrix4.CreateOrthographicOffCenter(world.X / 2, -world.X / 2, world.Y / 2, -world.Y / 2, 0.1f, 100);
+            OrthographicWorld = Matrix4.CreateOrthographicOffCenter(-world.X / 2, world.X / 2, world.Y / 2, -world.Y / 2, 0.1f, 4f);
         }
     }
 }

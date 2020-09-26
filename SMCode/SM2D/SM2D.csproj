@@ -46,11 +46,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\DrawBackground.cs" />
+    <Compile Include="Drawing\DrawColor.cs" />
+    <Compile Include="Drawing\DrawComplex.cs" />
+    <Compile Include="Drawing\DrawPolygon.cs" />
     <Compile Include="Drawing\DrawText.cs" />
     <Compile Include="Drawing\DrawTexture.cs" />
     <Compile Include="GLWindow2D.cs" />
+    <Compile Include="Object\Polygon.cs" />
+    <Compile Include="Object\PolygonVertex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Camera.cs" />
+    <Compile Include="Scene\I2DShowItem.cs" />
+    <Compile Include="Scene\ItemCollection.cs" />
     <Compile Include="Scene\Scene.cs" />
     <Compile Include="Types\Transformation.cs" />
   </ItemGroup>

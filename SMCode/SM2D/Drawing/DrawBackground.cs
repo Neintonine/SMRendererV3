@@ -2,8 +2,8 @@
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Contexts;
+using SM.Base.Objects.Static;
 using SM.Base.Scene;
-using SM.Base.StaticObjects;
 using SM.Base.Textures;
 using SM.OGL.Texture;
 using SM2D.Types;

@@ -32,10 +32,10 @@ namespace SM.OGL
                 GL.Enable(EnableCap.DebugOutput);
                 GL.Enable(EnableCap.DebugOutputSynchronous);
             }
-            catch
+            catch (AccessViolationException)
             {
                 Console.WriteLine("Enableing proper GLDebugging failed. \n" +
-                                  "Often it fails, because your hardware doesn't provied proper OpenGL 4 \n" +
+                                  "Often it fails, because your hardware doesn't provide proper OpenGL 4 \n" +
                                   "    or KHR_debug extension support.");
 
             }

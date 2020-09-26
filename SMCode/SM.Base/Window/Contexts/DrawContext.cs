@@ -14,7 +14,7 @@ namespace SM.Base.Contexts
         public Matrix4 View;
         public Instance[] Instances;
 
-        public Mesh Mesh;
+        public GenericMesh Mesh;
         public Material Material;
 
         public Vector2 WorldScale;

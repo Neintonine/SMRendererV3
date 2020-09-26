@@ -13,7 +13,7 @@ namespace SM.OGL
         {
             get
             {
-                if (AutoCompile && _id < 0) Compile();
+                if (AutoCompile && !WasCompiled) Compile();
                 return _id;
             }
         }
@@ -27,7 +27,7 @@ namespace SM.OGL
 
         public void Name(string name)
         {
-            GL.ObjectLabel(TypeIdentifier, _id, name.Length, name);
+            if (GLSystem.Debugging) GL.ObjectLabel(TypeIdentifier, _id, name.Length, name);
         }
 
         public static implicit operator int(GLObject glo) => glo.ID;

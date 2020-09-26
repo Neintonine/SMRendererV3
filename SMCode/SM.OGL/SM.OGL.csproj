@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="GLDebugging.cs" />
     <Compile Include="GLObject.cs" />
-    <Compile Include="Mesh\Mesh.cs" />
+    <Compile Include="GLSystem.cs" />
+    <Compile Include="Mesh\BoundingBox.cs" />
+    <Compile Include="Mesh\GenericMesh.cs" />
     <Compile Include="Mesh\TypeDefinition.cs" />
     <Compile Include="Mesh\VBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="Shaders\Uniform.cs" />
     <Compile Include="Shaders\UniformCollection.cs" />
     <Compile Include="Texture\TextureBase.cs" />
+    <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

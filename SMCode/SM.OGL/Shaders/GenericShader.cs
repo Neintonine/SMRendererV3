@@ -48,10 +48,22 @@ namespace SM.OGL.Shaders
             Load();
         }
 
-        public void DrawObject(Mesh.Mesh mesh, int amount, bool bindVAO = false)
+        public void DrawObject(Mesh.GenericMesh mesh, int amount, bool bindVAO = false)
         {
             if (bindVAO) GL.BindVertexArray(mesh);
-            GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
+
+            if (mesh.Indices != null)
+                GL.DrawElementsInstanced(mesh.PrimitiveType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
+            else 
+                GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
+        }
+
+        protected void CleanUp()
+        {
+            Uniforms.NextTexture = 0;
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.BindVertexArray(0);
         }
     }
 }

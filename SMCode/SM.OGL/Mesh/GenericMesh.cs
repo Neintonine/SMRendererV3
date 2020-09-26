@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
+using Buffer = OpenTK.Graphics.OpenGL4.Buffer;
 
 namespace SM.OGL.Mesh
 {
-    public class Mesh : GLObject
+    public abstract class GenericMesh : GLObject
     {
-        public static int BufferSizeMultiplier = 3;
-
         protected override bool AutoCompile { get; } = true;
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.VertexArray;
 
@@ -17,9 +16,13 @@ namespace SM.OGL.Mesh
         public virtual VBO UVs { get; }
         public virtual VBO Normals { get; }
 
+        public virtual BoundingBox BoundingBox { get; } = new BoundingBox();
+
         public virtual Dictionary<int, VBO> AttribDataIndex { get; }
 
-        public Mesh()
+        public virtual int[] Indices { get; set; }
+
+        protected GenericMesh()
         {
             AttribDataIndex = new Dictionary<int, VBO>()
             {

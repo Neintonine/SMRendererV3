@@ -4,7 +4,6 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Contexts;
 using SM.Base.Scene;
-using SM.Base.StaticObjects;
 using SM.OGL.Shaders;
 
 namespace SM.Base.Shader
@@ -24,12 +23,15 @@ namespace SM.Base.Shader
             GL.UseProgram(this);
 
             Uniforms["MVP"].SetMatrix4(context.View * context.World);
+            Uniforms["HasVColor"].SetUniform1(context.Mesh.AttribDataIndex.ContainsKey(3) && context.Mesh.AttribDataIndex[3] != null);
 
             for (int i = 0; i < context.Instances.Length; i++) SetUniformVertex?.Invoke(Uniforms, context, i);
             
             SetUniformFragment?.Invoke(Uniforms, context);
 
             DrawObject(context.Mesh, context.Instances.Length, true);
+
+            CleanUp();
 
             GL.UseProgram(0);
         }

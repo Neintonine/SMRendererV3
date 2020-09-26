@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
@@ -45,14 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Defaults.cs" />
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
     <Compile Include="Drawing\IShader.cs" />
+    <Compile Include="Objects\Mesh.cs" />
     <Compile Include="Scene\IShowCollection.cs" />
     <Compile Include="Scene\IShowItem.cs" />
     <Compile Include="Drawing\Material.cs" />
     <Compile Include="Scene\IBackgroundItem.cs" />
+    <Compile Include="Scene\GenericItemCollection.cs" />
     <Compile Include="Shader\InstanceShader.cs" />
     <Compile Include="Shader\Shaders.cs" />
     <Compile Include="Textures\Texture.cs" />
@@ -70,7 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\GenericCamera.cs" />
     <Compile Include="Scene\GenericScene.cs" />
-    <Compile Include="StaticObjects\Plate.cs" />
+    <Compile Include="Objects\Static\Plate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

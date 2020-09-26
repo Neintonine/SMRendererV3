@@ -39,6 +39,8 @@ namespace SM.Base.Text
             set => _material.Tint = value;
         }
 
+        public float Spacing = 1;
+
         protected TextDrawingBasis(Font font)
         {
             _material.Texture = font;
@@ -57,8 +59,15 @@ namespace SM.Base.Text
             _modelMatrixs = new Instance[_text.Length];
 
             float x = 0;
+            CharParameter _last = new CharParameter();
             for (var i = 0; i < _text.Length; i++)
             {
+                if (_text[i] == 32)
+                {
+                    x += _last.Width * Spacing;
+                    continue;
+                }
+                
                 CharParameter parameter;
                 try
                 {
@@ -66,17 +75,20 @@ namespace SM.Base.Text
                 }
                 catch
                 {
-                    throw new Exception("Font doesn't contain '"+_text[i]+"'");
+                    throw new Exception("Font doesn't contain '" + _text[i] + "'");
                 }
 
-                Matrix4 matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) * Matrix4.CreateTranslation(x, 0, 0);
+                Matrix4 matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
+                                 Matrix4.CreateTranslation(x, 0, 0);
                 _modelMatrixs[i] = new Instance
                 {
                     ModelMatrix = matrix,
                     TexturePosition = new Vector2(parameter.RelativeX, 0),
                     TextureScale = new Vector2(parameter.RelativeWidth, 1)
                 };
-                x += parameter.Width;
+                
+                x += parameter.Width * Spacing;
+                _last = parameter;
             }
         }
     }

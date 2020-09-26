@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using SM.Base.Contexts;
 
 namespace SM.Base.Scene
 {
-    public interface IShowCollection
+    public interface IShowCollection<TItem> where TItem : IShowItem
     {
-        List<IShowItem> Objects { get; }
+        List<TItem> Objects { get; }
+
+        void Draw(DrawContext context);
     }
 }

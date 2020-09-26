@@ -1,5 +1,5 @@
 ﻿using SM.Base.Contexts;
-using SM.Base.StaticObjects;
+using SM.Base.Objects.Static;
 using SM.OGL.Mesh;
 
 namespace SM.Base.Scene
@@ -7,7 +7,7 @@ namespace SM.Base.Scene
     public abstract class DrawingBasis : IShowItem
     {
         protected Material _material = new Material();
-        protected Mesh _mesh = Plate.Object;
+        protected GenericMesh _mesh = Plate.Object;
         public virtual void Update(UpdateContext context)
         {
 
