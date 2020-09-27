@@ -7,11 +7,17 @@ using OpenTK.Platform.Egl;
 
 namespace SM.OGL
 {
+    /// <summary>
+    /// Contains everything that is needed to properly debug OpenGL
+    /// </summary>
     public static class GLDebugging
     {
         private static DebugProc _debugProc = DebugCallback;
         private static GCHandle _debugGcHandle;
 
+        /// <summary>
+        /// A action that is performed, when a OpenGL-error occurs.
+        /// </summary>
         public static Action<DebugSource, DebugType, DebugSeverity, string> DebugAction = DefaultDebugAction;
 
         [DebuggerStepThrough]
@@ -22,6 +28,9 @@ namespace SM.OGL
             DebugAction?.Invoke(source, type, severity, msg);
         }
 
+        /// <summary>
+        /// Enables the debugging.
+        /// </summary>
         public static void EnableDebugging()
         {
             try
@@ -41,6 +50,13 @@ namespace SM.OGL
             }
         }
 
+        /// <summary>
+        /// Default action for 'DebugAction'.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="type"></param>
+        /// <param name="severity"></param>
+        /// <param name="msg"></param>
         public static void DefaultDebugAction(DebugSource source, DebugType type, DebugSeverity severity, string msg)
         {
             Console.WriteLine($"{severity}, {type}, {source} -> {msg}");

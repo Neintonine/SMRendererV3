@@ -5,6 +5,9 @@ using SM.OGL.Texture;
 
 namespace SM.OGL.Shaders
 {
+    /// <summary>
+    /// Manages the uniforms.
+    /// </summary>
     public struct Uniform
     {
         /// <summary>
@@ -162,19 +165,39 @@ namespace SM.OGL.Shaders
 
         #endregion
 
+        /// <summary>
+        /// Try to sets the texture at the next possible position and tells the checkUniform, if worked or not.
+        /// </summary>
+        /// <param name="texture">The texture you want to add</param>
+        /// <param name="checkUniform">The check uniform.</param>
         public void SetTexture(TextureBase texture, Uniform checkUniform)
         {
             checkUniform.SetUniform1(texture != null);
             if (texture != null) SetTexture(texture);
         }
 
+        /// <summary>
+        /// Try to sets the texture at the specified position and tells the checkUniform, if worked or not.
+        /// </summary>
+        /// <param name="texture">The texture you want to add</param>
+        /// <param name="pos">The position</param>
+        /// <param name="checkUniform">The check uniform.</param>
         public void SetTexture(TextureBase texture, int pos, Uniform checkUniform)
         {
             checkUniform.SetUniform1(texture != null);
             if (texture != null) SetTexture(texture);
         }
+        /// <summary>
+        /// Sets the texture to the next possible position.
+        /// </summary>
+        /// <param name="texture"></param>
         public void SetTexture(TextureBase texture) => SetTexture(texture, Parent.NextTexture++);
 
+        /// <summary>
+        /// Sets the texture to the specified position.
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="texturePos"></param>
         public void SetTexture(TextureBase texture, int texturePos)
         {
             GL.ActiveTexture(TextureUnit.Texture0 + texturePos);
@@ -182,6 +205,10 @@ namespace SM.OGL.Shaders
             SetUniform1(texturePos);
         }
 
+        /// <summary>
+        /// Returns the location from the uniform
+        /// </summary>
+        /// <param name="u"></param>
         public static implicit operator int(Uniform u) => u.Location;
     }
 }

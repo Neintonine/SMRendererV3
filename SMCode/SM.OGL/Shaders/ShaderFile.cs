@@ -4,19 +4,34 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL.Shaders
 {
+    /// <summary>
+    /// Contains/Represents a file used in shaders.
+    /// </summary>
     public class ShaderFile : GLObject
     {
         private string _data;
 
+        /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Shader;
 
+        /// <summary>
+        /// Contains overrides, that can be used to import values from the CPU to the shader before it is been send to the GPU.
+        /// </summary>
         public Dictionary<string, string> StringOverrides = new Dictionary<string, string>();
+        /// <summary>
+        /// Contains other shader files to allow access to their functions.
+        /// </summary>
         public List<ShaderFile> GLSLExtensions = new List<ShaderFile>();
 
+        /// <summary>
+        /// Creates a file.
+        /// </summary>
+        /// <param name="data">The source file.</param>
         public ShaderFile(string data)
         {
             _data = data;
         }
+
 
         private void GenerateSource()
         {

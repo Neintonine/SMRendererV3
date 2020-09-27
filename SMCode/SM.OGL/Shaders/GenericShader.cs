@@ -3,18 +3,33 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL.Shaders
 {
-    public class GenericShader : GLObject
+    /// <summary>
+    /// Abstract class, that is used to create graphic shader.
+    /// </summary>
+    public abstract class GenericShader : GLObject
     {
+        /// <summary>
+        /// Contains the different files for the shader.
+        /// </summary>
         protected ShaderFileCollection ShaderFileFiles;
+        /// <summary>
+        /// Contains and manage the uniforms from the shader.
+        /// </summary>
         protected UniformCollection Uniforms;
 
+        /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Program;
 
-        public GenericShader(ShaderFileCollection shaderFileFiles)
+
+        /// <inheritdoc />
+        protected GenericShader(ShaderFileCollection shaderFileFiles)
         {
             ShaderFileFiles = shaderFileFiles;
         }
 
+        /// <summary>
+        /// Loads the shader to the GPU.
+        /// </summary>
         public void Load()
         {
             
@@ -43,12 +58,19 @@ namespace SM.OGL.Shaders
 
         }
 
+        /// <inheritdoc />
         protected override void Compile()
         {
             Load();
         }
 
-        public void DrawObject(Mesh.GenericMesh mesh, int amount, bool bindVAO = false)
+        /// <summary>
+        /// Draws the mesh.
+        /// </summary>
+        /// <param name="mesh">The mesh.</param>
+        /// <param name="amount">The amounts for instancing.</param>
+        /// <param name="bindVAO">Binds the vertex array for the mesh.</param>
+        protected void DrawObject(Mesh.GenericMesh mesh, int amount, bool bindVAO = false)
         {
             if (bindVAO) GL.BindVertexArray(mesh);
 
@@ -57,7 +79,9 @@ namespace SM.OGL.Shaders
             else 
                 GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
         }
-
+        /// <summary>
+        /// Resets the shader specific settings to ensure proper workings.
+        /// </summary>
         protected void CleanUp()
         {
             Uniforms.NextTexture = 0;
