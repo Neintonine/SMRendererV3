@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base;
 using SM2D.Scene;
+using SM2D.Shader;
 
 namespace SM2D
 {
@@ -12,6 +13,8 @@ namespace SM2D
 
         protected override void OnLoad(EventArgs e)
         {
+            Defaults.DefaultShader = new Default2DShader();
+
             base.OnLoad(e);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);

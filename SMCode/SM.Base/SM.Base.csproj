@@ -58,8 +58,6 @@
     <Compile Include="Drawing\Material.cs" />
     <Compile Include="Scene\IBackgroundItem.cs" />
     <Compile Include="Scene\GenericItemCollection.cs" />
-    <Compile Include="Shader\InstanceShader.cs" />
-    <Compile Include="Shader\Shaders.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Text\CharParameter.cs" />
     <Compile Include="Text\Font.cs" />
@@ -69,6 +67,10 @@
     <Compile Include="Types\Vector2.cs" />
     <Compile Include="Types\Vector3.cs" />
     <Compile Include="Types\Vector4.cs" />
+    <Compile Include="Utility\Assembly.cs" />
+    <Compile Include="Utility\BezierCurve.cs" />
+    <Compile Include="Utility\Deltatime.cs" />
+    <Compile Include="Utility\Randomize.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
     <Compile Include="Window\GenericWindow.cs" />
@@ -80,8 +82,6 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Shader\Files\default.frag" />
-    <EmbeddedResource Include="Shader\Files\default.vert" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.OGL\SM.OGL.csproj">

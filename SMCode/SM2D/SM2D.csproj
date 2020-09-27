@@ -59,6 +59,7 @@
     <Compile Include="Scene\I2DShowItem.cs" />
     <Compile Include="Scene\ItemCollection.cs" />
     <Compile Include="Scene\Scene.cs" />
+    <Compile Include="Shader\Default2DShader.cs" />
     <Compile Include="Types\Transformation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,8 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shader\ShaderFiles\default.frag" />
+    <EmbeddedResource Include="Shader\ShaderFiles\default.vert" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -24,7 +24,7 @@ namespace SM.OGL.Mesh
             for (int i = 0; i < 2; i++)
             {
                 Min[i] = Math.Min(Min[i], vector[i]);
-                Max[i] = Math.Max(Min[i], vector[i]);
+                Max[i] = Math.Max(Max[i], vector[i]);
             }
         }
 

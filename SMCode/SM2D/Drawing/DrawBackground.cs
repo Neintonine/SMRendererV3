@@ -1,11 +1,13 @@
 ﻿using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
+using SM.Base;
 using SM.Base.Contexts;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.Base.Textures;
 using SM.OGL.Texture;
+using SM2D.Shader;
 using SM2D.Types;
 
 namespace SM2D.Drawing
@@ -48,6 +50,8 @@ namespace SM2D.Drawing
 
         public void Draw(DrawContext context)
         {
+            if (_material.Shader == null) _material.Shader = Defaults.DefaultShader;
+
             context.Material = _material;
             context.Mesh = Plate.Object;
 

@@ -8,7 +8,7 @@ namespace SM2D.Drawing
 {
     public class DrawColor : DrawingBasis<Transformation>, I2DShowItem
     {
-        public Color4 Tint
+        public Color4 Color
         {
             get => _material.Tint;
             set => _material.Tint = value;

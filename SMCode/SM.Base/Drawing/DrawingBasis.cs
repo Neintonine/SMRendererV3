@@ -7,7 +7,7 @@ namespace SM.Base.Scene
     public abstract class DrawingBasis : IShowItem
     {
         protected Material _material = new Material();
-        protected GenericMesh _mesh = Plate.Object;
+        protected GenericMesh _mesh = Defaults.DefaultMesh;
         public virtual void Update(UpdateContext context)
         {
 

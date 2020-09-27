@@ -24,7 +24,7 @@ namespace SM_TEST
                 FontSize = 32
             };
 
-            GLWindow2D window = new GLWindow2D {Scaling = new Vector2(0, 500)};
+            GLWindow2D window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
             window.UpdateFrame += WindowOnUpdateFrame;
@@ -50,7 +50,7 @@ namespace SM_TEST
             {
                 ZIndex = 1
             });
-            col.Objects.Add(new DrawColor(Color4.Aqua)
+            col.Objects.Add(new DrawColor(Color4.Black)
             {
                 Transform = { Rotation = 45, Position = new SM.Base.Types.Vector2(0, 25) },
             });
@@ -82,8 +82,8 @@ namespace SM_TEST
                 new PolygonVertex(new Vector2(1, .75f), Color4.White),
                 new PolygonVertex(new Vector2(.75f, 1), Color4.White),
                 new PolygonVertex(new Vector2(.25f, 1), Color4.White),
-                new PolygonVertex(new Vector2(0, .75f), Color4.Gray),
-                new PolygonVertex(new Vector2(0, .25f), Color4.Gray)
+                new PolygonVertex(new Vector2(0, .75f), new Color4(10,10,10,255)),
+                new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
             }), Color4.LawnGreen)
             {
                 Transform = {Position = new SM.Base.Types.Vector2(50,0)}
@@ -96,8 +96,8 @@ namespace SM_TEST
                 new PolygonVertex(new Vector2(1, .75f), Color4.White),
                 new PolygonVertex(new Vector2(.75f, 1), Color4.White),
                 new PolygonVertex(new Vector2(.25f, 1), Color4.White),
-                new PolygonVertex(new Vector2(0, .75f), Color4.Gray),
-                new PolygonVertex(new Vector2(0, .25f), Color4.Gray)
+                new PolygonVertex(new Vector2(0, .75f), new Color4(10,10,10,255)),
+                new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
             }), new Bitmap("soldier_logo.png"))
             {
                 Transform = {Position = new SM.Base.Types.Vector2(-50,0)}

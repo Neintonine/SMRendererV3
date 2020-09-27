@@ -1,8 +1,6 @@
 ﻿using SM.Base.Objects;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
-using SM.Base.Shader;
-using SM.OGL.Mesh;
 
 namespace SM.Base
 {
