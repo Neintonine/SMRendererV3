@@ -9,13 +9,12 @@ namespace SM2D.Types
         public Vector2 Position = new Vector2(0);
         public Vector2 Size = new Vector2(50);
         public float Rotation;
-        public int ZIndex = 0;
 
         public override Matrix4 GetMatrix()
         {
             return Matrix4.CreateScale(Size.X, Size.Y, 1) *
                    Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotation)) *
-                   Matrix4.CreateTranslation(Position.X, Position.Y, ZIndex);
+                   Matrix4.CreateTranslation(Position.X, Position.Y, 0);
         }
     }
 }

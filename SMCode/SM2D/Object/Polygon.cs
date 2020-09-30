@@ -58,5 +58,19 @@ namespace SM2D.Object
             Vector2 uv = Vector2.Divide(vertex, BoundingBox.Max.Xy) + BoundingBox.Min.Xy;
             UVs.Add(uv);
         }
+
+        public static Polygon GenerateCircle(int secments = 32)
+        {
+            List<Vector2> vertices = new List<Vector2>() {Vector2.Zero};
+
+            float step = 360f / secments;
+            for (int i = 0; i < secments + 1; i++)
+            {
+                Vector2 vertex = new Vector2( 0.5f * (float)Math.Cos(step * i * Math.PI / 180f), 0.5f * (float)Math.Sin(step * i * Math.PI / 180f));
+                vertices.Add(vertex);
+            }
+
+            return new Polygon(vertices);
+        }
     }
 }

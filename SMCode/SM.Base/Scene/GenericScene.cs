@@ -19,7 +19,7 @@ namespace SM.Base.Scene
 
         public virtual void Draw(DrawContext context)
         {
-            if (!context.ForceViewport && Camera != null) context.View = Camera.ViewMatrix;
+            if (!context.ForceViewport && Camera != null) context.View = Camera.CalculateViewMatrix();
 
             DrawContext backgroundDrawContext = context;
             backgroundDrawContext.View = BackgroundCamera.CalculateViewMatrix();
@@ -33,5 +33,12 @@ namespace SM.Base.Scene
                 HUD[i].Draw(context);
         }
 
+        internal void Activate()
+        {
+            OnActivating();
+        }
+
+        protected virtual void OnActivating()
+        { }
     }
 }

@@ -17,6 +17,8 @@ namespace SM_TEST
         static Scene scene;
         private static Font font;
         private static ItemCollection col;
+        private static DrawPolygon polyogn;
+        private static GLWindow2D window;
         static void Main(string[] args)
         {
             font = new Font(@"C:\Windows\Fonts\Arial.ttf")
@@ -24,18 +26,17 @@ namespace SM_TEST
                 FontSize = 32
             };
 
-            GLWindow2D window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
+            window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
+            window.GrabCursor();
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
-            window.UpdateFrame += WindowOnUpdateFrame;
+            window.RenderFrame += WindowOnUpdateFrame;
             window.Run();
         }
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            float speed = 40;
-
-            //col.Transform.Position.Y += (float)e.Time * speed;
+            polyogn.Transform.Position.Set(window.Mouse.InWorld(window.ViewportCamera));
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
@@ -53,6 +54,7 @@ namespace SM_TEST
             col.Objects.Add(new DrawColor(Color4.Black)
             {
                 Transform = { Rotation = 45, Position = new SM.Base.Types.Vector2(0, 25) },
+                ZIndex = 2
             });
 
             scene.Objects.Add(col);
@@ -62,18 +64,7 @@ namespace SM_TEST
                 Color = Color4.Black
             });
 
-            scene.Objects.Add(new DrawPolygon(new Polygon(new[]
-                {
-                    new Vector2(.25f, 0),
-                    new Vector2(.75f, 0),
-                    new Vector2(1, .25f),
-                    new Vector2(1, .75f),
-                    new Vector2(.75f, 1),
-                    new Vector2(.25f, 1),
-                    new Vector2(0, .75f),
-                    new Vector2(0, .25f)
-                }),Color4.Blue)
-            );
+            scene.Objects.Add(polyogn = new DrawPolygon(Polygon.GenerateCircle(),Color4.Blue));
             scene.Objects.Add(new DrawPolygon(new Polygon(new[]
             {
                 new PolygonVertex(new Vector2(.25f, 0), Color4.White),

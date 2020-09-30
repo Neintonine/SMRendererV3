@@ -1,11 +1,18 @@
 ﻿using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
 
 namespace SM.Base.Objects.Static
 {
-    public class Plate : Mesh
+    /// <summary>
+    /// A basic plate
+    /// </summary>
+    public class Plate : GenericMesh
     {
+        /// <summary>
+        /// The object.
+        /// </summary>
         public static Plate Object = new Plate();
 
         public override VBO Vertex { get; } = new VBO()

@@ -23,6 +23,10 @@
         public Vector2(float x, float y) : base(x,y, default, default) {}
         protected Vector2(float x, float y, float z, float w) : base(x, y, z, w) {}
 
+        public new void Set(float x, float y) => base.Set(x, y);
+        public new void Set(OpenTK.Vector2 vector) => base.Set(vector);
+
+        public new void Add(OpenTK.Vector2 vector) => base.Add(vector);
 
         public static implicit operator Vector2(OpenTK.Vector2 v) => new Vector2(v.X, v.Y);
     }

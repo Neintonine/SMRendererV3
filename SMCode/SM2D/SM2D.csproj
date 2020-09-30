@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Mouse2D.cs" />
     <Compile Include="Drawing\DrawBackground.cs" />
     <Compile Include="Drawing\DrawColor.cs" />
     <Compile Include="Drawing\DrawComplex.cs" />

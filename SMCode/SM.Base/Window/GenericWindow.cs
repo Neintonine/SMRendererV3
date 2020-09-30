@@ -3,32 +3,28 @@ using System.IO;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
 using SM.Base.Contexts;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.OGL;
 using SM.OGL.Shaders;
+using SM.Utility;
 
 namespace SM.Base
 {
-    public class GenericWindow<TScene, TItem, TCamera> : GameWindow
-        where TScene : GenericScene<TCamera, TItem>, new()
-        where TItem : IShowItem
-        where TCamera : GenericCamera, new()
+    public abstract class GenericWindow : GameWindow
     {
-        private TCamera _viewportCamera;
+        private bool _loading = false;
 
-        public TScene CurrentScene { get; private set; }
         public bool ForceViewportCamera { get; set; } = false;
 
-        public Vector2? Scaling { get; set; }
-        public Vector2 WorldScale { get; private set; }= Vector2.Zero;
+        protected Vector2 _worldScale = Vector2.Zero;
         public float Aspect { get; private set; } = 0f;
 
-        public GenericWindow() : base(1280, 720, GraphicsMode.Default, "Testing", GameWindowFlags.Default, DisplayDevice.Default, 0, 0, GraphicsContextFlags.Default, null, true)
-        {
-            _viewportCamera = new TCamera();
-        }
+        protected GenericWindow() : base(1280, 720, GraphicsMode.Default, "Generic OGL Title", GameWindowFlags.Default,
+            DisplayDevice.Default, 0, 0, GraphicsContextFlags.Default, null, true)
+        { }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -44,18 +40,74 @@ namespace SM.Base
                           $"----------------------------------\n");
 
             base.OnLoad(e);
+            _loading = true;
+        }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            Aspect = (float)Width / Height;
+            _worldScale = new Vector2(Width, Height);
+            SetWorldScale();
+            GL.Viewport(ClientRectangle);
+
+            if (_loading)
+            {
+                _loading = false;
+                OnLoaded();
+            }
+        }
+
+        protected virtual void OnLoaded()
+        {
+
+        }
+
+        protected virtual void SetWorldScale() { }
+
+        protected override void OnUpdateFrame(FrameEventArgs e)
+        {
+            base.OnUpdateFrame(e);
+            Deltatime.UpdateDelta = (float)e.Time;
+        }
+
+        public void GrabCursor(bool makeItInvisible = true)
+        {
+            CursorGrabbed = true;
+            CursorVisible = !makeItInvisible;
+        }
+
+        public void UngrabCursor()
+        {
+            CursorGrabbed = false;
+            if (!CursorVisible) CursorVisible = true;
+        }
+    }
+
+    public abstract class GenericWindow<TScene, TItem, TCamera> : GenericWindow
+        where TScene : GenericScene<TCamera, TItem>, new()
+        where TItem : IShowItem
+        where TCamera : GenericCamera, new()
+    {
+        public TCamera ViewportCamera { get; }
+
+        public TScene CurrentScene { get; private set; }
+
+        protected GenericWindow()
+        {
+            ViewportCamera = new TCamera();
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             DrawContext drawContext = new DrawContext()
             {
-                World = _viewportCamera.World,
-                View = _viewportCamera.CalculateViewMatrix(),
+                World = ViewportCamera.World,
+                View = ViewportCamera.CalculateViewMatrix(),
                 Instances = new[] { new Instance {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One } },
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,
-                WorldScale = WorldScale
+                WorldScale = _worldScale
             };
 
             base.OnRenderFrame(e);
@@ -71,30 +123,13 @@ namespace SM.Base
         {
             base.OnResize(e);
 
-            Aspect = (float)Width / Height;
-            WorldScale = new Vector2(Width, Height);
-            if (Scaling.HasValue)
-            {
-                if (Scaling.Value.X > 0 && Scaling.Value.Y > 0) WorldScale = Scaling.Value;
-                else if(Scaling.Value.X > 0) WorldScale = new Vector2(Scaling.Value.X, Scaling.Value.X / Aspect);
-                else if(Scaling.Value.Y > 0) WorldScale = new Vector2(Aspect * Scaling.Value.Y, Scaling.Value.Y);
-            }
-
-            GL.Viewport(ClientRectangle);
-            _viewportCamera.RecalculateWorld(WorldScale, Aspect);
+            ViewportCamera.RecalculateWorld(_worldScale, Aspect);
         }
 
         public virtual void SetScene(TScene scene)
         {
             CurrentScene = scene;
+            scene.Activate();
         }
-    }
-
-    public enum WindowScaling
-    {
-        None,
-        Width,
-        Height,
-        FixedSize
     }
 }

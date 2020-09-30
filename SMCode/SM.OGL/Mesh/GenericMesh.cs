@@ -43,7 +43,7 @@ namespace SM.OGL.Mesh
         /// <summary>
         /// Connects the different buffer objects with ids.
         /// </summary>
-        protected Dictionary<int, VBO> AttribDataIndex { get; }
+        public Dictionary<int, VBO> AttribDataIndex { get; }
 
         /// <summary>
         /// Stores indices for a more performance friendly method to draw objects. 

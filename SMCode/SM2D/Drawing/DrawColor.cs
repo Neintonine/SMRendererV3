@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics;
+using SM.Base;
 using SM.Base.Contexts;
 using SM.Base.Scene;
 using SM2D.Scene;
