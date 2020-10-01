@@ -48,6 +48,22 @@ namespace SM.OGL
         }
 
         /// <summary>
+        /// Is triggered, when something want to dispose this object.
+        /// </summary>
+        protected virtual void Dispose() {}
+
+        /// <summary>
+        /// Re-compiles the object.
+        /// </summary>
+        public void Recompile()
+        {
+            if (!WasCompiled) return;
+
+            Dispose();
+            Compile();
+        }
+
+        /// <summary>
         /// Names the object for debugging.
         /// </summary>
         /// <param name="name"></param>

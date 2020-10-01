@@ -11,13 +11,13 @@ namespace SM2D.Drawing
         public DrawText(Font font, string text) : base(font)
         {
             _text = text;
-            Transform.Size = new Vector2(1);
+            Transform.Size = new CVector2(1);
         }
 
         public override void Draw(DrawContext context)
         {
             base.Draw(context);
-            context.Instances = _modelMatrixs;
+            context.Instances = _instances;
             ApplyContext(ref context);
 
             context.View = Transform.GetMatrix() * context.View;

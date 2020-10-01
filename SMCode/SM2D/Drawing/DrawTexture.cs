@@ -7,7 +7,6 @@ using SM.Base.Textures;
 using SM.Base.Types;
 using SM2D.Scene;
 using SM2D.Types;
-using Vector2 = SM.Base.Types.Vector2;
 
 namespace SM2D.Drawing
 {
@@ -37,7 +36,7 @@ namespace SM2D.Drawing
 
         public override void Draw(DrawContext context)
         {
-            Transform.Size = new Vector2(Texture.Map.Width * MasterScale * Scale, Texture.Map.Height * MasterScale * Scale);
+            Transform.Size = new CVector2(Texture.Map.Width * MasterScale * Scale, Texture.Map.Height * MasterScale * Scale);
             base.Draw(context);
         }
     }

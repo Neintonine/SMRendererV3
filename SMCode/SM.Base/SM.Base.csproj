@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Debug\SM.Base.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -64,12 +65,14 @@
     <Compile Include="Text\Font.cs" />
     <Compile Include="Text\FontCharStorage.cs" />
     <Compile Include="Text\TextDrawingBasis.cs" />
-    <Compile Include="Types\Vector.cs" />
-    <Compile Include="Types\Vector2.cs" />
-    <Compile Include="Types\Vector3.cs" />
-    <Compile Include="Types\Vector4.cs" />
+    <Compile Include="Time\Interval.cs" />
+    <Compile Include="Time\Stopwatch.cs" />
+    <Compile Include="Time\Timer.cs" />
+    <Compile Include="Types\CVector.cs" />
+    <Compile Include="Types\CVector2.cs" />
+    <Compile Include="Types\CVector3.cs" />
+    <Compile Include="Types\CVector4.cs" />
     <Compile Include="Utility\Assembly.cs" />
-    <Compile Include="Utility\BezierCurve.cs" />
     <Compile Include="Utility\Deltatime.cs" />
     <Compile Include="Utility\Randomize.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />

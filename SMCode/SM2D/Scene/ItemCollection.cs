@@ -9,7 +9,7 @@ namespace SM2D.Scene
     {
         public ItemCollection()
         {
-            Transform.Size = new Vector2(1);
+            Transform.Size = new CVector2(1);
         }
 
         public override void Draw(DrawContext context)

@@ -6,13 +6,37 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace SM.Base.Textures
 {
+    /// <summary>
+    /// Texture that can be drawn to an object.
+    /// </summary>
     public class Texture : TextureBase
     {
+        /// <summary>
+        /// The texture as bitmap.
+        /// </summary>
         public Bitmap Map;
+        /// <summary>
+        /// Decides if the bitmap will automatically dispose itself.
+        /// </summary>
         public bool AutoDispose = false;
 
-        public Texture(Bitmap map) : this(map, TextureMinFilter.Linear, TextureWrapMode.Repeat) {}
+        /// <summary>
+        /// Empty constructor
+        /// </summary>
+        protected Texture() {}
 
+        /// <summary>
+        /// Creates a texture with only the map.
+        /// <para>Sets the filter to Linear and WrapMode to Repeat.</para>
+        /// </summary>
+        /// <param name="map">The map</param>
+        public Texture(Bitmap map) : this(map, TextureMinFilter.Linear, TextureWrapMode.Repeat) {}
+        /// <summary>
+        /// Creates the texture.
+        /// </summary>
+        /// <param name="map">The texture map</param>
+        /// <param name="filter">The filter</param>
+        /// <param name="wrapMode">The wrap mode</param>
         public Texture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode)
         {
             Map = map;
@@ -20,6 +44,8 @@ namespace SM.Base.Textures
             WrapMode = wrapMode;
         }
 
+
+        /// <inheritdoc />
         protected override void Compile()
         {
             base.Compile();
@@ -27,6 +53,22 @@ namespace SM.Base.Textures
             _id = GenerateTexture(Map, Filter, WrapMode, AutoDispose);
         }
 
+        /// <inheritdoc />
+        protected override void Dispose()
+        {
+            base.Dispose();
+
+            GL.DeleteTexture(this);
+        }
+
+        /// <summary>
+        /// Generates a OpenGL-texture.
+        /// </summary>
+        /// <param name="map">The texture as bitmap</param>
+        /// <param name="filter">The filter</param>
+        /// <param name="wrapMode">The wrap mode</param>
+        /// <param name="dispose">Auto dispose of the bitmap? Default: false</param>
+        /// <returns></returns>
         public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode, bool dispose = false)
         {
             int id = GL.GenTexture();
@@ -58,8 +100,9 @@ namespace SM.Base.Textures
             return id;
         }
 
+        /// <summary>
+        /// Converts a bitmap to a texture.
+        /// </summary>
         public static implicit operator Texture(Bitmap map) => new Texture(map);
-        public override TextureMinFilter Filter { get; set; }
-        public override TextureWrapMode WrapMode { get; set; }
     }
 }

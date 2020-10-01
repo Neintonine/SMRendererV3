@@ -15,11 +15,23 @@ namespace SM.OGL.Texture
 
         /// <summary>
         /// The texture filter.
+        /// <para>Default: <see cref="TextureMinFilter.Linear"/></para>
         /// </summary>
-        public abstract TextureMinFilter Filter { get; set; }
+        public virtual TextureMinFilter Filter { get; set; } = TextureMinFilter.Linear;
+
         /// <summary>
         /// The wrap mode.
+        /// <para>Default: <see cref="TextureWrapMode.Repeat"/></para>
         /// </summary>
-        public abstract TextureWrapMode WrapMode { get; set; }
+        public virtual TextureWrapMode WrapMode { get; set; } = TextureWrapMode.Repeat;
+
+        /// <summary>
+        /// The Width of the texture
+        /// </summary>
+        public int Width { get; protected set; }
+        /// <summary>
+        /// The height of the texture
+        /// </summary>
+        public int Height { get; protected set; }
     }
 }

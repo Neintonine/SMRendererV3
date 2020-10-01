@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 using SM.Base.Scene;
-using Vector2 = SM.Base.Types.Vector2;
+using SM.Base.Types;
 
 namespace SM2D.Scene
 {
@@ -8,7 +8,7 @@ namespace SM2D.Scene
     {
         public override bool Orthographic { get; } = true;
 
-        public Vector2 Position = new Vector2(0);
+        public CVector2 Position = new CVector2(0);
 
         protected override Matrix4 ViewCalculation()
         {

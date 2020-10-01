@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics;
+using SM.Base.Time;
 using SM2D;
 using SM2D.Drawing;
 using SM2D.Object;
@@ -27,7 +29,7 @@ namespace SM_TEST
             };
 
             window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
-            window.GrabCursor();
+            //window.GrabCursor();
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
             window.RenderFrame += WindowOnUpdateFrame;
@@ -41,9 +43,13 @@ namespace SM_TEST
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
+            Interval timer = new Interval(5);
+            timer.EndAction += (timer1, context) => Console.WriteLine("Interval...");
+            timer.Start();
+
             col = new ItemCollection()
             {
-                Transform = { Position = new SM.Base.Types.Vector2(0, -400) },
+                Transform = { Position = new SM.Base.Types.CVector2(0, -400) },
                 ZIndex = 1
             };
 
@@ -53,14 +59,14 @@ namespace SM_TEST
             });
             col.Objects.Add(new DrawColor(Color4.Black)
             {
-                Transform = { Rotation = 45, Position = new SM.Base.Types.Vector2(0, 25) },
+                Transform = { Rotation = 45, Position = new SM.Base.Types.CVector2(0, 25) },
                 ZIndex = 2
             });
 
             scene.Objects.Add(col);
             scene.Objects.Add(new DrawText(font, "Testing...")
             {
-                Transform = { Position = new SM.Base.Types.Vector2(0, -400)},
+                Transform = { Position = new SM.Base.Types.CVector2(0, -400)},
                 Color = Color4.Black
             });
 
@@ -77,7 +83,7 @@ namespace SM_TEST
                 new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
             }), Color4.LawnGreen)
             {
-                Transform = {Position = new SM.Base.Types.Vector2(50,0)}
+                Transform = {Position = new SM.Base.Types.CVector2(50,0)}
             });
             scene.Objects.Add(new DrawPolygon(new Polygon(new[]
             {
@@ -91,7 +97,7 @@ namespace SM_TEST
                 new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
             }), new Bitmap("soldier_logo.png"))
             {
-                Transform = {Position = new SM.Base.Types.Vector2(-50,0)}
+                Transform = {Position = new SM.Base.Types.CVector2(-50,0)}
             });
 
             scene.Background.Color = Color4.Beige;

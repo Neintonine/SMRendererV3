@@ -17,11 +17,14 @@ namespace SM.Base.Scene
         /// The mesh it should use.
         /// </summary>
         protected GenericMesh _mesh = Defaults.DefaultMesh;
+
+        /// <inheritdoc />
         public virtual void Update(UpdateContext context)
         {
 
         }
 
+        /// <inheritdoc />
         public virtual void Draw(DrawContext context)
         {
         }
@@ -45,6 +48,9 @@ namespace SM.Base.Scene
     public abstract class DrawingBasis<TTransformation> : DrawingBasis
         where TTransformation : GenericTransformation, new()
     {
+        /// <summary>
+        /// The current transformation.
+        /// </summary>
         public TTransformation Transform = new TTransformation();
     }
 }

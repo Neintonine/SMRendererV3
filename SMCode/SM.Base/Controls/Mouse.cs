@@ -25,11 +25,19 @@ namespace SM.Base.Controls
         /// </summary>
         public Vector2 InScreenNormalized { get; private set; }
 
+        /// <summary>
+        /// The constructor
+        /// </summary>
+        /// <param name="window">The window, its listen to.</param>
         protected internal Mouse(TWindow window)
         {
             _window = window;
         }
 
+        /// <summary>
+        /// The event to update the values.
+        /// </summary>
+        /// <param name="mmea">The event args.</param>
         protected void MouseMoveEvent(MouseMoveEventArgs mmea)
         {
             InScreen = new Vector2(mmea.X, mmea.Y);

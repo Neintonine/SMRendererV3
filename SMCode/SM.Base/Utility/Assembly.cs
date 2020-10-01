@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace SM.Utility
 {
+    /// <summary>
+    /// Contains utility functions for handling with assemblies.
+    /// </summary>
     public class AssemblyUtility
     {
         /// <summary>
@@ -22,8 +25,19 @@ namespace SM.Utility
         public static string ReadAssemblyFile(string path) { return ReadAssemblyFile(Assembly.GetCallingAssembly(), path); }
 
 
-        public static Stream GetAssemblyStream(Assembly ass, string path) { return ass.GetManifestResourceStream(ass.GetName().Name + "." + path) ?? throw new InvalidOperationException("Assembly couldn't find resource at path '" + path + "'."); }
+        /// <summary>
+        /// Returns a stream of a requested resource.
+        /// </summary>
+        /// <param name="ass">The assembly the resource is in.</param>
+        /// <param name="path">The path to the resource.</param>
+        /// <returns>The stream</returns>
+        public static Stream GetAssemblyStream(Assembly ass, string path) { return ass.GetManifestResourceStream(path) ?? throw new InvalidOperationException("Assembly couldn't find resource at path '" + path + "'."); }
 
+        /// <summary>
+        /// Returns a stream of a requested resource in the calling assembly.
+        /// </summary>
+        /// <param name="path">The path to the resource</param>
+        /// <returns>The stream</returns>
         public static Stream GetAssemblyStream(string path) { return GetAssemblyStream(Assembly.GetCallingAssembly(), path); }
     }
 }

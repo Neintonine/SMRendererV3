@@ -11,8 +11,8 @@ namespace SM2D.Shader
         protected override bool AutoCompile { get; } = true;
 
         public Default2DShader() : base(new ShaderFileCollection(
-            AssemblyUtility.ReadAssemblyFile("Shader.ShaderFiles.default.vert"),
-            AssemblyUtility.ReadAssemblyFile("Shader.ShaderFiles.default.frag")))
+            AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.vert"),
+            AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.frag")))
         {
 
         }
