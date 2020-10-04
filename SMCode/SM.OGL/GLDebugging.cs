@@ -4,11 +4,12 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Platform.Egl;
+using ErrorCode = OpenTK.Graphics.OpenGL4.ErrorCode;
 
 namespace SM.OGL
 {
     /// <summary>
-    /// Contains everything that is needed to properly debug OpenGL
+    /// Contains everything that is needed to debug OpenGL
     /// </summary>
     public static class GLDebugging
     {
@@ -62,6 +63,27 @@ namespace SM.OGL
             Console.WriteLine($"{severity}, {type}, {source} -> {msg}");
 
             if (type == DebugType.DebugTypeError) throw new Exception(msg);
+        }
+
+        /// <summary>
+        /// A action, that is performed, when <see cref="GLDebugging.CheckGLErrors"/> find an error.
+        /// </summary>
+        public static Action<ErrorCode> GlErrorAction;
+
+        /// <summary>
+        /// Checks for OpenGL errors.
+        /// </summary>
+        public static bool CheckGLErrors()
+        {
+            bool hasError = false;
+            ErrorCode c;
+            while ((c = GL.GetError()) != ErrorCode.NoError)
+            {
+                hasError = true;
+                GlErrorAction?.Invoke(c);
+            }
+
+            return hasError;
         }
     }
 }

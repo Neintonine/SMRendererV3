@@ -50,13 +50,11 @@ namespace SM2D.Drawing
 
         public void Draw(DrawContext context)
         {
-            if (_material.Shader == null) _material.Shader = Defaults.DefaultShader;
-
             context.Material = _material;
             context.Mesh = Plate.Object;
 
             context.Instances[0].ModelMatrix = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
-            _material.Shader.Draw(context);
+            context.Shader.Draw(context);
         }
     }
 }

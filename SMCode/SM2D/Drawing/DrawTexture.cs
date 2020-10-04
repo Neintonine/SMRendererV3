@@ -15,6 +15,7 @@ namespace SM2D.Drawing
         public static float MasterScale = .25f;
 
         public float Scale = 1;
+        public bool ManualSize = false;
         public Texture Texture
         {
             get => (Texture) _material.Texture;
@@ -28,16 +29,19 @@ namespace SM2D.Drawing
         public DrawTexture(Bitmap map) : this(map, Color4.White)
         { }
 
-        public DrawTexture(Bitmap map, Color4 color)
+        public DrawTexture(Bitmap map, Color4 color) : this((Texture)map, color)
+        { }
+
+        public DrawTexture(Texture texture, Color4 color)
         {
-            _material.Texture = new Texture(map);
+            _material.Texture = texture;
             _material.Tint = color;
         }
 
-        public override void Draw(DrawContext context)
+        protected override void DrawContext(ref DrawContext context)
         {
-            Transform.Size = new CVector2(Texture.Map.Width * MasterScale * Scale, Texture.Map.Height * MasterScale * Scale);
-            base.Draw(context);
+            if (!ManualSize) Transform.Size = new CVector2(Texture.Map.Width * MasterScale * Scale, Texture.Map.Height * MasterScale * Scale);
+            base.DrawContext(ref context);
         }
     }
 }

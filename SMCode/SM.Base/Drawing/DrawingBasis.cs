@@ -25,20 +25,21 @@ namespace SM.Base.Scene
         }
 
         /// <inheritdoc />
-        public virtual void Draw(DrawContext context)
+        public void Draw(DrawContext context)
         {
+            context.Material = _material;
+            context.Mesh = _mesh;
+
+            DrawContext(ref context);
         }
 
         /// <summary>
-        /// Applies the current settings to the context.
+        /// Draws the context, that was given to them.
         /// </summary>
         /// <param name="context"></param>
-        protected void ApplyContext(ref DrawContext context)
+        protected virtual void DrawContext(ref DrawContext context)
         {
-            _material.Shader ??= Defaults.DefaultShader;
 
-            context.Material = _material;
-            context.Mesh = _mesh;
         }
     }
     /// <summary>

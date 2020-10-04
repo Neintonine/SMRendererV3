@@ -59,7 +59,7 @@ namespace SM.OGL.Shaders
         }
 
         /// <inheritdoc />
-        protected override void Compile()
+        public override void Compile()
         {
             Load();
         }
@@ -70,7 +70,7 @@ namespace SM.OGL.Shaders
         /// <param name="mesh">The mesh.</param>
         /// <param name="amount">The amounts for instancing.</param>
         /// <param name="bindVAO">Binds the vertex array for the mesh.</param>
-        protected void DrawObject(Mesh.GenericMesh mesh, int amount, bool bindVAO = false)
+        protected void DrawObject(Mesh.GenericMesh mesh, int amount = 1, bool bindVAO = false)
         {
             if (bindVAO) GL.BindVertexArray(mesh);
 

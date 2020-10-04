@@ -75,9 +75,8 @@ namespace SM.Base.Text
 
 
         /// <inheritdoc />
-        public override void Draw(DrawContext context)
+        protected override void DrawContext(ref DrawContext context)
         {
-            base.Draw(context);
             if (_instances == null) GenerateMatrixes();
         }
 

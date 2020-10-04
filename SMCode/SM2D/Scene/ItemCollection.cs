@@ -14,7 +14,7 @@ namespace SM2D.Scene
 
         public override void Draw(DrawContext context)
         {
-            Objects.Sort((x, y) => x.ZIndex - y.ZIndex);
+            Sort((x, y) => x.ZIndex - y.ZIndex);
 
             base.Draw(context);
         }

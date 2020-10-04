@@ -33,5 +33,11 @@ namespace SM.OGL.Texture
         /// The height of the texture
         /// </summary>
         public int Height { get; protected set; }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            GL.DeleteTexture(_id);
+        }
     }
 }

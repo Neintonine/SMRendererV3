@@ -18,9 +18,8 @@ namespace SM.Base.Scene
         public Color4 Tint = Color4.White;
 
         /// <summary>
-        /// A shader, that is used to draw this material.
-        /// <para>Default: Defaults.DefaultShaders </para>
+        /// A custom shader, that is used to draw this material.
         /// </summary>
-        public IShader Shader = Defaults.DefaultShader;
+        public IShader CustomShader;
     }
 }

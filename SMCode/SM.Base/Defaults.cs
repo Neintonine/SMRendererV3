@@ -1,6 +1,7 @@
 ﻿using SM.Base.Objects;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
+using SM.Base.Text;
 using SM.OGL.Mesh;
 using SM.Utility;
 
@@ -12,13 +13,14 @@ namespace SM.Base
     public class Defaults
     {
         /// <summary>
-        /// The default shader.
-        /// </summary>
-        public static IShader DefaultShader;
-        /// <summary>
         /// The default mesh.
         /// </summary>
         public static GenericMesh DefaultMesh = Plate.Object;
+
+        /// <summary>
+        /// The default font.
+        /// </summary>
+        public static Font DefaultFont;
 
         /// <summary>
         /// The default deltatime helper.

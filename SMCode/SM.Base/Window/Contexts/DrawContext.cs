@@ -39,8 +39,19 @@ namespace SM.Base.Contexts
         public Material Material;
 
         /// <summary>
+        /// Contains the currently used render pipeline.
+        /// </summary>
+        public RenderPipeline ActivePipeline;
+
+        /// <summary>
         /// The current world scale.
         /// </summary>
         public Vector2 WorldScale;
+
+        /// <summary>
+        /// Returns the appropriate shader.
+        /// <para>Returns the material shader, if available, otherwise it will take the default shader from the render pipeline.</para>
+        /// </summary>
+        public IShader Shader => Material.CustomShader ?? ActivePipeline._defaultShader;
     }
 }

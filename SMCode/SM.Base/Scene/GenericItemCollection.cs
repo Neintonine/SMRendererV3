@@ -7,23 +7,24 @@ namespace SM.Base.Scene
     /// Contains a list of show items.
     /// </summary>
     /// <typeparam name="TItem">The type of show items.</typeparam>
-    public abstract class GenericItemCollection<TItem> : IShowItem, IShowCollection<TItem>
+    public abstract class GenericItemCollection<TItem> : List<TItem>, IShowItem, IShowCollection<TItem>
         where TItem : IShowItem
     {
         /// <inheritdoc />
-        public List<TItem> Objects { get; } = new List<TItem>();
+        public List<TItem> Objects => this;
 
         /// <inheritdoc />
         public void Update(UpdateContext context)
         {
-            throw new System.NotImplementedException();
+            for(int i = 0; i < Objects.Count; i++)
+                this[i].Update(context);
         }
 
         /// <inheritdoc cref="IShowCollection{TItem}.Draw" />
         public virtual void Draw(DrawContext context)
         {
             for (int i = 0; i < Objects.Count; i++)
-                Objects[i].Draw(context);
+                this[i].Draw(context);
         }
     }
 

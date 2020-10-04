@@ -22,14 +22,11 @@ namespace SM2D.Drawing
             set => _mesh = value;
         }
 
-        public override void Draw(DrawContext context)
+        protected override void DrawContext(ref DrawContext context)
         {
-            base.Draw(context);
-            ApplyContext(ref context);
-
             context.Instances[0].ModelMatrix = Transform.GetMatrix();
 
-            _material.Shader.Draw(context);
+            context.Shader.Draw(context);
         }
     }
 }

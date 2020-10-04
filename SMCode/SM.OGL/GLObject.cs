@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using System.Diagnostics;
+using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL
 {
@@ -29,7 +30,7 @@ namespace SM.OGL
         {
             get
             {
-                if (AutoCompile && !WasCompiled) Compile();
+                if (AutoCompile && !WasCompiled) PerformCompile();
                 return _id;
             }
         }
@@ -39,10 +40,17 @@ namespace SM.OGL
         /// </summary>
         public abstract ObjectLabelIdentifier TypeIdentifier { get; }
 
+        [DebuggerStepThrough]
+        private void PerformCompile()
+        {
+            Compile();
+        }
+
         /// <summary>
         /// The action, that is called, when "ID" tries to compile something.
         /// </summary>
-        protected virtual void Compile()
+
+        public virtual void Compile()
         {
 
         }
@@ -50,7 +58,7 @@ namespace SM.OGL
         /// <summary>
         /// Is triggered, when something want to dispose this object.
         /// </summary>
-        protected virtual void Dispose() {}
+        public virtual void Dispose() {}
 
         /// <summary>
         /// Re-compiles the object.
@@ -72,10 +80,15 @@ namespace SM.OGL
             if (GLSystem.Debugging) GL.ObjectLabel(TypeIdentifier, _id, name.Length, name);
         }
 
+        protected virtual int GetID()
+        {
+            return _id;
+        }
+
         /// <summary>
         /// Returns the ID for the object.
         /// </summary>
         /// <param name="glo"></param>
-        public static implicit operator int(GLObject glo) => glo.ID;
+        public static implicit operator int(GLObject glo) => glo.GetID();
     }
 }

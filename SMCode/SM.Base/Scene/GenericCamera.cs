@@ -54,7 +54,7 @@ namespace SM.Base.Scene
         public abstract bool Orthographic { get; }
         /// <summary>
         /// This will calculate the world.
-        /// <para>This is called on <see cref="GenericWindow{TScene,TItem,TCamera}.ViewportCamera"/> to calculate the world.</para>
+        /// <para>This is called on <see cref="GenericWindow{TScene,TCamera}.ViewportCamera"/> to calculate the world.</para>
         /// </summary>
         /// <param name="world">The world scale</param>
         /// <param name="aspect">The aspect ratio from the window.</param>

@@ -41,14 +41,14 @@ namespace SM.Base
         {
             GLSystem.INIT_SYSTEM();
 
-            Console.Write("----------------------\n" +
-                          "--- OpenGL Loading ---\n" +
-                          "----------------------------------\n" +
-                          $"--- {"DeviceVersion",14}: {GLSystem.DeviceVersion,-10} ---\n" +
-                          $"--- {"ForcedVersion",14}: {GLSystem.ForcedVersion,-10} ---\n" +
-                          $"--- {"ShadingVersion",14}: {GLSystem.ShadingVersion,-10} ---\n" +
-                          $"--- {"Debugging",14}: {GLSystem.Debugging,-10} ---\n" +
-                          $"----------------------------------\n");
+            Log.Write("#", ConsoleColor.Cyan, "----------------------",
+                "--- OpenGL Loading ---",
+                "----------------------------------",
+                $"--- {"DeviceVersion",14}: {GLSystem.DeviceVersion,-10} ---",
+                $"--- {"ForcedVersion",14}: {GLSystem.ForcedVersion,-10} ---",
+                $"--- {"ShadingVersion",14}: {GLSystem.ShadingVersion,-10} ---",
+                $"--- {"Debugging",14}: {GLSystem.Debugging,-10} ---",
+                $"----------------------------------");
 
             base.OnLoad(e);
             _loading = true;
@@ -123,11 +123,9 @@ namespace SM.Base
     /// The base window.
     /// </summary>
     /// <typeparam name="TScene">The scene type</typeparam>
-    /// <typeparam name="TItem">The base item type</typeparam>
     /// <typeparam name="TCamera">The camera type</typeparam>
-    public abstract class GenericWindow<TScene, TItem, TCamera> : GenericWindow
-        where TScene : GenericScene<TCamera, TItem>, new()
-        where TItem : IShowItem
+    public abstract class GenericWindow<TScene, TCamera> : GenericWindow
+        where TScene : GenericScene, new()
         where TCamera : GenericCamera, new()
     {
         /// <summary>
@@ -144,6 +142,11 @@ namespace SM.Base
         /// </summary>
         public TScene CurrentScene { get; private set; }
 
+        /// <summary>
+        /// Controls how a scene is rendered.
+        /// </summary>
+        public RenderPipeline<TScene> RenderPipeline { get; private set; }
+
         /// <inheritdoc />
         protected GenericWindow()
         {
@@ -153,6 +156,7 @@ namespace SM.Base
         /// <inheritdoc />
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            Deltatime.RenderDelta = (float)e.Time;
             DrawContext drawContext = new DrawContext()
             {
                 World = ViewportCamera.World,
@@ -165,11 +169,11 @@ namespace SM.Base
 
             base.OnRenderFrame(e);
 
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            CurrentScene.Draw(drawContext);
+            RenderPipeline.Render(ref drawContext, CurrentScene);
 
             SwapBuffers();
+
+            GLDebugging.CheckGLErrors();
         }
 
         /// <inheritdoc />
@@ -178,6 +182,7 @@ namespace SM.Base
             base.OnResize(e);
 
             ViewportCamera.RecalculateWorld(_worldScale, Aspect);
+            RenderPipeline.Resize();
         }
 
         /// <summary>
@@ -188,6 +193,16 @@ namespace SM.Base
         {
             CurrentScene = scene;
             scene.Activate();
+        }
+
+        /// <summary>
+        /// Defines the render pipeline.
+        /// </summary>
+        /// <param name="pipeline"></param>
+        public void SetRenderPipeline(RenderPipeline<TScene> pipeline)
+        {
+            RenderPipeline = pipeline;
+            pipeline.Activate(this);
         }
     }
 }

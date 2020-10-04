@@ -8,13 +8,15 @@ namespace SM2D.Shader
 {
     public class Default2DShader : GenericShader, IShader
     {
-        protected override bool AutoCompile { get; } = true;
+        public static Default2DShader Shader = new Default2DShader();
 
-        public Default2DShader() : base(new ShaderFileCollection(
+        //protected override bool AutoCompile { get; } = true;
+
+        private Default2DShader() : base(new ShaderFileCollection(
             AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.vert"),
             AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.frag")))
         {
-
+            Load();
         }
         public void Draw(DrawContext context)
         {

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics;
+using SM.Base;
 using SM.Base.Time;
 using SM2D;
 using SM2D.Drawing;
@@ -27,6 +28,8 @@ namespace SM_TEST
             {
                 FontSize = 32
             };
+
+            Log.SetLogFile(compressionFolder:"logs");
 
             window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
             //window.GrabCursor();
@@ -53,11 +56,11 @@ namespace SM_TEST
                 ZIndex = 1
             };
 
-            col.Objects.Add(new DrawTexture(new Bitmap("soldier_logo.png"))
+            col.Add(new DrawTexture(new Bitmap("soldier_logo.png"))
             {
                 ZIndex = 1
             });
-            col.Objects.Add(new DrawColor(Color4.Black)
+            col.Add(new DrawColor(Color4.Black)
             {
                 Transform = { Rotation = 45, Position = new SM.Base.Types.CVector2(0, 25) },
                 ZIndex = 2

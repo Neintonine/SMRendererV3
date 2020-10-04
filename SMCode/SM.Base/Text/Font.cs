@@ -127,7 +127,7 @@ namespace SM.Base.Text
         }
 
         /// <inheritdoc />
-        protected override void Compile()
+        public override void Compile()
         {
             RegenerateTexture();
             base.Compile();

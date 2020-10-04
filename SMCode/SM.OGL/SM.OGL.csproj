@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framebuffer\ColorAttachment.cs" />
+    <Compile Include="Framebuffer\Framebuffer.cs" />
     <Compile Include="GLDebugging.cs" />
     <Compile Include="GLObject.cs" />
     <Compile Include="GLSystem.cs" />

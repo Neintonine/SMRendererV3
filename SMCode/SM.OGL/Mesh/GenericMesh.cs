@@ -64,7 +64,7 @@ namespace SM.OGL.Mesh
         }
 
         /// <inheritdoc />
-        protected override void Compile()
+        public override void Compile()
         {
             _id = GL.GenVertexArray();
             GL.BindVertexArray(_id);

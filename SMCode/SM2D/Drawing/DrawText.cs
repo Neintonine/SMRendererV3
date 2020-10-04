@@ -1,4 +1,5 @@
-﻿using SM.Base.Contexts;
+﻿using SM.Base;
+using SM.Base.Contexts;
 using SM.Base.Text;
 using SM.Base.Types;
 using SM2D.Scene;
@@ -14,15 +15,14 @@ namespace SM2D.Drawing
             Transform.Size = new CVector2(1);
         }
 
-        public override void Draw(DrawContext context)
+        protected override void DrawContext(ref DrawContext context)
         {
-            base.Draw(context);
+            base.DrawContext(ref context);
             context.Instances = _instances;
-            ApplyContext(ref context);
 
             context.View = Transform.GetMatrix() * context.View;
 
-            _material.Shader.Draw(context);
+            context.Shader.Draw(context);
         }
 
         public int ZIndex { get; set; }

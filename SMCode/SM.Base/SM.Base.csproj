@@ -40,6 +40,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +57,7 @@
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
     <Compile Include="Drawing\IShader.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Objects\Mesh.cs" />
     <Compile Include="Scene\IShowCollection.cs" />
     <Compile Include="Scene\IShowItem.cs" />
@@ -82,6 +86,7 @@
     <Compile Include="Scene\GenericCamera.cs" />
     <Compile Include="Scene\GenericScene.cs" />
     <Compile Include="Objects\Static\Plate.cs" />
+    <Compile Include="Window\RenderPipeline.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

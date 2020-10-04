@@ -46,7 +46,7 @@ namespace SM.Base.Textures
 
 
         /// <inheritdoc />
-        protected override void Compile()
+        public override void Compile()
         {
             base.Compile();
 
@@ -54,7 +54,7 @@ namespace SM.Base.Textures
         }
 
         /// <inheritdoc />
-        protected override void Dispose()
+        public override void Dispose()
         {
             base.Dispose();
 
