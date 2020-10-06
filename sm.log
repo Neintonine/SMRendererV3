@@ -1,0 +1,33 @@
+<06.10.2020, 09:13> [Info] Activated new log file. ['sm.log']
+<06.10.2020, 09:13> [#] ----------------------
+<06.10.2020, 09:13> [#] --- OpenGL Loading ---
+<06.10.2020, 09:13> [#] ----------------------------------
+<06.10.2020, 09:13> [#] ---  DeviceVersion: 4.5        ---
+<06.10.2020, 09:13> [#] ---  ForcedVersion: 0.0        ---
+<06.10.2020, 09:13> [#] --- ShadingVersion: 4.5        ---
+<06.10.2020, 09:13> [#] ---      Debugging: False      ---
+<06.10.2020, 09:13> [#] ----------------------------------
+<06.10.2020, 09:13> [Terminating Error] System.TypeInitializationException: Der Typeninitialisierer für "SM2D.Shader.Default2DShader" hat eine Ausnahme verursacht. ---> System.Exception: [GLError] GL_INVALID_OPERATION error generated. <program> is not a container object.
+   bei SM.Base.Log.GLDebugAction(DebugSource source, DebugType type, DebugSeverity severity, String msg)
+   bei SM.OGL.GLDebugging.DebugCallback(DebugSource source, DebugType type, Int32 id, DebugSeverity severity, Int32 length, IntPtr message, IntPtr userparam)
+   bei OpenTK.Graphics.OpenGL4.GL.DetachShader(Int32 program, Int32 shader)
+   bei SM.OGL.Shaders.ShaderFileCollection.Detach(GenericShader shader)
+   bei SM.OGL.Shaders.GenericShader.Load()
+   bei SM2D.Shader.Default2DShader..ctor()
+   bei SM2D.Shader.Default2DShader..cctor()
+   --- Ende der internen Ausnahmestapelüberwachung ---
+   bei SM2D.Pipelines.Basic2DPipeline..ctor()
+   bei SM2D.GLWindow2D.OnLoaded()
+   bei SM.Base.GenericWindow.OnResize(EventArgs e)
+   bei SM.Base.GenericWindow`2.OnResize(EventArgs e)
+   bei OpenTK.GameWindow.Run(Double updates_per_second, Double frames_per_second)
+   bei OpenTK.GameWindow.Run()
+   bei SM_TEST.Program.Main(String[] args) in c:\Users\Michel.Fedde\Documents\Visual Studio 2013\Projects\ConsoleApplication3\ConsoleApplication3\Program.cs:Zeile 40.
+   bei System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+   bei System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+   bei Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+   bei System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+   bei System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   bei System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   bei System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   bei System.Threading.ThreadHelper.ThreadStart()
