@@ -80,15 +80,10 @@ namespace SM.OGL
             if (GLSystem.Debugging) GL.ObjectLabel(TypeIdentifier, _id, name.Length, name);
         }
 
-        protected virtual int GetID()
-        {
-            return _id;
-        }
-
         /// <summary>
         /// Returns the ID for the object.
         /// </summary>
         /// <param name="glo"></param>
-        public static implicit operator int(GLObject glo) => glo.GetID();
+        public static implicit operator int(GLObject glo) => glo.ID;
     }
 }

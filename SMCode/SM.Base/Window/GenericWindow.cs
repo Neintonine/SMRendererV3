@@ -20,8 +20,7 @@ namespace SM.Base
     public abstract class GenericWindow : GameWindow
     {
         private bool _loading = false;
-
-
+        
         /// <summary>
         /// This tells you the current world scale.
         /// </summary>
