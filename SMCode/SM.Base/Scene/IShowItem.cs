@@ -1,4 +1,5 @@
-﻿using SM.Base.Contexts;
+﻿using System.Collections.Generic;
+using SM.Base.Contexts;
 
 namespace SM.Base.Scene
 {
@@ -7,6 +8,21 @@ namespace SM.Base.Scene
     /// </summary>
     public interface IShowItem
     {
+        /// <summary>
+        /// Parent of the object.
+        /// </summary>
+        object Parent { get; set; }
+
+        /// <summary>
+        /// Contains the name for the object.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Contains specific flags for the object.
+        /// </summary>
+        ICollection<string> Flags { get; set; }
+
         /// <summary>
         /// Tells the object to update own systems.
         /// </summary>
@@ -17,5 +33,14 @@ namespace SM.Base.Scene
         /// </summary>
         /// <param name="context"></param>
         void Draw(DrawContext context);
+
+        /// <summary>
+        /// Action, that is called, when the object was added to a GenericItemCollection.
+        /// </summary>
+        void OnAdded(object sender);
+        /// <summary>
+        /// Action, that is called, when the object was removed from a GenericItemCollection.
+        /// </summary>
+        void OnRemoved(object sender);
     }
 }

@@ -13,10 +13,20 @@ namespace SM2D.Controls
 
         internal new void MouseMoveEvent(MouseMoveEventArgs mmea) => base.MouseMoveEvent(mmea);
 
-        public Vector2 InWorld(Camera cam)
+        public Vector2 InWorld()
         {
             Vector2 res = _window.WorldScale;
             return InScreenNormalized * res - res / 2;
+        }
+
+        public Vector2 InWorld(Camera cam)
+        {
+            return InWorld() + cam.Position;
+        }
+
+        public Vector2 InWorld(Vector2 position)
+        {
+            return InWorld() + position;
         }
     }
 }

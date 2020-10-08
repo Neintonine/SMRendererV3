@@ -1,6 +1,4 @@
-﻿using SM.Base.Objects;
-using SM.Base.Objects.Static;
-using SM.Base.Scene;
+﻿using SM.Base.Objects.Static;
 using SM.Base.Text;
 using SM.OGL.Mesh;
 using SM.Utility;
@@ -8,9 +6,9 @@ using SM.Utility;
 namespace SM.Base
 {
     /// <summary>
-    /// The default options.
+    /// Contains different information about this renderer.
     /// </summary>
-    public class Defaults
+    public class SMRenderer
     {
         /// <summary>
         /// The default mesh.
@@ -26,5 +24,10 @@ namespace SM.Base
         /// The default deltatime helper.
         /// </summary>
         public static Deltatime DefaultDeltatime = new Deltatime();
+
+        /// <summary>
+        /// Current Frame
+        /// </summary>
+        public static ulong CurrentFrame { get; internal set; } = 0;
     }
 }

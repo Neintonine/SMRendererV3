@@ -17,7 +17,7 @@ namespace SM2D.Pipelines
 
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            scene.Draw(context);
+            scene?.Draw(context);
         }
     }
 }

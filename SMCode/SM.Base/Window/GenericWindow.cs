@@ -95,6 +95,16 @@ namespace SM.Base
                 MouseState = Mouse.GetState()
             };
 
+            Update(e, ref context);
+        }
+
+        /// <summary>
+        /// Updates the system.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="context"></param>
+        protected virtual void Update(FrameEventArgs e, ref UpdateContext context)
+        {
             Stopwatch.PerformTicks(context);
         }
 
@@ -153,13 +163,23 @@ namespace SM.Base
         }
 
         /// <inheritdoc />
+        protected override void Update(FrameEventArgs e, ref UpdateContext context)
+        {
+            base.Update(e, ref context);
+            CurrentScene?.Update(context);
+        }
+
+        /// <inheritdoc />
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            SMRenderer.CurrentFrame++;
+
             Deltatime.RenderDelta = (float)e.Time;
             DrawContext drawContext = new DrawContext()
             {
                 World = ViewportCamera.World,
                 View = ViewportCamera.CalculateViewMatrix(),
+                ModelMaster = Matrix4.Identity,
                 Instances = new[] { new Instance {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One } },
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,

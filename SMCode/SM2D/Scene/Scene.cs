@@ -7,11 +7,11 @@ namespace SM2D.Scene
 {
     public class Scene : GenericScene<Camera, ItemCollection, I2DShowItem>
     {
-        public DrawBackground Background => (DrawBackground)_background;
+        public DrawBackground Background => (DrawBackground)_Background;
 
         public Scene()
         {
-            _background = new DrawBackground(Color4.Black);
+            _Background = new DrawBackground(Color4.Black);
         }
     }
 }

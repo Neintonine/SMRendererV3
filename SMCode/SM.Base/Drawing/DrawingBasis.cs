@@ -1,4 +1,5 @@
-﻿using SM.Base.Contexts;
+﻿using System.Collections.Generic;
+using SM.Base.Contexts;
 using SM.Base.Objects.Static;
 using SM.OGL.Mesh;
 
@@ -16,7 +17,16 @@ namespace SM.Base.Scene
         /// <summary>
         /// The mesh it should use.
         /// </summary>
-        protected GenericMesh _mesh = Defaults.DefaultMesh;
+        protected GenericMesh _mesh = SMRenderer.DefaultMesh;
+
+        /// <inheritdoc />
+        public object Parent { get; set; }
+
+        /// <inheritdoc />
+        public string Name { get; set; } = "Unnamed draw object";
+
+        /// <inheritdoc />
+        public ICollection<string> Flags { get; set; }
 
         /// <inheritdoc />
         public virtual void Update(UpdateContext context)
@@ -31,6 +41,18 @@ namespace SM.Base.Scene
             context.Mesh = _mesh;
 
             DrawContext(ref context);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnAdded(object sender)
+        {
+            
+        }
+
+        /// <inheritdoc />
+        public virtual void OnRemoved(object sender)
+        {
+
         }
 
         /// <summary>

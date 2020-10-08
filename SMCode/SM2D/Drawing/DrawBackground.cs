@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base;
@@ -43,10 +44,12 @@ namespace SM2D.Drawing
             Texture = (Texture) texture;
         }
 
+        public object Parent { get; set; }
+        public string Name { get; set; } = "Background";
+        public ICollection<string> Flags { get; set; } = new string[0];
+
         public void Update(UpdateContext context)
-        {
-            throw new System.NotImplementedException();
-        }
+        { }
 
         public void Draw(DrawContext context)
         {
@@ -55,6 +58,14 @@ namespace SM2D.Drawing
 
             context.Instances[0].ModelMatrix = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
             context.Shader.Draw(context);
+        }
+
+        public void OnAdded(object sender)
+        {
+        }
+
+        public void OnRemoved(object sender)
+        {
         }
     }
 }

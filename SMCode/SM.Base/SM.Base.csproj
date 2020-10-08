@@ -52,18 +52,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Mouse.cs" />
-    <Compile Include="Defaults.cs" />
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
     <Compile Include="Drawing\IShader.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Objects\Mesh.cs" />
+    <Compile Include="PostProcessing\PostProcessingEffect.cs" />
     <Compile Include="Scene\IShowCollection.cs" />
     <Compile Include="Scene\IShowItem.cs" />
     <Compile Include="Drawing\Material.cs" />
     <Compile Include="Scene\IBackgroundItem.cs" />
     <Compile Include="Scene\GenericItemCollection.cs" />
+    <Compile Include="SMRenderer.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Text\CharParameter.cs" />
     <Compile Include="Text\Font.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Utility\Assembly.cs" />
     <Compile Include="Utility\Deltatime.cs" />
     <Compile Include="Utility\Randomize.cs" />
+    <Compile Include="Utility\RotationUtility.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
     <Compile Include="Window\GenericWindow.cs" />

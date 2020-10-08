@@ -55,6 +55,7 @@
     <Compile Include="GLWindow2D.cs" />
     <Compile Include="Object\Polygon.cs" />
     <Compile Include="Object\PolygonVertex.cs" />
+    <Compile Include="Pipelines\Adv2DPipeline.cs" />
     <Compile Include="Pipelines\Basic2DPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Camera.cs" />

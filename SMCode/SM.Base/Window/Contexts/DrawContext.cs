@@ -24,6 +24,10 @@ namespace SM.Base.Contexts
         /// </summary>
         public Matrix4 View;
         /// <summary>
+        /// The master model matrix.
+        /// </summary>
+        public Matrix4 ModelMaster;
+        /// <summary>
         /// The drawing instances.
         /// <para>If there is only one, it's index 0</para>
         /// </summary>

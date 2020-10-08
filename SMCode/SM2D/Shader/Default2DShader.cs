@@ -25,7 +25,7 @@ namespace SM2D.Shader
             GL.BindVertexArray(context.Mesh);
 
             // Vertex Uniforms
-            Uniforms["MVP"].SetMatrix4(context.View * context.World);
+            Uniforms["MVP"].SetMatrix4(context.ModelMaster * context.View * context.World);
             Uniforms["HasVColor"].SetUniform1(context.Mesh.AttribDataIndex.ContainsKey(3) && context.Mesh.AttribDataIndex[3] != null);
 
             for (int i = 0; i < context.Instances.Length; i++)

@@ -11,7 +11,7 @@ namespace SM.Base.Contexts
         /// <summary>
         /// The delta time.
         /// </summary>
-        public float Deltatime => Defaults.DefaultDeltatime.DeltaTime;
+        public float Deltatime => SMRenderer.DefaultDeltatime.DeltaTime;
 
         /// <summary>
         /// The current keyboard state.

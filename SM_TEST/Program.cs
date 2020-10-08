@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security.Authentication.ExtendedProtection.Configuration;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base;
@@ -41,7 +42,11 @@ namespace SM_TEST
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            polyogn.Transform.Position.Set(window.Mouse.InWorld(window.ViewportCamera));
+            Vector2 mousepos = window.Mouse.InWorld();
+            //polyogn.Transform.Position.Set(mousepos);
+            polyogn.Transform.TurnTo(mousepos);
+
+            Log.Write(LogType.Info, polyogn.Transform.LookAtVector()); 
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
@@ -52,7 +57,7 @@ namespace SM_TEST
 
             col = new ItemCollection()
             {
-                Transform = { Position = new SM.Base.Types.CVector2(0, -400) },
+                Transform = { Position = new SM.Base.Types.CVector2(0, 400) },
                 ZIndex = 1
             };
 
@@ -69,12 +74,12 @@ namespace SM_TEST
             scene.Objects.Add(col);
             scene.Objects.Add(new DrawText(font, "Testing...")
             {
-                Transform = { Position = new SM.Base.Types.CVector2(0, -400)},
+                Transform = { Position = new SM.Base.Types.CVector2(0, 400)},
                 Color = Color4.Black
             });
 
-            scene.Objects.Add(polyogn = new DrawPolygon(Polygon.GenerateCircle(),Color4.Blue));
-            scene.Objects.Add(new DrawPolygon(new Polygon(new[]
+            scene.Objects.Add(new DrawPolygon(Polygon.GenerateCircle(),Color4.Blue));
+            scene.Objects.Add(polyogn = new DrawPolygon(new Polygon(new[]
             {
                 new PolygonVertex(new Vector2(.25f, 0), Color4.White),
                 new PolygonVertex(new Vector2(.75f, 0), Color4.White),

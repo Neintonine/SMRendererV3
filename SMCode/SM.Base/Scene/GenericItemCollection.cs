@@ -14,7 +14,37 @@ namespace SM.Base.Scene
         public List<TItem> Objects => this;
 
         /// <inheritdoc />
-        public void Update(UpdateContext context)
+        public object Parent { get; set; }
+
+        /// <inheritdoc />
+        public string Name { get; set; } = "Unnamed Item Collection";
+
+        /// <inheritdoc />
+        public ICollection<string> Flags { get; set; } = new[] {"collection"};
+
+        /// <summary>
+        /// Adds a item.
+        /// </summary>
+        public new void Add(TItem item)
+        {
+            base.Add(item);
+            item.Parent = this;
+            item.OnAdded(this);
+        }
+
+        /// <summary>
+        /// Removes a item.
+        /// </summary>
+        /// <param name="item"></param>
+        public new void Remove(TItem item)
+        {
+            base.Remove(item);
+            item.Parent = null;
+            item.OnRemoved(this);
+        }
+
+        /// <inheritdoc />
+        public virtual void Update(UpdateContext context)
         {
             for(int i = 0; i < Objects.Count; i++)
                 this[i].Update(context);
@@ -25,6 +55,64 @@ namespace SM.Base.Scene
         {
             for (int i = 0; i < Objects.Count; i++)
                 this[i].Draw(context);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnAdded(object sender)
+        {
+
+        }
+
+        /// <inheritdoc />
+        public virtual void OnRemoved(object sender)
+        { }
+
+        /// <summary>
+        /// Returns a object with this name or the default, if not available.
+        /// <para>Not reclusive.</para>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public TItem GetItemByName(string name)
+        {
+            TItem obj = default;
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Name == name)
+                {
+                    obj = this[i];
+                    break;
+                }
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Returns a object with this name or the default if not available.
+        /// <para>Not reclusive.</para>
+        /// </summary>
+        /// <typeparam name="TGetItem">Type of return</typeparam>
+        public TGetItem GetItemByName<TGetItem>(string name)
+            where TGetItem : TItem
+        {
+            return (TGetItem)GetItemByName(name);
+        }
+
+        /// <summary>
+        /// Returns all object that have this flag.
+        /// <para>Only in this list.</para>
+        /// </summary>
+        public ICollection<TItem> GetItemsWithFlag(string flag)
+        {
+            List<TItem> list = new List<TItem>();
+            for (var i = 0; i < this.Count; i++)
+            {
+                TItem obj = this[i];
+                if (obj.Flags.Contains(flag)) list.Add(obj);
+            }
+
+            return list;
         }
     }
 
@@ -45,7 +133,7 @@ namespace SM.Base.Scene
         /// <inheritdoc />
         public override void Draw(DrawContext context)
         {
-            context.View = Transform.GetMatrix() * context.View;
+            context.ModelMaster = Transform.GetMatrix() * context.ModelMaster;
             
             base.Draw(context);
         }
