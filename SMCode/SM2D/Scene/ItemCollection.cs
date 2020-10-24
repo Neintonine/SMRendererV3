@@ -1,7 +1,11 @@
-﻿using SM.Base.Contexts;
+﻿#region usings
+
+using SM.Base.Contexts;
 using SM.Base.Scene;
 using SM.Base.Types;
 using SM2D.Types;
+
+#endregion
 
 namespace SM2D.Scene
 {

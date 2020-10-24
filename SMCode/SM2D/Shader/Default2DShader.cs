@@ -1,14 +1,18 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿#region usings
+
+using OpenTK.Graphics.OpenGL4;
 using SM.Base.Contexts;
 using SM.Base.Scene;
 using SM.OGL.Shaders;
 using SM.Utility;
 
+#endregion
+
 namespace SM2D.Shader
 {
-    public class Default2DShader : GenericShader, IShader
+    public class Default2DShader : MaterialShader
     {
-        public static Default2DShader Shader = new Default2DShader();
+        public static Default2DShader MaterialShader = new Default2DShader();
 
         //protected override bool AutoCompile { get; } = true;
 
@@ -18,32 +22,31 @@ namespace SM2D.Shader
         {
             Load();
         }
-        public void Draw(DrawContext context)
+
+        protected override void DrawProcess(DrawContext context)
         {
-            GL.UseProgram(this);
-
-            GL.BindVertexArray(context.Mesh);
-
             // Vertex Uniforms
             Uniforms["MVP"].SetMatrix4(context.ModelMaster * context.View * context.World);
-            Uniforms["HasVColor"].SetUniform1(context.Mesh.AttribDataIndex.ContainsKey(3) && context.Mesh.AttribDataIndex[3] != null);
+            Uniforms["HasVColor"]
+                .SetUniform1(context.Mesh.AttribDataIndex.ContainsKey(3) && context.Mesh.AttribDataIndex[3] != null);
 
-            for (int i = 0; i < context.Instances.Length; i++)
+            Uniforms.GetArray("Instances").Set((i, uniforms) =>
             {
-                GL.UniformMatrix4(Uniforms["ModelMatrix"] + i, false, ref context.Instances[i].ModelMatrix);
-                GL.Uniform2(Uniforms["TextureOffset"] + i, context.Instances[i].TexturePosition);
-                GL.Uniform2(Uniforms["TextureScale"] + i, context.Instances[i].TextureScale);
-            }
+                if (i >= context.Instances.Length) return false;
+
+                var instance = context.Instances[i];
+                uniforms["ModelMatrix"].SetMatrix4(instance.ModelMatrix);
+                uniforms["TextureOffset"].SetUniform2(instance.TexturePosition);
+                uniforms["TextureScale"].SetUniform2(instance.TextureScale);
+
+                return true;
+            });
 
             // Fragment Uniforms
             Uniforms["Tint"].SetUniform4(context.Material.Tint);
             Uniforms["Texture"].SetTexture(context.Material.Texture, Uniforms["UseTexture"]);
 
             DrawObject(context.Mesh, context.Instances.Length);
-
-            CleanUp();
-
-            GL.UseProgram(0);
         }
     }
 }

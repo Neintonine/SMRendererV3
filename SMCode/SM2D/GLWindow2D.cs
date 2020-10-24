@@ -1,28 +1,30 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using SM.Base;
-using SM.Base.Controls;
 using SM2D.Controls;
 using SM2D.Pipelines;
 using SM2D.Scene;
 using SM2D.Shader;
-using Vector2 = OpenTK.Vector2;
+
+#endregion
 
 namespace SM2D
 {
     public class GLWindow2D : GenericWindow<Scene.Scene, Camera>
     {
-        public Vector2? Scaling { get; set; }
-        public Vector2 WorldScale => _worldScale;
-
-        public Mouse2D Mouse { get; }
-
         public GLWindow2D()
         {
             Mouse = new Mouse2D(this);
         }
+
+        public Vector2? Scaling { get; set; }
+        public Vector2 WorldScale => _worldScale;
+
+        public Mouse2D Mouse { get; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -34,6 +36,8 @@ namespace SM2D
         protected override void OnLoaded()
         {
             base.OnLoaded();
+            SMRenderer.DefaultMaterialShader = Default2DShader.MaterialShader;
+
             SetRenderPipeline(new Basic2DPipeline());
         }
 

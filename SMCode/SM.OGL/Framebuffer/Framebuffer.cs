@@ -1,15 +1,18 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Platform;
+
+#endregion
 
 namespace SM.OGL.Framebuffer
 {
     // TODO: Write summeries for framebuffer-system.
     public class Framebuffer : GLObject
     {
-        public static readonly Framebuffer Screen = new Framebuffer()
+        public static readonly Framebuffer Screen = new Framebuffer
         {
             _id = 0,
             _canBeCompiled = false
@@ -17,34 +20,45 @@ namespace SM.OGL.Framebuffer
 
         private bool _canBeCompiled = true;
 
-        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
-
-        public Vector2 Size { get; private set; }
-        
-        public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } = new Dictionary<string, ColorAttachment>();
+        private INativeWindow _window;
+        private float _windowScale;
 
         public Framebuffer()
-        { }
+        {
+        }
 
-        public Framebuffer(INativeWindow window, float scale = 1) : this(new Vector2(window.Width * scale, window.Height * scale))
-        { }
+        public Framebuffer(INativeWindow window, float scale = 1) : this(new Vector2(window.Width * scale,
+            window.Height * scale))
+        {
+            _window = window;
+            _windowScale = scale;
+        }
 
         public Framebuffer(Vector2 size)
         {
             Size = size;
         }
 
+        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
+
+        public Vector2 Size { get; private set; }
+
+        public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } =
+            new Dictionary<string, ColorAttachment>();
+
         public override void Compile()
         {
             if (!_canBeCompiled) return;
+
+            if (_window != null) Size = new Vector2(_window.Width * _windowScale, _window.Height * _windowScale);
 
             base.Compile();
             _id = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _id);
 
-            DrawBuffersEnum[] enums = new DrawBuffersEnum[ColorAttachments.Count];
-            int c = 0;
-            foreach (KeyValuePair<string, ColorAttachment> pair in ColorAttachments)
+            var enums = new DrawBuffersEnum[ColorAttachments.Count];
+            var c = 0;
+            foreach (var pair in ColorAttachments)
             {
                 pair.Value.Generate(this);
 
@@ -53,11 +67,12 @@ namespace SM.OGL.Framebuffer
 
             GL.DrawBuffers(enums.Length, enums);
             foreach (var pair in ColorAttachments)
-                GL.FramebufferTexture(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.ID, 0);
+                GL.FramebufferTexture(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.ID,
+                    0);
 
-            FramebufferErrorCode err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            var err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
             if (err != FramebufferErrorCode.FramebufferComplete)
-                throw new Exception("Failed loading framebuffer.\nProblem: "+err);
+                throw new Exception("Failed loading framebuffer.\nProblem: " + err);
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -66,23 +81,36 @@ namespace SM.OGL.Framebuffer
         public override void Dispose()
         {
             base.Dispose();
-            foreach (ColorAttachment attachment in ColorAttachments.Values) attachment.Dispose();
+            foreach (var attachment in ColorAttachments.Values) attachment.Dispose();
             GL.DeleteFramebuffer(this);
         }
 
+        public void Append(string key, int pos) => Append(key, new ColorAttachment(pos));
         public void Append(string key, ColorAttachment value)
         {
             ColorAttachments.Add(key, value);
         }
 
 
-        public void Activate() => Activate(FramebufferTarget.Framebuffer, ClearBufferMask.None);
-        public void Activate(FramebufferTarget target) => Activate(target, ClearBufferMask.None);
-        public void Activate(ClearBufferMask clearMask) => Activate(FramebufferTarget.Framebuffer, clearMask);
+        public void Activate()
+        {
+            Activate(FramebufferTarget.Framebuffer, ClearBufferMask.None);
+        }
+
+        public void Activate(FramebufferTarget target)
+        {
+            Activate(target, ClearBufferMask.None);
+        }
+
+        public void Activate(ClearBufferMask clearMask)
+        {
+            Activate(FramebufferTarget.Framebuffer, clearMask);
+        }
+
         public void Activate(FramebufferTarget target, ClearBufferMask clear)
         {
-            GL.Clear(clear);
             GL.BindFramebuffer(target, this);
+            GL.Clear(clear);
         }
     }
 }

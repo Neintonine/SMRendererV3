@@ -1,30 +1,49 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Contexts;
 using SM.Base.Scene;
-using SM.Data.Fonts;
+
+#endregion
 
 namespace SM.Base.Text
 {
     /// <summary>
-    /// Defines a basis for text drawing.
+    ///     Defines a basis for text drawing.
     /// </summary>
     /// <typeparam name="TTransform">Transformation type</typeparam>
     public abstract class TextDrawingBasis<TTransform> : DrawingBasis<TTransform>
         where TTransform : GenericTransformation, new()
     {
         /// <summary>
-        /// The different instances for drawing.
+        ///     The different instances for drawing.
         /// </summary>
         protected Instance[] _instances;
+
         /// <summary>
-        /// The text, that is drawn.
+        ///     The text, that is drawn.
         /// </summary>
         protected string _text;
 
         /// <summary>
-        /// The font.
+        ///     The spacing between numbers.
+        ///     <para>Default: 1</para>
+        /// </summary>
+        public float Spacing = 1;
+
+        /// <summary>
+        ///     Creates a text object with a font.
+        /// </summary>
+        /// <param name="font">The font.</param>
+        protected TextDrawingBasis(Font font)
+        {
+            _material.Texture = font;
+        }
+
+        /// <summary>
+        ///     The font.
         /// </summary>
         public Font Font
         {
@@ -37,7 +56,7 @@ namespace SM.Base.Text
         }
 
         /// <summary>
-        /// The text, that is drawn.
+        ///     The text, that is drawn.
         /// </summary>
         public string Text
         {
@@ -50,27 +69,12 @@ namespace SM.Base.Text
         }
 
         /// <summary>
-        /// The font color.
+        ///     The font color.
         /// </summary>
         public Color4 Color
         {
             get => _material.Tint;
             set => _material.Tint = value;
-        }
-
-        /// <summary>
-        /// The spacing between numbers.
-        /// <para>Default: 1</para>
-        /// </summary>
-        public float Spacing = 1;
-
-        /// <summary>
-        /// Creates a text object with a font.
-        /// </summary>
-        /// <param name="font">The font.</param>
-        protected TextDrawingBasis(Font font)
-        {
-            _material.Texture = font;
         }
 
 
@@ -81,7 +85,7 @@ namespace SM.Base.Text
         }
 
         /// <summary>
-        /// This generates the instances.
+        ///     This generates the instances.
         /// </summary>
         /// <exception cref="Exception">The font doesn't contain a character that is needed for the text.</exception>
         public void GenerateMatrixes()
@@ -91,7 +95,7 @@ namespace SM.Base.Text
             _instances = new Instance[_text.Length];
 
             float x = 0;
-            CharParameter _last = new CharParameter();
+            var _last = new CharParameter();
             for (var i = 0; i < _text.Length; i++)
             {
                 if (_text[i] == 32)
@@ -99,7 +103,7 @@ namespace SM.Base.Text
                     x += _last.Width * Spacing;
                     continue;
                 }
-                
+
                 CharParameter parameter;
                 try
                 {
@@ -110,15 +114,15 @@ namespace SM.Base.Text
                     throw new Exception("Font doesn't contain '" + _text[i] + "'");
                 }
 
-                Matrix4 matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
-                                 Matrix4.CreateTranslation(x, 0, 0);
+                var matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
+                             Matrix4.CreateTranslation(x, 0, 0);
                 _instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
                     TexturePosition = new Vector2(parameter.NormalizedX, 0),
                     TextureScale = new Vector2(parameter.NormalizedWidth, 1)
                 };
-                
+
                 x += parameter.Width * Spacing;
                 _last = parameter;
             }

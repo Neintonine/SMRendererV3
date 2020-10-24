@@ -1,16 +1,19 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿#region usings
+
+using System.Reflection;
 using System.Runtime.InteropServices;
+
+#endregion
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SM.Base")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Basis for every SMRenderer")]
+[assembly: AssemblyDescription("SMRenderer-Basis functions")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("iedSoftworks")]
 [assembly: AssemblyProduct("SM.Base")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2020")]
+[assembly: AssemblyCopyright("Copyright © iedSoftworks 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

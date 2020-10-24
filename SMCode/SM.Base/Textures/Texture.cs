@@ -1,38 +1,48 @@
-﻿using System.Drawing;
+﻿#region usings
+
+using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Texture;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
+#endregion
+
 namespace SM.Base.Textures
 {
     /// <summary>
-    /// Texture that can be drawn to an object.
+    ///     Texture that can be drawn to an object.
     /// </summary>
     public class Texture : TextureBase
     {
         /// <summary>
-        /// The texture as bitmap.
-        /// </summary>
-        public Bitmap Map;
-        /// <summary>
-        /// Decides if the bitmap will automatically dispose itself.
+        ///     Decides if the bitmap will automatically dispose itself.
         /// </summary>
         public bool AutoDispose = false;
 
         /// <summary>
-        /// Empty constructor
+        ///     The texture as bitmap.
         /// </summary>
-        protected Texture() {}
+        public Bitmap Map;
 
         /// <summary>
-        /// Creates a texture with only the map.
-        /// <para>Sets the filter to Linear and WrapMode to Repeat.</para>
+        ///     Empty constructor
+        /// </summary>
+        protected Texture()
+        {
+        }
+
+        /// <summary>
+        ///     Creates a texture with only the map.
+        ///     <para>Sets the filter to Linear and WrapMode to Repeat.</para>
         /// </summary>
         /// <param name="map">The map</param>
-        public Texture(Bitmap map) : this(map, TextureMinFilter.Linear, TextureWrapMode.Repeat) {}
+        public Texture(Bitmap map) : this(map, TextureMinFilter.Linear, TextureWrapMode.Repeat)
+        {
+        }
+
         /// <summary>
-        /// Creates the texture.
+        ///     Creates the texture.
         /// </summary>
         /// <param name="map">The texture map</param>
         /// <param name="filter">The filter</param>
@@ -62,22 +72,23 @@ namespace SM.Base.Textures
         }
 
         /// <summary>
-        /// Generates a OpenGL-texture.
+        ///     Generates a OpenGL-texture.
         /// </summary>
         /// <param name="map">The texture as bitmap</param>
         /// <param name="filter">The filter</param>
         /// <param name="wrapMode">The wrap mode</param>
         /// <param name="dispose">Auto dispose of the bitmap? Default: false</param>
         /// <returns></returns>
-        public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode, bool dispose = false)
+        public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode,
+            bool dispose = false)
         {
-            int id = GL.GenTexture();
+            var id = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, id);
 
-            BitmapData data = map.LockBits(new Rectangle(0, 0, map.Width, map.Height), ImageLockMode.ReadOnly,
+            var data = map.LockBits(new Rectangle(0, 0, map.Width, map.Height), ImageLockMode.ReadOnly,
                 map.PixelFormat);
 
-            bool transparenz = map.PixelFormat == PixelFormat.Format32bppArgb;
+            var transparenz = map.PixelFormat == PixelFormat.Format32bppArgb;
 
             GL.TexImage2D(TextureTarget.Texture2D, 0,
                 transparenz ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb,
@@ -85,10 +96,10 @@ namespace SM.Base.Textures
                 transparenz ? OpenTK.Graphics.OpenGL4.PixelFormat.Bgra : OpenTK.Graphics.OpenGL4.PixelFormat.Bgr,
                 PixelType.UnsignedByte, data.Scan0);
 
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)filter);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)filter);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrapMode);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrapMode);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) filter);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) filter);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) wrapMode);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) wrapMode);
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
@@ -101,8 +112,11 @@ namespace SM.Base.Textures
         }
 
         /// <summary>
-        /// Converts a bitmap to a texture.
+        ///     Converts a bitmap to a texture.
         /// </summary>
-        public static implicit operator Texture(Bitmap map) => new Texture(map);
+        public static implicit operator Texture(Bitmap map)
+        {
+            return new Texture(map);
+        }
     }
 }

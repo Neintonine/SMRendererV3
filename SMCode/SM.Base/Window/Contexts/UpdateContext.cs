@@ -1,25 +1,28 @@
-﻿using OpenTK.Input;
-using SM.Utility;
+﻿#region usings
+
+using OpenTK.Input;
+
+#endregion
 
 namespace SM.Base.Contexts
 {
     /// <summary>
-    /// The update context.
+    ///     The update context.
     /// </summary>
     public struct UpdateContext
     {
         /// <summary>
-        /// The delta time.
+        ///     The delta time.
         /// </summary>
         public float Deltatime => SMRenderer.DefaultDeltatime.DeltaTime;
 
         /// <summary>
-        /// The current keyboard state.
+        ///     The current keyboard state.
         /// </summary>
         public KeyboardState KeyboardState;
 
         /// <summary>
-        /// The current mouse state.
+        ///     The current mouse state.
         /// </summary>
         public MouseState MouseState;
     }

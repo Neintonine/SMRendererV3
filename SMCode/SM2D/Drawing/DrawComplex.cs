@@ -1,15 +1,17 @@
-﻿using SM.Base.Contexts;
+﻿#region usings
+
+using SM.Base.Contexts;
 using SM.Base.Scene;
 using SM.OGL.Mesh;
 using SM2D.Scene;
 using SM2D.Types;
 
+#endregion
+
 namespace SM2D.Drawing
 {
-    public class DrawComplex: DrawingBasis<Transformation>, I2DShowItem
+    public class DrawComplex : DrawingBasis<Transformation>, I2DShowItem
     {
-        public int ZIndex { get; set; }
-
         public Material Material
         {
             get => _material;
@@ -21,6 +23,8 @@ namespace SM2D.Drawing
             get => _mesh;
             set => _mesh = value;
         }
+
+        public int ZIndex { get; set; }
 
         protected override void DrawContext(ref DrawContext context)
         {

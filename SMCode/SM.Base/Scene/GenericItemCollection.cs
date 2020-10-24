@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿#region usings
+
+using System.Collections.Generic;
 using SM.Base.Contexts;
+
+#endregion
 
 namespace SM.Base.Scene
 {
     /// <summary>
-    /// Contains a list of show items.
+    ///     Contains a list of show items.
     /// </summary>
     /// <typeparam name="TItem">The type of show items.</typeparam>
     public abstract class GenericItemCollection<TItem> : List<TItem>, IShowItem, IShowCollection<TItem>
@@ -22,8 +26,32 @@ namespace SM.Base.Scene
         /// <inheritdoc />
         public ICollection<string> Flags { get; set; } = new[] {"collection"};
 
+        /// <inheritdoc />
+        public virtual void Update(UpdateContext context)
+        {
+            for (var i = 0; i < Objects.Count; i++)
+                this[i].Update(context);
+        }
+
+        /// <inheritdoc cref="IShowCollection{TItem}.Draw" />
+        public virtual void Draw(DrawContext context)
+        {
+            for (var i = 0; i < Objects.Count; i++)
+                this[i].Draw(context);
+        }
+
+        /// <inheritdoc />
+        public virtual void OnAdded(object sender)
+        {
+        }
+
+        /// <inheritdoc />
+        public virtual void OnRemoved(object sender)
+        {
+        }
+
         /// <summary>
-        /// Adds a item.
+        ///     Adds a item.
         /// </summary>
         public new void Add(TItem item)
         {
@@ -33,7 +61,7 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        /// Removes a item.
+        ///     Removes a item.
         /// </summary>
         /// <param name="item"></param>
         public new void Remove(TItem item)
@@ -43,72 +71,46 @@ namespace SM.Base.Scene
             item.OnRemoved(this);
         }
 
-        /// <inheritdoc />
-        public virtual void Update(UpdateContext context)
-        {
-            for(int i = 0; i < Objects.Count; i++)
-                this[i].Update(context);
-        }
-
-        /// <inheritdoc cref="IShowCollection{TItem}.Draw" />
-        public virtual void Draw(DrawContext context)
-        {
-            for (int i = 0; i < Objects.Count; i++)
-                this[i].Draw(context);
-        }
-
-        /// <inheritdoc />
-        public virtual void OnAdded(object sender)
-        {
-
-        }
-
-        /// <inheritdoc />
-        public virtual void OnRemoved(object sender)
-        { }
-
         /// <summary>
-        /// Returns a object with this name or the default, if not available.
-        /// <para>Not reclusive.</para>
+        ///     Returns a object with this name or the default, if not available.
+        ///     <para>Not reclusive.</para>
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public TItem GetItemByName(string name)
         {
             TItem obj = default;
-            for (var i = 0; i < this.Count; i++)
-            {
+            for (var i = 0; i < Count; i++)
                 if (this[i].Name == name)
                 {
                     obj = this[i];
                     break;
                 }
-            }
 
             return obj;
         }
 
         /// <summary>
-        /// Returns a object with this name or the default if not available.
-        /// <para>Not reclusive.</para>
+        ///     Returns a object with this name or the default if not available.
+        ///     <para>Not reclusive.</para>
         /// </summary>
         /// <typeparam name="TGetItem">Type of return</typeparam>
         public TGetItem GetItemByName<TGetItem>(string name)
             where TGetItem : TItem
         {
-            return (TGetItem)GetItemByName(name);
+            return (TGetItem) GetItemByName(name);
         }
 
         /// <summary>
-        /// Returns all object that have this flag.
-        /// <para>Only in this list.</para>
+        ///     Returns all object that have this flag.
+        ///     <para>Only in this list.</para>
         /// </summary>
         public ICollection<TItem> GetItemsWithFlag(string flag)
         {
-            List<TItem> list = new List<TItem>();
-            for (var i = 0; i < this.Count; i++)
+            var list = new List<TItem>();
+            for (var i = 0; i < Count; i++)
             {
-                TItem obj = this[i];
+                var obj = this[i];
                 if (obj.Flags.Contains(flag)) list.Add(obj);
             }
 
@@ -117,7 +119,7 @@ namespace SM.Base.Scene
     }
 
     /// <summary>
-    /// Contains a list of show items with transformation.
+    ///     Contains a list of show items with transformation.
     /// </summary>
     /// <typeparam name="TItem">The type of show items.</typeparam>
     /// <typeparam name="TTransformation">The type of transformation.</typeparam>
@@ -126,7 +128,7 @@ namespace SM.Base.Scene
         where TTransformation : GenericTransformation, new()
     {
         /// <summary>
-        /// Transformation of the collection
+        ///     Transformation of the collection
         /// </summary>
         public TTransformation Transform = new TTransformation();
 
@@ -134,7 +136,7 @@ namespace SM.Base.Scene
         public override void Draw(DrawContext context)
         {
             context.ModelMaster = Transform.GetMatrix() * context.ModelMaster;
-            
+
             base.Draw(context);
         }
     }

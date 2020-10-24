@@ -1,25 +1,30 @@
-﻿using System;
+﻿#region usings
+
 using OpenTK.Graphics.OpenGL4;
+using SM.OGL.Mesh;
+
+#endregion
 
 namespace SM.OGL.Shaders
 {
     /// <summary>
-    /// Abstract class, that is used to create graphic shader.
+    ///     Abstract class, that is used to create graphic shader.
     /// </summary>
     public abstract class GenericShader : GLObject
     {
+        protected override bool AutoCompile { get; } = true;
+
         /// <summary>
-        /// Contains the different files for the shader.
+        ///     Contains the different files for the shader.
         /// </summary>
         protected ShaderFileCollection ShaderFileFiles;
+
         /// <summary>
-        /// Contains and manage the uniforms from the shader.
+        ///     Contains and manage the uniforms from the shader.
         /// </summary>
         protected UniformCollection Uniforms;
 
-        /// <inheritdoc />
-        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Program;
-
+        protected GenericShader(string vertex, string fragment) : this(new ShaderFileCollection(vertex, fragment)){}
 
         /// <inheritdoc />
         protected GenericShader(ShaderFileCollection shaderFileFiles)
@@ -27,35 +32,26 @@ namespace SM.OGL.Shaders
             ShaderFileFiles = shaderFileFiles;
         }
 
+        /// <inheritdoc />
+        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Program;
+
         /// <summary>
-        /// Loads the shader to the GPU.
+        ///     Loads the shader to the GPU.
         /// </summary>
         public void Load()
         {
-            
             _id = GL.CreateProgram();
 
             ShaderFileFiles.Append(this);
             GL.LinkProgram(_id);
-            this.Name(GetType().Name);
+            Name(GetType().Name);
             ShaderFileFiles.Detach(this);
 
-            GL.GetProgram(_id, GetProgramParameterName.ActiveUniforms, out int uniformCount);
-            if (uniformCount < 1)
-                throw new Exception("[Critical] No uniforms has been found.");
-
             Uniforms = new UniformCollection();
-            Uniforms._parentShader = this;
-            for (int i = 0; i < uniformCount; i++)
-            {
-                string key = GL.GetActiveUniform(_id, i, out _, out _);
-                int loc = GL.GetUniformLocation(_id, key);
+            Uniforms.ParentShader = this;
+            Uniforms.Import(this);
 
-                if (key.EndsWith("]")) 
-                    key = key.Split('[', ']')[0];
-                Uniforms.Add(key, loc);
-            }
-
+            GLDebugging.CheckGLErrors($"A error occured at shader creation for '{GetType()}': %code%");
         }
 
         /// <inheritdoc />
@@ -65,22 +61,21 @@ namespace SM.OGL.Shaders
         }
 
         /// <summary>
-        /// Draws the mesh.
+        ///     Draws the mesh.
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <param name="amount">The amounts for instancing.</param>
         /// <param name="bindVAO">Binds the vertex array for the mesh.</param>
-        protected void DrawObject(Mesh.GenericMesh mesh, int amount = 1, bool bindVAO = false)
+        protected void DrawObject(GenericMesh mesh, int amount = 1)
         {
-            if (bindVAO) GL.BindVertexArray(mesh);
-
             if (mesh.Indices != null)
                 GL.DrawElementsInstanced(mesh.PrimitiveType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
-            else 
+            else
                 GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
         }
+
         /// <summary>
-        /// Resets the shader specific settings to ensure proper workings.
+        ///     Resets the shader specific settings to ensure proper workings.
         /// </summary>
         protected void CleanUp()
         {

@@ -1,36 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region usings
+
 using OpenTK.Graphics.OpenGL4;
+
+#endregion
 
 namespace SM.OGL.Shaders
 {
     /// <summary>
-    /// Collects all files that are needed for a shader.
+    ///     Collects all files that are needed for a shader.
     /// </summary>
     public struct ShaderFileCollection
     {
         /// <summary>
-        /// Contains the vertex file.
+        ///     Contains the vertex file.
         /// </summary>
         public ShaderFile Vertex;
+
         /// <summary>
-        /// Contains the geometry file.
+        ///     Contains the geometry file.
         /// </summary>
         public ShaderFile Geometry;
+
         /// <summary>
-        /// Contains the fragment file.
+        ///     Contains the fragment file.
         /// </summary>
         public ShaderFile Fragment;
 
         /// <summary>
-        /// Creating the collection with vertex and fragment files.
+        ///     Creating the collection with vertex and fragment files.
         /// </summary>
         /// <param name="vertex">The vertex source file.</param>
         /// <param name="fragment">The fragment source file.</param>
-        public ShaderFileCollection(string vertex, string fragment) : this(new ShaderFile(vertex), new ShaderFile(fragment)) {}
+        public ShaderFileCollection(string vertex, string fragment) : this(new ShaderFile(vertex),
+            new ShaderFile(fragment))
+        {
+        }
 
         /// <summary>
-        /// Creating the collection with shader files.
+        ///     Creating the collection with shader files.
         /// </summary>
         /// <param name="vertex"></param>
         /// <param name="fragment"></param>
@@ -43,7 +50,7 @@ namespace SM.OGL.Shaders
         }
 
         /// <summary>
-        /// Appends the files to the shader.
+        ///     Appends the files to the shader.
         /// </summary>
         /// <param name="shader"></param>
         internal void Append(GenericShader shader)
@@ -54,14 +61,16 @@ namespace SM.OGL.Shaders
         }
 
         /// <summary>
-        /// Removes the files form the shader.
+        ///     Removes the files form the shader.
         /// </summary>
         /// <param name="shader"></param>
         internal void Detach(GenericShader shader)
         {
-            GL.DetachShader(Vertex, shader);
-            if (Geometry != null) GL.DetachShader(Geometry, shader);
-            GL.DetachShader(Fragment, shader);
+            GL.DetachShader(shader, Vertex);
+            if (Geometry != null) GL.DetachShader(shader, Geometry);
+            GL.DetachShader(shader, Fragment);
+
+            GLDebugging.CheckGLErrors($"Error at detaching '{shader.GetType()}'");
         }
     }
 }

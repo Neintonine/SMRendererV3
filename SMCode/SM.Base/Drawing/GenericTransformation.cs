@@ -1,23 +1,28 @@
-﻿using OpenTK;
+﻿#region usings
+
+using OpenTK;
+
+#endregion
 
 namespace SM.Base.Scene
 {
     /// <summary>
-    /// Contains methods for using transformations right.
+    ///     Contains methods for using transformations right.
     /// </summary>
     public abstract class GenericTransformation
     {
         /// <summary>
-        /// Contains the current model matrix.
+        ///     Contains the current model matrix.
         /// </summary>
         protected Matrix4 _modelMatrix { get; private set; }
+
         /// <summary>
-        /// Contains the last frame the matrix was calculated.
+        ///     Contains the last frame the matrix was calculated.
         /// </summary>
         protected ulong _lastFrame { get; private set; }
 
         /// <summary>
-        /// Returns the current model matrix.
+        ///     Returns the current model matrix.
         /// </summary>
         /// <returns></returns>
         public Matrix4 GetMatrix()
@@ -32,7 +37,7 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        /// Calculates the current matrix.
+        ///     Calculates the current matrix.
         /// </summary>
         /// <returns>The current matrix.</returns>
         protected abstract Matrix4 RequestMatrix();

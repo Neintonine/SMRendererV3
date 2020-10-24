@@ -34,8 +34,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.2.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OpenTK.3.2.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,27 +43,23 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Mouse.cs" />
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
-    <Compile Include="Drawing\IShader.cs" />
+    <Compile Include="Drawing\MaterialShader.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Objects\Mesh.cs" />
-    <Compile Include="PostProcessing\PostProcessingEffect.cs" />
+    <Compile Include="PostProcess\PostProcessEffect.cs" />
+    <Compile Include="PostProcess\PostProcessShader.cs" />
     <Compile Include="Scene\IShowCollection.cs" />
     <Compile Include="Scene\IShowItem.cs" />
     <Compile Include="Drawing\Material.cs" />
     <Compile Include="Scene\IBackgroundItem.cs" />
     <Compile Include="Scene\GenericItemCollection.cs" />
+    <Compile Include="ShaderExtension\ExtensionManager.cs" />
     <Compile Include="SMRenderer.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Text\CharParameter.cs" />
@@ -81,6 +77,7 @@
     <Compile Include="Utility\Deltatime.cs" />
     <Compile Include="Utility\Randomize.cs" />
     <Compile Include="Utility\RotationUtility.cs" />
+    <Compile Include="Utility\ShaderUtility.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
     <Compile Include="Window\GenericWindow.cs" />
@@ -91,8 +88,9 @@
     <Compile Include="Window\RenderPipeline.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OpenTK.dll.config" />
-    <None Include="packages.config" />
+    <EmbeddedResource Include="ShaderExtension\vertex\basic.vert" />
+    <EmbeddedResource Include="PostProcess\DefaultFiles\vertexFile.vert" />
+    <EmbeddedResource Include="PostProcess\DefaultFiles\extensions.frag" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.OGL\SM.OGL.csproj">
@@ -100,6 +98,15 @@
       <Name>SM.OGL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ShaderExtension\fragment\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PostProcess\DefaultFiles\vertexWithExt.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

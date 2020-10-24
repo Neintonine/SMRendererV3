@@ -1,53 +1,86 @@
-﻿using System;
-using System.IO;
+﻿#region usings
+
+using System;
+using System.Drawing;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using SM.Base.Contexts;
 using SM.Base.Objects.Static;
+using SM.Base.PostProcess;
 using SM.Base.Scene;
+using SM.Base.ShaderExtension;
 using SM.Base.Time;
 using SM.OGL;
-using SM.OGL.Shaders;
+using SM.OGL.Framebuffer;
 using SM.Utility;
+
+#endregion
 
 namespace SM.Base
 {
     /// <summary>
-    /// The base window.
+    ///     The base window.
     /// </summary>
     public abstract class GenericWindow : GameWindow
     {
-        private bool _loading = false;
-        
+        private bool _loading;
+
         /// <summary>
-        /// This tells you the current world scale.
+        ///     This tells you the current world scale.
         /// </summary>
         protected Vector2 _worldScale = Vector2.Zero;
+
         /// <summary>
-        /// This tells you the current aspect ratio of this window.
+        ///     This tells you the current aspect ratio of this window.
         /// </summary>
-        public float Aspect { get; private set; } = 0f;
+        public float Aspect { get; private set; }
+
+        public bool ReactWhileUnfocused = false;
 
         /// <inheritdoc />
-        protected GenericWindow() : base(1280, 720, GraphicsMode.Default, "Generic OGL Title", GameWindowFlags.Default,
-            DisplayDevice.Default, 0, 0, GraphicsContextFlags.Default, null, true)
-        { }
+        protected GenericWindow() : this(1280, 720, "Generic OGL Title", GameWindowFlags.Default)
+        {
+        }
+
+        protected GenericWindow(int width, int height, string title, GameWindowFlags flags, bool vSync = true) : base(width, height,
+            GraphicsMode.Default, title, flags, DisplayDevice.Default, GLSettings.ForcedVersion.MajorVersion,
+            GLSettings.ForcedVersion.MinorVersion, GraphicsContextFlags.Default)
+        {
+            VSync = vSync ? VSyncMode.On : VSyncMode.Off;
+        }
+
 
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             GLSystem.INIT_SYSTEM();
+            GLSettings.ShaderPreProcessing = true;
+
+            var args = Environment.GetCommandLineArgs();
+            if (args.Contains("--advDebugging"))
+            {
+                SMRenderer.AdvancedDebugging = true;
+                GLSettings.InfoEveryUniform = true;
+            }
+
+            Log.Init();
 
             Log.Write("#", ConsoleColor.Cyan, "----------------------",
                 "--- OpenGL Loading ---",
                 "----------------------------------",
                 $"--- {"DeviceVersion",14}: {GLSystem.DeviceVersion,-10} ---",
-                $"--- {"ForcedVersion",14}: {GLSystem.ForcedVersion,-10} ---",
+                $"--- {"ForcedVersion",14}: {GLSettings.ForcedVersion,-10} ---",
                 $"--- {"ShadingVersion",14}: {GLSystem.ShadingVersion,-10} ---",
                 $"--- {"Debugging",14}: {GLSystem.Debugging,-10} ---",
-                $"----------------------------------");
+                $"--- {"AdvDebugging",14}: {SMRenderer.AdvancedDebugging,-10} ---",
+                "----------------------------------");
+
+            if (SMRenderer.AdvancedDebugging) Log.Write("Extension", ConsoleColor.DarkCyan, GLSystem.Extensions);
+
+            ExtensionManager.InitExtensions();
 
             base.OnLoad(e);
             _loading = true;
@@ -58,7 +91,7 @@ namespace SM.Base
         {
             base.OnResize(e);
 
-            Aspect = (float)Width / Height;
+            Aspect = (float) Width / Height;
             _worldScale = new Vector2(Width, Height);
             SetWorldScale();
             GL.Viewport(ClientRectangle);
@@ -71,25 +104,28 @@ namespace SM.Base
         }
 
         /// <summary>
-        /// This is triggered after all the window-loading has been done.
+        ///     This is triggered after all the window-loading has been done.
         /// </summary>
         protected virtual void OnLoaded()
         {
-
         }
 
         /// <summary>
-        /// Sets the world scale.
+        ///     Sets the world scale.
         /// </summary>
-        protected virtual void SetWorldScale() { }
+        protected virtual void SetWorldScale()
+        {
+        }
 
         /// <inheritdoc />
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            if (!ReactWhileUnfocused && !Focused) return;
+
             base.OnUpdateFrame(e);
-            
-            Deltatime.UpdateDelta = (float)e.Time;
-            UpdateContext context = new UpdateContext()
+
+            Deltatime.UpdateDelta = (float) e.Time;
+            var context = new UpdateContext
             {
                 KeyboardState = Keyboard.GetState(),
                 MouseState = Mouse.GetState()
@@ -99,7 +135,7 @@ namespace SM.Base
         }
 
         /// <summary>
-        /// Updates the system.
+        ///     Updates the system.
         /// </summary>
         /// <param name="e"></param>
         /// <param name="context"></param>
@@ -109,7 +145,7 @@ namespace SM.Base
         }
 
         /// <summary>
-        /// Grabs the cursor and make sure it doesn't leave the window.
+        ///     Grabs the cursor and make sure it doesn't leave the window.
         /// </summary>
         /// <param name="makeItInvisible">If true, it makes the cursor invisible.</param>
         public void GrabCursor(bool makeItInvisible = true)
@@ -119,17 +155,42 @@ namespace SM.Base
         }
 
         /// <summary>
-        /// Ungrabs the cursor.
+        ///     Ungrabs the cursor.
         /// </summary>
         public void UngrabCursor()
         {
             CursorGrabbed = false;
             if (!CursorVisible) CursorVisible = true;
         }
+
+        public Bitmap TakeScreenshot(Framebuffer framebuffer, ReadBufferMode readBuffer, int x, int y, int width, int height)
+        {
+            GL.GetInteger(GetPName.FramebufferBinding, out int prevFBId);
+            GL.GetInteger(GetPName.DrawFramebufferBinding, out int prevFBDrawId);
+            GL.GetInteger(GetPName.ReadFramebufferBinding, out int prevFBReadId);
+
+            Bitmap b = new Bitmap(width, height);
+            System.Drawing.Imaging.BitmapData bits = b.LockBits(new Rectangle(0, 0, width, height),
+                System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, framebuffer);
+            GL.ReadBuffer(readBuffer);
+            GL.ReadPixels(x, y, width, height, OpenTK.Graphics.OpenGL4.PixelFormat.Bgra, PixelType.UnsignedByte,
+                bits.Scan0);
+
+            b.UnlockBits(bits);
+            b.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, prevFBId);
+            GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, prevFBDrawId);
+            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, prevFBReadId);
+
+            return b;
+        }
     }
 
     /// <summary>
-    /// The base window.
+    ///     The base window.
     /// </summary>
     /// <typeparam name="TScene">The scene type</typeparam>
     /// <typeparam name="TCamera">The camera type</typeparam>
@@ -137,30 +198,31 @@ namespace SM.Base
         where TScene : GenericScene, new()
         where TCamera : GenericCamera, new()
     {
-        /// <summary>
-        /// The viewport camera.
-        /// </summary>
-        public TCamera ViewportCamera { get; }
-        /// <summary>
-        /// This forces the render to use the viewport camera.
-        /// </summary>
-        public bool ForceViewportCamera { get; set; } = false;
-
-        /// <summary>
-        /// The current scene.
-        /// </summary>
-        public TScene CurrentScene { get; private set; }
-
-        /// <summary>
-        /// Controls how a scene is rendered.
-        /// </summary>
-        public RenderPipeline<TScene> RenderPipeline { get; private set; }
-
         /// <inheritdoc />
         protected GenericWindow()
         {
             ViewportCamera = new TCamera();
         }
+
+        /// <summary>
+        ///     The viewport camera.
+        /// </summary>
+        public TCamera ViewportCamera { get; }
+
+        /// <summary>
+        ///     This forces the render to use the viewport camera.
+        /// </summary>
+        public bool ForceViewportCamera { get; set; } = false;
+
+        /// <summary>
+        ///     The current scene.
+        /// </summary>
+        public TScene CurrentScene { get; private set; }
+
+        /// <summary>
+        ///     Controls how a scene is rendered.
+        /// </summary>
+        public RenderPipeline<TScene> RenderPipeline { get; private set; }
 
         /// <inheritdoc />
         protected override void Update(FrameEventArgs e, ref UpdateContext context)
@@ -172,15 +234,21 @@ namespace SM.Base
         /// <inheritdoc />
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            if (!ReactWhileUnfocused && !Focused) return;
+
             SMRenderer.CurrentFrame++;
 
-            Deltatime.RenderDelta = (float)e.Time;
-            DrawContext drawContext = new DrawContext()
+            Deltatime.RenderDelta = (float) e.Time;
+            var drawContext = new DrawContext
             {
                 World = ViewportCamera.World,
                 View = ViewportCamera.CalculateViewMatrix(),
                 ModelMaster = Matrix4.Identity,
-                Instances = new[] { new Instance {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One } },
+                Instances = new[]
+                {
+                    new Instance
+                        {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One}
+                },
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,
                 WorldScale = _worldScale
@@ -202,10 +270,14 @@ namespace SM.Base
 
             ViewportCamera.RecalculateWorld(_worldScale, Aspect);
             RenderPipeline.Resize();
+
+            PostProcessEffect.Mvp = Matrix4.CreateScale(_worldScale.X, -_worldScale.Y, 1) *
+                                    Matrix4.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0) *
+                                    GenericCamera.OrthographicWorld;
         }
 
         /// <summary>
-        /// Sets the scene.
+        ///     Sets the scene.
         /// </summary>
         /// <param name="scene"></param>
         public virtual void SetScene(TScene scene)
@@ -215,7 +287,7 @@ namespace SM.Base
         }
 
         /// <summary>
-        /// Defines the render pipeline.
+        ///     Defines the render pipeline.
         /// </summary>
         /// <param name="pipeline"></param>
         public void SetRenderPipeline(RenderPipeline<TScene> pipeline)

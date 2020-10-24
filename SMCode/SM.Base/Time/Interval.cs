@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using SM.Base.Contexts;
+
+#endregion
 
 namespace SM.Base.Time
 {
     /// <summary>
-    /// Performs intervals.
+    ///     Performs intervals.
     /// </summary>
     public class Interval : Timer
     {
@@ -24,13 +28,14 @@ namespace SM.Base.Time
         protected override void Stopping(UpdateContext context)
         {
             TriggerEndAction(context);
-            if (_stop){base.Stop();}
+            if (_stop)
+                base.Stop();
             else Reset();
         }
 
         /// <summary>
-        /// This will tell the interval to stop after the next iteration.
-        /// <para>To stop immediately use <see cref="Cancel"/></para>
+        ///     This will tell the interval to stop after the next iteration.
+        ///     <para>To stop immediately use <see cref="Cancel" /></para>
         /// </summary>
         public override void Stop()
         {
@@ -38,7 +43,7 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// This will stop the interval immediately.
+        ///     This will stop the interval immediately.
         /// </summary>
         public void Cancel()
         {

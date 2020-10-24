@@ -31,25 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.2.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OpenTK.3.2.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Mouse2D.cs" />
     <Compile Include="Drawing\DrawBackground.cs" />
+    <Compile Include="Drawing\DrawBackgroundShader.cs" />
     <Compile Include="Drawing\DrawColor.cs" />
     <Compile Include="Drawing\DrawComplex.cs" />
     <Compile Include="Drawing\DrawPolygon.cs" />
+    <Compile Include="Drawing\DrawShader.cs" />
     <Compile Include="Drawing\DrawText.cs" />
     <Compile Include="Drawing\DrawTexture.cs" />
     <Compile Include="GLWindow2D.cs" />
@@ -76,11 +72,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="OpenTK.dll.config" />
-    <None Include="packages.config" />
     <EmbeddedResource Include="Shader\ShaderFiles\default.frag" />
     <EmbeddedResource Include="Shader\ShaderFiles\default.vert" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

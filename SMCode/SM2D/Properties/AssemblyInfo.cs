@@ -1,16 +1,19 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿#region usings
+
+using System.Reflection;
 using System.Runtime.InteropServices;
+
+#endregion
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SM2D")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SMRenderer for 2D-projects")]
+[assembly: AssemblyDescription("Scene and Render system for 2D-projects")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("iedSoftworks")]
 [assembly: AssemblyProduct("SM2D")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2020")]
+[assembly: AssemblyCopyright("Copyright © iedSoftworks 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

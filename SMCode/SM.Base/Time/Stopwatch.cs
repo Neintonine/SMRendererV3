@@ -1,22 +1,26 @@
-﻿using System.Collections.Generic;
+﻿#region usings
+
+using System.Collections.Generic;
 using SM.Base.Contexts;
+
+#endregion
 
 namespace SM.Base.Time
 {
     /// <summary>
-    /// Represents a stopwatch.
+    ///     Represents a stopwatch.
     /// </summary>
     public class Stopwatch
     {
         private static List<Stopwatch> _activeStopwatches = new List<Stopwatch>();
 
         /// <summary>
-        /// Contains how much time already has passed. (in seconds)
+        ///     Contains how much time already has passed. (in seconds)
         /// </summary>
         public float Elapsed { get; private set; }
 
         /// <summary>
-        /// Starts the stopwatch.
+        ///     Starts the stopwatch.
         /// </summary>
         public virtual void Start()
         {
@@ -24,7 +28,7 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Performs a tick.
+        ///     Performs a tick.
         /// </summary>
         /// <param name="context"></param>
         private protected virtual void Tick(UpdateContext context)
@@ -33,7 +37,7 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Stops the stopwatch.
+        ///     Stops the stopwatch.
         /// </summary>
         public virtual void Stop()
         {
@@ -41,7 +45,7 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Resets the stopwatch.
+        ///     Resets the stopwatch.
         /// </summary>
         public void Reset()
         {
@@ -50,10 +54,7 @@ namespace SM.Base.Time
 
         internal static void PerformTicks(UpdateContext context)
         {
-            for (var i = 0; i < _activeStopwatches.Count; i++)
-            {
-                _activeStopwatches[i].Tick(context);
-            }
+            for (var i = 0; i < _activeStopwatches.Count; i++) _activeStopwatches[i].Tick(context);
         }
     }
 }

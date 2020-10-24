@@ -1,21 +1,22 @@
 ﻿namespace SM.OGL
 {
     /// <summary>
-    /// Helper struct to manage versions.
+    ///     Helper struct to manage versions.
     /// </summary>
     public struct Version
     {
         /// <summary>
-        /// The major version.
+        ///     The major version.
         /// </summary>
         public int MajorVersion;
+
         /// <summary>
-        /// The minor version.
+        ///     The minor version.
         /// </summary>
         public int MinorVersion;
 
         /// <summary>
-        /// Creates the struct with specific major and minor versions.
+        ///     Creates the struct with specific major and minor versions.
         /// </summary>
         /// <param name="majorVersion"></param>
         /// <param name="minorVersion"></param>
@@ -26,12 +27,12 @@
         }
 
         /// <summary>
-        /// Creates the struct by reading it out of a string.
+        ///     Creates the struct by reading it out of a string.
         /// </summary>
         /// <param name="version"></param>
         public Version(string version)
         {
-            string[] splits = version.Trim().Split(new []{'.'}, 2);
+            var splits = version.Trim().Split(new[] {'.'}, 2);
             MajorVersion = int.Parse(splits[0]);
             MinorVersion = int.Parse(splits[1]);
         }
@@ -43,7 +44,7 @@
         }
 
         /// <summary>
-        /// Create a version struct, with a OpenGL Version string.
+        ///     Create a version struct, with a OpenGL Version string.
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>

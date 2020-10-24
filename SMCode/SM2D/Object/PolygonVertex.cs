@@ -1,5 +1,9 @@
-﻿using OpenTK;
+﻿#region usings
+
+using OpenTK;
 using OpenTK.Graphics;
+
+#endregion
 
 namespace SM2D.Object
 {

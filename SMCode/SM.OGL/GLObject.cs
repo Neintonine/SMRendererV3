@@ -1,30 +1,35 @@
-﻿using System.Diagnostics;
+﻿#region usings
+
+using System.Diagnostics;
 using OpenTK.Graphics.OpenGL4;
+
+#endregion
 
 namespace SM.OGL
 {
     /// <summary>
-    /// Specifies default object behaviour.
+    ///     Specifies default object behaviour.
     /// </summary>
     public abstract class GLObject
     {
         /// <summary>
-        /// Contains the OpenGL ID
+        ///     Contains the OpenGL ID
         /// </summary>
         protected int _id = -1;
+
         /// <summary>
-        /// If true, the system will call "Compile()", when "ID" is tried to get, but the id is still -1.
+        ///     If true, the system will call "Compile()", when "ID" is tried to get, but the id is still -1.
         /// </summary>
         protected virtual bool AutoCompile { get; } = false;
 
         /// <summary>
-        /// Checks if the object was compiled.
+        ///     Checks if the object was compiled.
         /// </summary>
         public bool WasCompiled => _id > 0;
 
         /// <summary>
-        /// Returns the id for this object.
-        /// <para>It will auto compile, if needed and allowed.</para>
+        ///     Returns the id for this object.
+        ///     <para>It will auto compile, if needed and allowed.</para>
         /// </summary>
         public virtual int ID
         {
@@ -36,7 +41,7 @@ namespace SM.OGL
         }
 
         /// <summary>
-        /// Identifies the object.
+        ///     Identifies the object.
         /// </summary>
         public abstract ObjectLabelIdentifier TypeIdentifier { get; }
 
@@ -47,21 +52,21 @@ namespace SM.OGL
         }
 
         /// <summary>
-        /// The action, that is called, when "ID" tries to compile something.
+        ///     The action, that is called, when "ID" tries to compile something.
         /// </summary>
-
         public virtual void Compile()
         {
-
         }
 
         /// <summary>
-        /// Is triggered, when something want to dispose this object.
+        ///     Is triggered, when something want to dispose this object.
         /// </summary>
-        public virtual void Dispose() {}
+        public virtual void Dispose()
+        {
+        }
 
         /// <summary>
-        /// Re-compiles the object.
+        ///     Re-compiles the object.
         /// </summary>
         public void Recompile()
         {
@@ -72,7 +77,7 @@ namespace SM.OGL
         }
 
         /// <summary>
-        /// Names the object for debugging.
+        ///     Names the object for debugging.
         /// </summary>
         /// <param name="name"></param>
         public void Name(string name)
@@ -81,9 +86,12 @@ namespace SM.OGL
         }
 
         /// <summary>
-        /// Returns the ID for the object.
+        ///     Returns the ID for the object.
         /// </summary>
         /// <param name="glo"></param>
-        public static implicit operator int(GLObject glo) => glo.ID;
+        public static implicit operator int(GLObject glo)
+        {
+            return glo.ID;
+        }
     }
 }

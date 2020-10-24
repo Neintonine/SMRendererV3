@@ -1,28 +1,34 @@
-﻿using System;
+﻿#region usings
+
+using System;
+
+#endregion
 
 namespace SM.Base.Text
 {
     /// <summary>
-    /// Contains information for a font character.
+    ///     Contains information for a font character.
     /// </summary>
     [Serializable]
     public struct CharParameter
     {
         /// <summary>
-        /// The position on the X-axis.
+        ///     The position on the X-axis.
         /// </summary>
         public int X;
+
         /// <summary>
-        /// The width of the character.
+        ///     The width of the character.
         /// </summary>
         public float Width;
 
         /// <summary>
-        /// The normalized position inside the texture.
+        ///     The normalized position inside the texture.
         /// </summary>
         public float NormalizedX;
+
         /// <summary>
-        /// The normalized width inside the texture.
+        ///     The normalized width inside the texture.
         /// </summary>
         public float NormalizedWidth;
     }

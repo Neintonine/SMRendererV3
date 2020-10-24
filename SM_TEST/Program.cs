@@ -45,16 +45,10 @@ namespace SM_TEST
             Vector2 mousepos = window.Mouse.InWorld();
             //polyogn.Transform.Position.Set(mousepos);
             polyogn.Transform.TurnTo(mousepos);
-
-            Log.Write(LogType.Info, polyogn.Transform.LookAtVector()); 
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
-            Interval timer = new Interval(5);
-            timer.EndAction += (timer1, context) => Console.WriteLine("Interval...");
-            timer.Start();
-
             col = new ItemCollection()
             {
                 Transform = { Position = new SM.Base.Types.CVector2(0, 400) },

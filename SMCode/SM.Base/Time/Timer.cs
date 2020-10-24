@@ -1,31 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region usings
+
+using System;
 using SM.Base.Contexts;
+
+#endregion
 
 namespace SM.Base.Time
 {
     /// <summary>
-    /// Timer-System
+    ///     Timer-System
     /// </summary>
     public class Timer : Stopwatch
     {
-
         /// <summary>
-        /// The target time in seconds.
-        /// </summary>
-        public float Target { get; private set; }
-        /// <summary>
-        /// The already elapsed time but normalized to the target.
-        /// </summary>
-        public float ElapsedNormalized { get; private set; }
-
-        /// <summary>
-        /// The event, that is triggered when the timer stops.
-        /// </summary>
-        public event Action<Timer, UpdateContext> EndAction;
-
-        /// <summary>
-        /// Creates a timer with specified seconds.
+        ///     Creates a timer with specified seconds.
         /// </summary>
         /// <param name="seconds"></param>
         public Timer(float seconds)
@@ -34,13 +22,28 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Creates a timer with a time span.
+        ///     Creates a timer with a time span.
         /// </summary>
         /// <param name="timeSpan"></param>
         public Timer(TimeSpan timeSpan)
         {
-            Target = (float)timeSpan.TotalSeconds;
+            Target = (float) timeSpan.TotalSeconds;
         }
+
+        /// <summary>
+        ///     The target time in seconds.
+        /// </summary>
+        public float Target { get; private set; }
+
+        /// <summary>
+        ///     The already elapsed time but normalized to the target.
+        /// </summary>
+        public float ElapsedNormalized { get; private set; }
+
+        /// <summary>
+        ///     The event, that is triggered when the timer stops.
+        /// </summary>
+        public event Action<Timer, UpdateContext> EndAction;
 
         /// <inheritdoc />
         public override void Start()
@@ -58,15 +61,16 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Occurs, when the timer tries to stop.
+        ///     Occurs, when the timer tries to stop.
         /// </summary>
         protected virtual void Stopping(UpdateContext context)
         {
             EndAction?.Invoke(this, context);
             Stop();
         }
+
         /// <summary>
-        /// This will trigger <see cref="EndAction"/>
+        ///     This will trigger <see cref="EndAction" />
         /// </summary>
         /// <param name="context"></param>
         protected void TriggerEndAction(UpdateContext context)
