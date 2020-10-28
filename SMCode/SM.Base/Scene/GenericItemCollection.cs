@@ -1,7 +1,9 @@
 ﻿#region usings
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 
 #endregion
 
@@ -11,9 +13,15 @@ namespace SM.Base.Scene
     ///     Contains a list of show items.
     /// </summary>
     /// <typeparam name="TItem">The type of show items.</typeparam>
-    public abstract class GenericItemCollection<TItem> : List<TItem>, IShowItem, IShowCollection<TItem>
+    public abstract class GenericItemCollection<TItem> : List<TItem>, IShowItem, IShowCollection<TItem>, IScriptable
         where TItem : IShowItem
     {
+        private List<IScriptable> _scriptableObjects = new List<IScriptable>();
+
+        /// <summary>
+        ///     Currently active script objects.
+        /// </summary>
+        public ReadOnlyCollection<IScriptable> ScriptableObjects => new ReadOnlyCollection<IScriptable>(_scriptableObjects);
         /// <inheritdoc />
         public List<TItem> Objects => this;
 
@@ -24,18 +32,20 @@ namespace SM.Base.Scene
         public string Name { get; set; } = "Unnamed Item Collection";
 
         /// <inheritdoc />
-        public ICollection<string> Flags { get; set; } = new[] {"collection"};
+        public ICollection<string> Flags { get; set; } = new List<string>() {"collection"};
 
         /// <inheritdoc />
         public virtual void Update(UpdateContext context)
         {
-            for (var i = 0; i < Objects.Count; i++)
-                this[i].Update(context);
+            for (var i = 0; i < _scriptableObjects.Count; i++)
+                _scriptableObjects[i].Update(context);
         }
 
         /// <inheritdoc cref="IShowCollection{TItem}.Draw" />
         public virtual void Draw(DrawContext context)
         {
+            context.LastPassthough = this;
+
             for (var i = 0; i < Objects.Count; i++)
                 this[i].Draw(context);
         }
@@ -51,24 +61,66 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        ///     Adds a item.
+        ///     Adds a item to the draw and the script collection, when applicable.
         /// </summary>
         public new void Add(TItem item)
+        {
+            AddObject(item);
+
+            if (item is IScriptable scriptable)
+                AddScript(scriptable);
+
+        }
+
+        /// <summary>
+        /// Adds the object to the collection.
+        /// </summary>
+        /// <param name="item"></param>
+        public void AddObject(TItem item)
         {
             base.Add(item);
             item.Parent = this;
             item.OnAdded(this);
         }
+        /// <summary>
+        /// Adds the script to the collection.
+        /// </summary>
+        /// <param name="item"></param>
+        public void AddScript(IScriptable item)
+        {
+            _scriptableObjects.Add(item);
+        }
 
         /// <summary>
-        ///     Removes a item.
+        ///     Removes a item from the draw and script collection, when applicable.
         /// </summary>
         /// <param name="item"></param>
         public new void Remove(TItem item)
         {
+            RemoveObject(item);
+
+            if (item.GetType().IsAssignableFrom(typeof(IScriptable)))
+                RemoveScript((IScriptable)item);
+        }
+
+        /// <summary>
+        /// Remove the object from the draw collection.
+        /// </summary>
+        /// <param name="item"></param>
+        public void RemoveObject(TItem item)
+        {
             base.Remove(item);
             item.Parent = null;
             item.OnRemoved(this);
+        }
+
+        /// <summary>
+        /// Remove the object from the script collection.
+        /// </summary>
+        /// <param name="item"></param>
+        public void RemoveScript(IScriptable item)
+        {
+            _scriptableObjects.Remove(item);
         }
 
         /// <summary>
@@ -111,6 +163,7 @@ namespace SM.Base.Scene
             for (var i = 0; i < Count; i++)
             {
                 var obj = this[i];
+                if (obj.Flags == null) continue;
                 if (obj.Flags.Contains(flag)) list.Add(obj);
             }
 

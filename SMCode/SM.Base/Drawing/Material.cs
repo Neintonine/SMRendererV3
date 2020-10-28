@@ -5,7 +5,7 @@ using SM.OGL.Texture;
 
 #endregion
 
-namespace SM.Base.Scene
+namespace SM.Base.Drawing
 {
     /// <summary>
     ///     Represents a material.

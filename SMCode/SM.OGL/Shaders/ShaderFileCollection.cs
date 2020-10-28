@@ -31,8 +31,8 @@ namespace SM.OGL.Shaders
         /// </summary>
         /// <param name="vertex">The vertex source file.</param>
         /// <param name="fragment">The fragment source file.</param>
-        public ShaderFileCollection(string vertex, string fragment) : this(new ShaderFile(vertex),
-            new ShaderFile(fragment))
+        public ShaderFileCollection(string vertex, string fragment, string geometry = "") : this(new ShaderFile(vertex),
+            new ShaderFile(fragment), geometry != "" ? new ShaderFile(geometry) : null)
         {
         }
 

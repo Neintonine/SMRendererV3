@@ -1,5 +1,7 @@
 ﻿#region usings
 
+using System;
+using System.Linq;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
 
@@ -24,6 +26,46 @@ namespace SM.OGL.Shaders
         /// </summary>
         protected UniformCollection Uniforms;
 
+        protected GenericShader(string combinedData)
+        {
+            int firstPos = combinedData.IndexOf("//# region ", StringComparison.Ordinal);
+            string header = combinedData.Substring(0, firstPos);
+
+            int regionAmount = combinedData.Split(new string[] {"//# region "}, StringSplitOptions.None).Length - 1;
+            int pos = firstPos + 10;
+
+            string vertex = "";
+            string geometry = "";
+            string fragment = "";
+            for (int i = 0; i < regionAmount; i++)
+            {
+                int posOfBreak = combinedData.IndexOf("\n", pos, StringComparison.Ordinal);
+                string name = combinedData.Substring(pos, posOfBreak - pos).Trim();
+
+                int nextPos = i == regionAmount - 1 ? combinedData.Length : combinedData.IndexOf("//# region ", posOfBreak, StringComparison.Ordinal);
+
+                string data = header + combinedData.Substring(posOfBreak, nextPos - posOfBreak);
+                pos = nextPos + 10;
+
+                switch (name)
+                {
+                    case "vertex":
+                        vertex = data.Replace("vmain()", "main()");
+                        break;
+                    case "geometry":
+                        geometry = data.Replace("gmain()", "main()");
+                        break;
+                    case "fragment":
+                        fragment = data.Replace("fmain()", "main()");
+                        break;
+                }
+            }
+
+            Console.WriteLine();
+
+            ShaderFileFiles = new ShaderFileCollection(vertex,fragment, geometry);
+        }
+
         protected GenericShader(string vertex, string fragment) : this(new ShaderFileCollection(vertex, fragment)){}
 
         /// <inheritdoc />
@@ -47,8 +89,7 @@ namespace SM.OGL.Shaders
             Name(GetType().Name);
             ShaderFileFiles.Detach(this);
 
-            Uniforms = new UniformCollection();
-            Uniforms.ParentShader = this;
+            Uniforms = new UniformCollection {ParentShader = this};
             Uniforms.Import(this);
 
             GLDebugging.CheckGLErrors($"A error occured at shader creation for '{GetType()}': %code%");

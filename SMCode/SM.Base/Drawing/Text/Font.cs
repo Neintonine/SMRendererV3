@@ -5,11 +5,10 @@ using System.Drawing;
 using System.Drawing.Text;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Textures;
-using SM.Data.Fonts;
 
 #endregion
 
-namespace SM.Base.Text
+namespace SM.Base.Drawing.Text
 {
     /// <summary>
     ///     Represents a font.

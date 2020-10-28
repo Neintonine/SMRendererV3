@@ -65,7 +65,7 @@ namespace SM.Base.Time
         /// </summary>
         protected virtual void Stopping(UpdateContext context)
         {
-            EndAction?.Invoke(this, context);
+            TriggerEndAction(context);
             Stop();
         }
 

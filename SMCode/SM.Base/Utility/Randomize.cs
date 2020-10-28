@@ -1,6 +1,9 @@
 ﻿#region usings
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 #endregion
 
@@ -9,7 +12,7 @@ namespace SM.Utility
     /// <summary>
     ///     A global helper class for randomization.
     /// </summary>
-    public class Randomize
+    public static class Randomize
     {
         /// <summary>
         ///     The randomizer.
@@ -78,7 +81,12 @@ namespace SM.Utility
         /// </summary>
         public static float GetFloat(float min, float max)
         {
-            return (float) Randomizer.NextDouble() * max + min;
+            return (float) Randomizer.NextDouble() * (max - min) + min;
+        }
+
+        public static TSource GetRandomItem<TSource>(this IList<TSource> list)
+        {
+            return list[GetInt(0, list.Count - 1)];
         }
     }
 }

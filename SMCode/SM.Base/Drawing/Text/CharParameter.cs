@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace SM.Base.Text
+namespace SM.Base.Drawing.Text
 {
     /// <summary>
     ///     Contains information for a font character.

@@ -13,6 +13,8 @@ namespace SM.Base.Scene
     /// </summary>
     public abstract class GenericScene
     {
+        
+
         private IBackgroundItem _background;
         
         /// <summary>
@@ -27,6 +29,9 @@ namespace SM.Base.Scene
                 _background = value;
             }
         }
+        /// <summary>
+        /// If true, the scene was already initialized.
+        /// </summary>
         public bool IsInitialized { get; private set; }
 
         /// <summary>
@@ -137,7 +142,6 @@ namespace SM.Base.Scene
         /// <inheritdoc />
         public override void Update(UpdateContext context)
         {
-            _Background?.Update(context);
             _objectCollection.Update(context);
             _hud.Update(context);
         }

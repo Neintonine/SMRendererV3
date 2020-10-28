@@ -2,6 +2,7 @@
 
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM.OGL.Shaders;
 using SM.Utility;
@@ -13,12 +14,9 @@ namespace SM2D.Shader
     public class Default2DShader : MaterialShader
     {
         public static Default2DShader MaterialShader = new Default2DShader();
+        
 
-        //protected override bool AutoCompile { get; } = true;
-
-        private Default2DShader() : base(new ShaderFileCollection(
-            AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.vert"),
-            AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.frag")))
+        private Default2DShader() : base(AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.glsl"))
         {
             Load();
         }
@@ -32,7 +30,7 @@ namespace SM2D.Shader
 
             Uniforms.GetArray("Instances").Set((i, uniforms) =>
             {
-                if (i >= context.Instances.Length) return false;
+                if (i >= context.Instances.Count) return false;
 
                 var instance = context.Instances[i];
                 uniforms["ModelMatrix"].SetMatrix4(instance.ModelMatrix);
@@ -46,7 +44,7 @@ namespace SM2D.Shader
             Uniforms["Tint"].SetUniform4(context.Material.Tint);
             Uniforms["Texture"].SetTexture(context.Material.Texture, Uniforms["UseTexture"]);
 
-            DrawObject(context.Mesh, context.Instances.Length);
+            DrawObject(context.Mesh, context.Instances.Count);
         }
     }
 }

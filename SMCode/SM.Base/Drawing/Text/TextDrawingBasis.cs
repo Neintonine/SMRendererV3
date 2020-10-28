@@ -4,11 +4,10 @@ using System;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Contexts;
-using SM.Base.Scene;
 
 #endregion
 
-namespace SM.Base.Text
+namespace SM.Base.Drawing.Text
 {
     /// <summary>
     ///     Defines a basis for text drawing.

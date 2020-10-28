@@ -44,6 +44,7 @@
     <Compile Include="Drawing\DrawBackgroundShader.cs" />
     <Compile Include="Drawing\DrawColor.cs" />
     <Compile Include="Drawing\DrawComplex.cs" />
+    <Compile Include="Drawing\DrawParticles.cs" />
     <Compile Include="Drawing\DrawPolygon.cs" />
     <Compile Include="Drawing\DrawShader.cs" />
     <Compile Include="Drawing\DrawText.cs" />
@@ -72,12 +73,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Shader\ShaderFiles\default.frag" />
-    <EmbeddedResource Include="Shader\ShaderFiles\default.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shader\ShaderFiles\default.glsl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

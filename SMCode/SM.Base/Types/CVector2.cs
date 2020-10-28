@@ -73,6 +73,9 @@ namespace SM.Base.Types
             base.Add(vector);
         }
 
+        /// <summary>
+        /// Converts a <see cref="OpenTK.Vector2"/> to <see cref="CVector2"/>
+        /// </summary>
         public static implicit operator CVector2(Vector2 v) => new CVector2(v.X,v.Y);
     }
 }

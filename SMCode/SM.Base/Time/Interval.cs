@@ -28,26 +28,7 @@ namespace SM.Base.Time
         protected override void Stopping(UpdateContext context)
         {
             TriggerEndAction(context);
-            if (_stop)
-                base.Stop();
-            else Reset();
-        }
-
-        /// <summary>
-        ///     This will tell the interval to stop after the next iteration.
-        ///     <para>To stop immediately use <see cref="Cancel" /></para>
-        /// </summary>
-        public override void Stop()
-        {
-            _stop = true;
-        }
-
-        /// <summary>
-        ///     This will stop the interval immediately.
-        /// </summary>
-        public void Cancel()
-        {
-            base.Stop();
+            Reset();
         }
     }
 }

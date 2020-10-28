@@ -5,6 +5,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.Base.Textures;

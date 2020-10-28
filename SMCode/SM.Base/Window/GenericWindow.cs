@@ -8,6 +8,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Objects.Static;
 using SM.Base.PostProcess;
 using SM.Base.Scene;
@@ -38,6 +39,12 @@ namespace SM.Base
         /// </summary>
         public float Aspect { get; private set; }
 
+        /// <summary>
+        ///     If false, the window will not react on updates and will not render something.
+        ///     <para>
+        ///         Default: false
+        ///     </para>
+        /// </summary>
         public bool ReactWhileUnfocused = false;
 
         /// <inheritdoc />
@@ -45,6 +52,9 @@ namespace SM.Base
         {
         }
 
+        /// <summary>
+        /// Creates a window...
+        /// </summary>
         protected GenericWindow(int width, int height, string title, GameWindowFlags flags, bool vSync = true) : base(width, height,
             GraphicsMode.Default, title, flags, DisplayDevice.Default, GLSettings.ForcedVersion.MajorVersion,
             GLSettings.ForcedVersion.MinorVersion, GraphicsContextFlags.Default)
@@ -56,6 +66,8 @@ namespace SM.Base
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
+            SMRenderer.CurrentWindow = this;
+
             GLSystem.INIT_SYSTEM();
             GLSettings.ShaderPreProcessing = true;
 
@@ -251,7 +263,8 @@ namespace SM.Base
                 },
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,
-                WorldScale = _worldScale
+                WorldScale = _worldScale,
+                LastPassthough = this
             };
 
             base.OnRenderFrame(e);

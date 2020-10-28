@@ -1,6 +1,8 @@
 ﻿#region usings
 
+using System.Collections.Generic;
 using OpenTK;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM.OGL.Mesh;
 
@@ -29,6 +31,11 @@ namespace SM.Base.Contexts
         public Matrix4 View;
 
         /// <summary>
+        ///     The current WorldView matrix.
+        /// </summary>
+        public Matrix4 WorldView;
+
+        /// <summary>
         ///     The master model matrix.
         /// </summary>
         public Matrix4 ModelMaster;
@@ -37,7 +44,7 @@ namespace SM.Base.Contexts
         ///     The drawing instances.
         ///     <para>If there is only one, it's index 0</para>
         /// </summary>
-        public Instance[] Instances;
+        public IList<Instance> Instances;
 
         /// <summary>
         ///     The mesh.
@@ -58,6 +65,11 @@ namespace SM.Base.Contexts
         ///     The current world scale.
         /// </summary>
         public Vector2 WorldScale;
+
+        /// <summary>
+        ///     The last collection the context was passed though.
+        /// </summary>
+        public object LastPassthough;
 
         /// <summary>
         ///     Returns the appropriate shader.

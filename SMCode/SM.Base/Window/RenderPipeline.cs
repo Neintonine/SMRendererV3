@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM.OGL.Framebuffer;
 

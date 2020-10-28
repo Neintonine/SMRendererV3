@@ -6,24 +6,29 @@ using SM.OGL.Shaders;
 
 #endregion
 
-namespace SM.Base.Scene
+namespace SM.Base.Drawing
 {
     /// <summary>
     ///     A general class to work with material shaders properly.
     /// </summary>
     public abstract class MaterialShader : GenericShader
     {
+        /// <inheritdoc />
+        protected MaterialShader(string combinedData) : base(combinedData)
+        {}
 
+        /// <inheritdoc />
         protected MaterialShader(string vertex, string fragment) : base(vertex, fragment)
         {
         }
 
+        /// <inheritdoc />
         protected MaterialShader(ShaderFileCollection shaderFileFiles) : base(shaderFileFiles)
         {
         }
 
         /// <summary>
-        ///     Draws the context.
+        ///     Prepares the context for the drawing.
         /// </summary>
         /// <param name="context">The context</param>
         public virtual void Draw(DrawContext context)
@@ -39,6 +44,10 @@ namespace SM.Base.Scene
             GL.UseProgram(0);
         }
 
+        /// <summary>
+        ///     Draws the context.
+        /// </summary>
+        /// <param name="context"></param>
         protected virtual void DrawProcess(DrawContext context)
         {
 

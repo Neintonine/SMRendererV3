@@ -21,7 +21,7 @@ namespace SM2D.Scene
         public override void RecalculateWorld(Vector2 world, float aspect)
         {
             OrthographicWorld =
-                Matrix4.CreateOrthographicOffCenter(-world.X / 2, world.X / 2, world.Y / 2, -world.Y / 2, 0.1f, 4f);
+                Matrix4.CreateOrthographic(world.X, world.Y, 0.1f, 100f);
         }
     }
 }

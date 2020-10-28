@@ -1,4 +1,5 @@
 ﻿using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM2D.Scene;
 using SM2D.Types;
@@ -16,8 +17,7 @@ namespace SM2D.Drawing
 
         protected override void DrawContext(ref DrawContext context)
         {
-            context.Instances[0].ModelMatrix = Transform.GetMatrix();
-
+            base.DrawContext(ref context);
             _material.CustomShader.Draw(context);
         }
     }

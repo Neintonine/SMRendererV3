@@ -1,8 +1,9 @@
 ﻿#region usings
 
+using SM.Base.Drawing;
+using SM.Base.Drawing.Text;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
-using SM.Base.Text;
 using SM.OGL.Mesh;
 using SM.OGL.Shaders;
 using SM.Utility;
@@ -36,6 +37,9 @@ namespace SM.Base
         /// </summary>
         public static Deltatime DefaultDeltatime = new Deltatime();
 
+        /// <summary>
+        ///     The default material shader.
+        /// </summary>
         public static MaterialShader DefaultMaterialShader;
 
         /// <summary>
@@ -48,7 +52,9 @@ namespace SM.Base
         /// </summary>
         public static ulong CurrentFrame { get; internal set; } = 0;
 
-        public static GenericWindow CurrentWindow;
-        public static GenericScene CurrentScene;
+        /// <summary>
+        ///     Represents the current active window.
+        /// </summary>
+        public static GenericWindow CurrentWindow { get; internal set; }
     }
 }

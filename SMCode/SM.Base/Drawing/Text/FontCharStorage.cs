@@ -1,4 +1,4 @@
-﻿namespace SM.Data.Fonts
+﻿namespace SM.Base.Drawing.Text
 {
     /// <summary>
     ///     Contains default char sets.

@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using OpenTK;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM.Base.Types;
 using SM.Utility;

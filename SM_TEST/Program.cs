@@ -5,13 +5,16 @@ using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection.Configuration;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Input;
 using SM.Base;
+using SM.Base.Scene;
 using SM.Base.Time;
+using SM.Utility;
 using SM2D;
 using SM2D.Drawing;
 using SM2D.Object;
 using SM2D.Scene;
-using Font = SM.Base.Text.Font;
+using Font = SM.Base.Drawing.Text.Font;
 using Vector2 = OpenTK.Vector2;
 
 namespace SM_TEST
@@ -20,8 +23,6 @@ namespace SM_TEST
     {
         static Scene scene;
         private static Font font;
-        private static ItemCollection col;
-        private static DrawPolygon polyogn;
         private static GLWindow2D window;
         static void Main(string[] args)
         {
@@ -40,75 +41,23 @@ namespace SM_TEST
             window.Run();
         }
 
+        private static DrawParticles particles;
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            Vector2 mousepos = window.Mouse.InWorld();
-            //polyogn.Transform.Position.Set(mousepos);
-            polyogn.Transform.TurnTo(mousepos);
+            if (Keyboard.GetState()[Key.R])
+                particles.Trigger();
+            particles.Paused = Keyboard.GetState()[Key.P];
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
-            col = new ItemCollection()
+            particles = new DrawParticles(TimeSpan.FromSeconds(5))
             {
-                Transform = { Position = new SM.Base.Types.CVector2(0, 400) },
-                ZIndex = 1
+                MaxSpeed = 10
             };
+            window.CurrentScene.Objects.Add(particles);
 
-            col.Add(new DrawTexture(new Bitmap("soldier_logo.png"))
-            {
-                ZIndex = 1
-            });
-            col.Add(new DrawColor(Color4.Black)
-            {
-                Transform = { Rotation = 45, Position = new SM.Base.Types.CVector2(0, 25) },
-                ZIndex = 2
-            });
-
-            scene.Objects.Add(col);
-            scene.Objects.Add(new DrawText(font, "Testing...")
-            {
-                Transform = { Position = new SM.Base.Types.CVector2(0, 400)},
-                Color = Color4.Black
-            });
-
-            scene.Objects.Add(new DrawPolygon(Polygon.GenerateCircle(),Color4.Blue));
-            scene.Objects.Add(polyogn = new DrawPolygon(new Polygon(new[]
-            {
-                new PolygonVertex(new Vector2(.25f, 0), Color4.White),
-                new PolygonVertex(new Vector2(.75f, 0), Color4.White),
-                new PolygonVertex(new Vector2(1, .25f), Color4.White),
-                new PolygonVertex(new Vector2(1, .75f), Color4.White),
-                new PolygonVertex(new Vector2(.75f, 1), Color4.White),
-                new PolygonVertex(new Vector2(.25f, 1), Color4.White),
-                new PolygonVertex(new Vector2(0, .75f), new Color4(10,10,10,255)),
-                new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
-            }), Color4.LawnGreen)
-            {
-                Transform = {Position = new SM.Base.Types.CVector2(50,0)}
-            });
-            scene.Objects.Add(new DrawPolygon(new Polygon(new[]
-            {
-                new PolygonVertex(new Vector2(.25f, 0), Color4.White),
-                new PolygonVertex(new Vector2(.75f, 0), Color4.White),
-                new PolygonVertex(new Vector2(1, .25f), Color4.White),
-                new PolygonVertex(new Vector2(1, .75f), Color4.White),
-                new PolygonVertex(new Vector2(.75f, 1), Color4.White),
-                new PolygonVertex(new Vector2(.25f, 1), Color4.White),
-                new PolygonVertex(new Vector2(0, .75f), new Color4(10,10,10,255)),
-                new PolygonVertex(new Vector2(0, .25f), new Color4(10,10,10,255))
-            }), new Bitmap("soldier_logo.png"))
-            {
-                Transform = {Position = new SM.Base.Types.CVector2(-50,0)}
-            });
-
-            scene.Background.Color = Color4.Beige;
-
-            /*scene.HUD.Add(new DrawText(font, "GIVE ME A HUD HUG!")
-            {
-                Color = Color4.Black,
-                Spacing = .75f
-            });*/
+            //particles.Trigger();
         }
     }
 }

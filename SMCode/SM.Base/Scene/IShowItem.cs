@@ -26,13 +26,7 @@ namespace SM.Base.Scene
         ///     Contains specific flags for the object.
         /// </summary>
         ICollection<string> Flags { get; set; }
-
-        /// <summary>
-        ///     Tells the object to update own systems.
-        /// </summary>
-        /// <param name="context">The update context</param>
-        void Update(UpdateContext context);
-
+        
         /// <summary>
         ///     Tells the object to draw its object.
         /// </summary>

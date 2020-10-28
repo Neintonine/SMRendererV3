@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 using SM.Base.Scene;
 using SM.OGL.Mesh;
 using SM2D.Scene;
@@ -28,7 +29,7 @@ namespace SM2D.Drawing
 
         protected override void DrawContext(ref DrawContext context)
         {
-            context.Instances[0].ModelMatrix = Transform.GetMatrix();
+            base.DrawContext(ref context);
 
             context.Shader.Draw(context);
         }

@@ -4,7 +4,7 @@ using OpenTK;
 
 #endregion
 
-namespace SM.Base.Scene
+namespace SM.Base.Drawing
 {
     /// <summary>
     ///     Contains methods for using transformations right.

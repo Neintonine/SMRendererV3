@@ -2,11 +2,12 @@
 
 using System.Collections.Generic;
 using SM.Base.Contexts;
+using SM.Base.Scene;
 using SM.OGL.Mesh;
 
 #endregion
 
-namespace SM.Base.Scene
+namespace SM.Base.Drawing
 {
     /// <summary>
     ///     Contains general basis systems for drawing objects.
@@ -31,12 +32,7 @@ namespace SM.Base.Scene
 
         /// <inheritdoc />
         public ICollection<string> Flags { get; set; }
-
-        /// <inheritdoc />
-        public virtual void Update(UpdateContext context)
-        {
-        }
-
+        
         /// <inheritdoc />
         public void Draw(DrawContext context)
         {
@@ -76,5 +72,11 @@ namespace SM.Base.Scene
         ///     The current transformation.
         /// </summary>
         public TTransformation Transform = new TTransformation();
+
+        /// <inheritdoc />
+        protected override void DrawContext(ref DrawContext context)
+        {
+            context.ModelMaster = Transform.GetMatrix();
+        }
     }
 }

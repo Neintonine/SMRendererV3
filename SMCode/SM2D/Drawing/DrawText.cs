@@ -1,7 +1,7 @@
 ﻿#region usings
 
 using SM.Base.Contexts;
-using SM.Base.Text;
+using SM.Base.Drawing.Text;
 using SM.Base.Types;
 using SM2D.Scene;
 using SM2D.Types;
@@ -24,9 +24,7 @@ namespace SM2D.Drawing
         {
             base.DrawContext(ref context);
             context.Instances = _instances;
-
-            context.View = Transform.GetMatrix() * context.View;
-
+            
             context.Shader.Draw(context);
         }
     }
