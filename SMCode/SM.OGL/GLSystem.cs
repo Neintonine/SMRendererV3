@@ -49,7 +49,7 @@ namespace SM.OGL
             ShadingVersion = Version.CreateGLVersion(GL.GetString(StringName.ShadingLanguageVersion));
             Extensions = GL.GetString(StringName.Extensions).Split(' ');
 
-            Debugging = Extensions.Contains("khr_debug");
+            Debugging = Extensions.Contains("GL_KHR_debug");
             if (Debugging) GLDebugging.EnableDebugging();
 
             _init = true;

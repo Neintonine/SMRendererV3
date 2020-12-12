@@ -76,7 +76,7 @@ namespace SM.Base.Drawing
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
-            context.ModelMaster = Transform.GetMatrix();
+            context.ModelMaster *= Transform.GetMatrix();
         }
     }
 }
