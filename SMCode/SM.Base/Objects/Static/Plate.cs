@@ -36,10 +36,10 @@ namespace SM.Base.Objects.Static
         /// <inheritdoc />
         public override VBO UVs { get; } = new VBO(pointerSize: 2)
         {
-            {0, 0},
             {0, 1},
-            {1, 1},
-            {1, 0}
+            {0, 0},
+            {1, 0},
+            {1, 1}
         };
 
         /// <inheritdoc />
