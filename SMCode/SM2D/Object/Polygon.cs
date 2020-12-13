@@ -50,7 +50,8 @@ namespace SM2D.Object
 
         private void AddUV(Vector2 vertex)
         {
-            var uv = Vector2.Divide(vertex, BoundingBox.Max.Xy) + BoundingBox.Min.Xy;
+            var uv = Vector2.Divide(vertex - BoundingBox.Min.Xy, BoundingBox.Max.Xy - BoundingBox.Min.Xy);
+            uv.Y *= -1;
             UVs.Add(uv);
         }
 

@@ -55,7 +55,8 @@ namespace SM_TEST
             scene.ShowAxisHelper = true;
 
             DrawObject2D kasten = new DrawObject2D();
-            kasten.Transform.Size.Set(50,50);
+            kasten.Transform.Size.Set(500,500);
+            kasten.ApplyCircle();
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
             scene.Objects.Add(kasten);
 
