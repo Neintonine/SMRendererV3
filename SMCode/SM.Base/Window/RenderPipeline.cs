@@ -16,6 +16,10 @@ namespace SM.Base
     /// </summary>
     public abstract class RenderPipeline
     {
+        public bool IsInitialized { get; private set; } = false;
+
+        protected GenericWindow _window { get; private set; }
+
         /// <summary>
         ///     The framebuffers, that are used in this Pipeline.
         /// </summary>
@@ -51,11 +55,30 @@ namespace SM.Base
             }
         }
 
+        internal void Activate(GenericWindow window)
+        {
+            _window = window;
+
+            if (!IsInitialized)
+            {
+                Initialization(window);
+                IsInitialized = true;
+            }
+
+            Activation(window);
+        }
+
         /// <summary>
         ///     Occurs, when the pipeline was connected to a window.
         /// </summary>
-        protected internal virtual void Activate(GenericWindow window)
+        protected internal virtual void Activation(GenericWindow window)
         {
+        }
+
+
+        protected internal virtual void Initialization(GenericWindow window)
+        {
+
         }
 
         /// <summary>
@@ -63,6 +86,14 @@ namespace SM.Base
         /// </summary>
         protected internal virtual void Unload()
         {
+        }
+
+        protected Framebuffer CreateWindowFramebuffer()
+        {
+            Framebuffer framebuffer = new Framebuffer(window: _window);
+            framebuffer.Append("color", 0);
+            framebuffer.Compile();
+            return framebuffer;
         }
     }
 
@@ -79,6 +110,11 @@ namespace SM.Base
         protected internal virtual void Render(ref DrawContext context, TScene scene)
         {
             context.ActivePipeline = this;
+        }
+
+        protected internal virtual void SceneChanged(TScene scene)
+        {
+
         }
     }
 }

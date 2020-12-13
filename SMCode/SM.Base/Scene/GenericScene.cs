@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using SM.Base.Contexts;
@@ -15,6 +16,7 @@ namespace SM.Base.Scene
     public abstract class GenericScene
     {
         private IBackgroundItem _background;
+        private Dictionary<Type, object> _extensions = new Dictionary<Type, object>();
         
         /// <summary>
         ///     This contains the background.
@@ -47,6 +49,28 @@ namespace SM.Base.Scene
         /// </summary>
         public virtual void Draw(DrawContext context)
         {
+        }
+
+        /// <summary>
+        ///     Adds a extension to the scene.
+        /// </summary>
+        /// <param name="extension"></param>
+        public virtual void SetExtension(object extension)
+        {
+            _extensions[extension.GetType()] =  extension;
+        }
+
+        /// <summary>
+        ///     Gets a extension with the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public virtual T GetExtension<T>()
+        {
+            object ext = _extensions[typeof(T)];
+            if (ext == null) throw new Exception("[Error] Tried to get a extension, that doesn't exist.");
+            return (T)ext;
         }
 
         /// <summary>
@@ -91,6 +115,9 @@ namespace SM.Base.Scene
         private TCollection _hud = new TCollection();
         private TCollection _objectCollection = new TCollection();
 
+        /// <summary>
+        ///     If true, shows a axis helper at (0,0,0)
+        /// </summary>
         public bool ShowAxisHelper { get; set; } = false;
 
         /// <summary>
@@ -159,6 +186,10 @@ namespace SM.Base.Scene
             DrawDebug(context);
         }
 
+        /// <summary>
+        ///     Draws only the background.
+        /// </summary>
+        /// <param name="context"></param>
         public void DrawBackground(DrawContext context)
         {
             var backgroundDrawContext = context;
@@ -166,18 +197,30 @@ namespace SM.Base.Scene
             _Background?.Draw(backgroundDrawContext);
         }
 
+        /// <summary>
+        ///     Draws only the main objects
+        /// </summary>
+        /// <param name="context"></param>
         public void DrawMainObjects(DrawContext context)
         {
             if (!context.ForceViewport && Camera != null) context.View = Camera.CalculateViewMatrix();
             _objectCollection.Draw(context);
         }
 
+        /// <summary>
+        ///     Draws only the HUD
+        /// </summary>
+        /// <param name="context"></param>
         public void DrawHUD(DrawContext context)
         {
             context.View = HUDCamera.CalculateViewMatrix();
             _hud.Draw(context);
         }
 
+        /// <summary>
+        ///     Draw the debug informations.
+        /// </summary>
+        /// <param name="context"></param>
         public virtual void DrawDebug(DrawContext context)
         {
 

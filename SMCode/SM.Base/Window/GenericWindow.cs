@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenTK;
@@ -27,7 +28,8 @@ namespace SM.Base
     /// </summary>
     public abstract class GenericWindow : GameWindow
     {
-        private bool _loading;
+        internal bool _loading = true;
+        internal List<Action> _actionsAfterLoading = new List<Action>();
 
         /// <summary>
         ///     This tells you the current world scale.
@@ -95,7 +97,6 @@ namespace SM.Base
             ExtensionManager.InitExtensions();
 
             base.OnLoad(e);
-            _loading = true;
         }
 
         /// <inheritdoc />
@@ -111,6 +112,10 @@ namespace SM.Base
             if (_loading)
             {
                 _loading = false;
+
+                _actionsAfterLoading.ForEach(a => a());
+                _actionsAfterLoading = null;
+
                 OnLoaded();
             }
         }
@@ -284,7 +289,8 @@ namespace SM.Base
             ViewportCamera.RecalculateWorld(_worldScale, Aspect);
             RenderPipeline.Resize();
 
-            PostProcessEffect.Mvp = Matrix4.CreateScale(_worldScale.X, -_worldScale.Y, 1) *
+            PostProcessEffect.Model = Matrix4.CreateScale(_worldScale.X, -_worldScale.Y, 1);
+            PostProcessEffect.Mvp = PostProcessEffect.Model *
                                     Matrix4.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0) *
                                     GenericCamera.OrthographicWorld;
         }
@@ -295,8 +301,15 @@ namespace SM.Base
         /// <param name="scene"></param>
         public virtual void SetScene(TScene scene)
         {
+            if (_loading)
+            {
+                _actionsAfterLoading.Add(() => SetScene(scene));
+                return;
+            }
+
             CurrentScene = scene;
             scene.Activate();
+            RenderPipeline.SceneChanged(scene);
         }
 
         /// <summary>
@@ -305,6 +318,12 @@ namespace SM.Base
         /// <param name="pipeline"></param>
         public void SetRenderPipeline(RenderPipeline<TScene> pipeline)
         {
+            if (_loading)
+            {
+                _actionsAfterLoading.Add(() => SetRenderPipeline(pipeline));
+                return;
+            }
+
             RenderPipeline = pipeline;
             pipeline.Activate(this);
         }
