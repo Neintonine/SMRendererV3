@@ -66,10 +66,15 @@ namespace SM.Base.Scene
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public virtual T GetExtension<T>()
+        public virtual T GetExtension<T>() where T : class
         {
             object ext = _extensions[typeof(T)];
-            if (ext == null) throw new Exception("[Error] Tried to get a extension, that doesn't exist.");
+            if (ext == null)
+            {
+                Log.Write(LogType.Warning, $"Tried to get the extension '{typeof(T).Name}', that doesn't exist in the scene.");
+                return null;
+            }
+
             return (T)ext;
         }
 

@@ -39,7 +39,14 @@ namespace SM2D.Pipelines
                 _lightEffect.Draw(_tempWindow);
 
                 scene.DrawHUD(context);
+                scene.DrawDebug(context);
             }
+        }
+
+        protected override void SceneChanged(Scene.Scene scene)
+        {
+            base.SceneChanged(scene);
+            _lightEffect.SceneChanged(scene);
         }
     }
 }

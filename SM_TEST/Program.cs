@@ -54,8 +54,8 @@ namespace SM_TEST
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
-        {
-            //scene.ShowAxisHelper = true;
+        { 
+            scene.ShowAxisHelper = true;
 
             kasten = new DrawObject2D();
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
@@ -64,7 +64,9 @@ namespace SM_TEST
 
             DrawText text = new DrawText(font, "Text");
             text.Transform.Position.Set(0, 500);
-            scene.Objects.Add(text);
+            scene.HUD.Add(text);
+
+            scene.LightInformations.Ambient = Color4.Blue;
 
             //particles.Trigger();
         }

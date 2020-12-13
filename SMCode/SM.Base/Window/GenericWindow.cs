@@ -113,10 +113,10 @@ namespace SM.Base
             {
                 _loading = false;
 
+                OnLoaded();
+                
                 _actionsAfterLoading.ForEach(a => a());
                 _actionsAfterLoading = null;
-
-                OnLoaded();
             }
         }
 
