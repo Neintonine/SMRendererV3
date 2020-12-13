@@ -15,6 +15,9 @@ namespace SM.Base.Textures
     /// </summary>
     public class Texture : TextureBase
     {
+        private int? _width;
+        private int? _height;
+
         /// <summary>
         ///     Decides if the bitmap will automatically dispose itself.
         /// </summary>
@@ -28,16 +31,15 @@ namespace SM.Base.Textures
         /// <inheritdoc />
         public override int Width
         {
-            get => Map.Width;
-            protected set
-            { }
+            get => _width ?? Map.Width;
+            protected set => _width = value;
         }
 
         /// <inheritdoc />
         public override int Height
         {
-            get => Map.Height; 
-            protected set {}
+            get => _height ?? Map.Height;
+            protected set => _height = value;
         }
         public float Aspect { get; private set; }
 

@@ -60,7 +60,7 @@ namespace SM2D.Drawing
             context.Material = _material;
             context.Mesh = Plate.Object;
 
-            context.Instances[0].ModelMatrix = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
+            context.ModelMaster = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
             context.Shader.Draw(context);
         }
 

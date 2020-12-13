@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection.Configuration;
@@ -52,12 +53,16 @@ namespace SM_TEST
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
-            scene.ShowAxisHelper = true;
+            //scene.ShowAxisHelper = true;
 
             DrawObject2D kasten = new DrawObject2D();
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
             kasten.Transform.ApplyTextureSize(kasten.Texture, 500);
             scene.Objects.Add(kasten);
+
+            DrawText text = new DrawText(font, "Text");
+            text.Transform.Position.Set(0, 500);
+            scene.Objects.Add(text);
 
             //particles.Trigger();
         }

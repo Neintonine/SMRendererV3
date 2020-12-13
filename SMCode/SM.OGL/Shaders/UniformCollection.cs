@@ -82,20 +82,16 @@ namespace SM.OGL.Shaders
                         {
                             Location = loc,
                             Name = keySplits[0],
-                            Parent = ParentShader,
-                            Struct = keySplits.Length > 2
+                            Parent = this,
+                            ParentShader = ParentShader
                         };
 
                         arrayFilled = true;
                         lastArrayKey = keySplits[0];
                     }
 
-                    var curIndex = int.Parse(keySplits[1]);
-                    if (array.Size < curIndex) array.Size = curIndex;
-
-                    if (array.Struct)
-                        if (!array.Offsets.ContainsKey(keySplits[2].Trim('.')))
-                            array.Offsets.Add(keySplits[2].Trim('.'), loc - array.Location);
+                    if (keySplits[1] == "0") 
+                        array.uniformNames.Add(keySplits[2].Substring(1));
                 }
                 else
                 {

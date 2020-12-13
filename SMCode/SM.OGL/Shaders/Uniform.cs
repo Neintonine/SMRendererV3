@@ -28,6 +28,15 @@ namespace SM.OGL.Shaders
         {
         }
 
+        public Uniform(string name, GenericShader shader) : this(GL.GetUniformLocation(shader, name), null)
+        {
+
+        }
+        public Uniform(string name, GenericShader shader, UniformCollection parent) : this(GL.GetUniformLocation(shader, name), parent)
+        {
+
+        }
+
         /// <summary>
         ///     This create a new uniform manager
         /// </summary>

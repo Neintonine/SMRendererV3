@@ -1,50 +1,33 @@
-﻿#region usings
-
-using System;
-using System.Collections.Generic;
-
-#endregion
+﻿using System.Collections.Generic;
+using OpenTK.Graphics.OpenGL;
 
 namespace SM.OGL.Shaders
 {
     public class UniformArray : IUniform
     {
-        internal UniformCollection collection;
+        private Dictionary<int, Dictionary<string, Uniform>> storedUniforms = new Dictionary<int, Dictionary<string, Uniform>>();
+        internal List<string> uniformNames = new List<string>();
 
-        internal Dictionary<string, int> Offsets = new Dictionary<string, int>();
-        internal int Size;
-
-        internal bool Struct = false;
         public int Location { get; internal set; }
-        public GenericShader Parent { get; internal set; }
         public string Name { get; internal set; }
+        public UniformCollection Parent { get; internal set; }
+        public GenericShader ParentShader { get; internal set; }
 
-        public UniformArray()
+        public Dictionary<string, Uniform> this[int index] => Get(index);
+
+        public Dictionary<string, Uniform> Get(int index)
         {
-            collection = new UniformCollection()
+            if (!storedUniforms.ContainsKey(index))
             {
-                ParentShader = Parent
-            };
-        }
+                Dictionary<string, Uniform> dic = storedUniforms[index] = new Dictionary<string, Uniform>();
 
-        public void Set(Action<int, Uniform> setAction)
-        {
-            for (var i = 0; i < Size; i++) setAction(i, new Uniform(Location + i));
-        }
-
-        public void Set(Func<int, UniformCollection, bool> setAction)
-        {
-            collection.ParentShader ??= Parent;
-
-            for (var i = 0; i < Size; i++)
-            {
-                collection.KeyString = $"{Name}[{i}]";
-
-                foreach (var pair in Offsets)
-                    collection.Set(pair.Key, new Uniform(Location + pair.Value + i));
-
-                if (!setAction(i, collection)) break;
+                for (int i = 0; i < uniformNames.Count; i++)
+                {
+                    dic.Add(uniformNames[i], new Uniform(Name + $"[{index}]." + uniformNames[i], ParentShader, Parent));
+                }
             }
+
+            return storedUniforms[index];
         }
     }
 }

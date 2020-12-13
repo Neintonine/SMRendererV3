@@ -27,18 +27,16 @@ namespace SM2D.Shader
             Uniforms["MVP"].SetMatrix4(context.ModelMaster * context.View * context.World);
             Uniforms["HasVColor"]
                 .SetUniform1(context.Mesh.Attributes["color"] != null);
-            /*
-            Uniforms.GetArray("Instances").Set((i, uniforms) =>
+
+            UniformArray instances = Uniforms.GetArray("Instances");
+            for (int i = 0; i < context.Instances.Count; i++)
             {
-                if (i >= context.Instances.Count) return false;
-
+                var shaderInstance = instances[i];
                 var instance = context.Instances[i];
-                uniforms["ModelMatrix"].SetMatrix4(instance.ModelMatrix);
-                uniforms["TextureOffset"].SetUniform2(instance.TexturePosition);
-                uniforms["TextureScale"].SetUniform2(instance.TextureScale);
-
-                return true;
-            });*/
+                shaderInstance["ModelMatrix"].SetMatrix4(instance.ModelMatrix);
+                shaderInstance["TextureOffset"].SetUniform2(instance.TexturePosition);
+                shaderInstance["TextureScale"].SetUniform2(instance.TextureScale);
+            }
 
             // Fragment Uniforms
             Uniforms["Tint"].SetUniform4(context.Material.Tint);
