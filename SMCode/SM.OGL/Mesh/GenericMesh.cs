@@ -13,16 +13,17 @@ namespace SM.OGL.Mesh
     /// </summary>
     public abstract class GenericMesh : GLObject
     {
+
         /// <summary>
         ///     Generates the AttribDataIndex
         /// </summary>
         protected GenericMesh()
         {
-            AttribDataIndex = new Dictionary<int, VBO>
+            Attributes = new MeshAttributeList()
             {
-                {0, Vertex},
-                {1, UVs},
-                {2, Normals}
+                {0, "vertex", Vertex},
+                {1, "uv", UVs},
+                {2, "normal", Normals}
             };
         }
 
@@ -61,7 +62,7 @@ namespace SM.OGL.Mesh
         /// <summary>
         ///     Connects the different buffer objects with ids.
         /// </summary>
-        public Dictionary<int, VBO> AttribDataIndex { get; }
+        public MeshAttributeList Attributes { get; }
 
         /// <summary>
         ///     Stores indices for a more performance friendly method to draw objects.
@@ -74,9 +75,9 @@ namespace SM.OGL.Mesh
             _id = GL.GenVertexArray();
             GL.BindVertexArray(_id);
 
-            if (AttribDataIndex == null) throw new Exception("[Critical] The model requires a attribute data index.");
+            if (Attributes == null) throw new Exception("[Critical] The model requires attributes.");
 
-            foreach (var kvp in AttribDataIndex) kvp.Value?.BindBuffer(kvp.Key);
+            foreach (var kvp in Attributes) kvp.ConnectedVBO?.BindBuffer(kvp.Index);
 
             GL.BindVertexArray(0);
         }

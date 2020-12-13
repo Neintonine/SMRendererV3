@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using SM.Base.Contexts;
+using SM.Base.Drawing;
 
 #endregion
 
@@ -13,8 +14,6 @@ namespace SM.Base.Scene
     /// </summary>
     public abstract class GenericScene
     {
-        
-
         private IBackgroundItem _background;
         
         /// <summary>
@@ -33,6 +32,7 @@ namespace SM.Base.Scene
         /// If true, the scene was already initialized.
         /// </summary>
         public bool IsInitialized { get; private set; }
+
 
         /// <summary>
         ///     Updates this scene.
@@ -90,6 +90,8 @@ namespace SM.Base.Scene
     {
         private TCollection _hud = new TCollection();
         private TCollection _objectCollection = new TCollection();
+
+        public bool ShowAxisHelper { get; set; } = false;
 
         /// <summary>
         ///     A collection for cameras to switch easier to different cameras.
@@ -154,6 +156,7 @@ namespace SM.Base.Scene
             DrawMainObjects(context);
 
             DrawHUD(context);
+            DrawDebug(context);
         }
 
         public void DrawBackground(DrawContext context)
@@ -173,6 +176,11 @@ namespace SM.Base.Scene
         {
             context.View = HUDCamera.CalculateViewMatrix();
             _hud.Draw(context);
+        }
+
+        public virtual void DrawDebug(DrawContext context)
+        {
+
         }
     }
 }

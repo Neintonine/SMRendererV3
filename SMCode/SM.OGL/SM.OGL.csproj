@@ -51,6 +51,8 @@
     <Compile Include="GLSystem.cs" />
     <Compile Include="Mesh\BoundingBox.cs" />
     <Compile Include="Mesh\GenericMesh.cs" />
+    <Compile Include="Mesh\MeshAttribute.cs" />
+    <Compile Include="Mesh\MeshAttributeList.cs" />
     <Compile Include="Mesh\VBO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shaders\GenericShader.cs" />

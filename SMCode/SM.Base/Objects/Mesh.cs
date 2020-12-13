@@ -14,7 +14,7 @@ namespace SM.Base.Objects
         /// </summary>
         protected Mesh()
         {
-            AttribDataIndex.Add(3, Color);
+            Attributes.Add(3, "color", Color);
         }
 
         /// <summary>

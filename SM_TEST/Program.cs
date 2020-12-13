@@ -8,6 +8,7 @@ using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base;
 using SM.Base.Scene;
+using SM.Base.Textures;
 using SM.Base.Time;
 using SM.Utility;
 using SM2D;
@@ -46,16 +47,17 @@ namespace SM_TEST
         {
             if (Keyboard.GetState()[Key.R])
                 particles.Trigger();
-            particles.Paused = Keyboard.GetState()[Key.P];
+            //particles.Paused = Keyboard.GetState()[Key.P];
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
-            particles = new DrawParticles(TimeSpan.FromSeconds(5))
-            {
-                MaxSpeed = 10
-            };
-            window.CurrentScene.Objects.Add(particles);
+            scene.ShowAxisHelper = true;
+
+            DrawObject2D kasten = new DrawObject2D();
+            kasten.Transform.Size.Set(50,50);
+            kasten.Texture = new Texture(new Bitmap("herosword.png"));
+            scene.Objects.Add(kasten);
 
             //particles.Trigger();
         }

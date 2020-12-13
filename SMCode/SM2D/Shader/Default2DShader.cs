@@ -26,8 +26,8 @@ namespace SM2D.Shader
             // Vertex Uniforms
             Uniforms["MVP"].SetMatrix4(context.ModelMaster * context.View * context.World);
             Uniforms["HasVColor"]
-                .SetUniform1(context.Mesh.AttribDataIndex.ContainsKey(3) && context.Mesh.AttribDataIndex[3] != null);
-
+                .SetUniform1(context.Mesh.Attributes["color"] != null);
+            /*
             Uniforms.GetArray("Instances").Set((i, uniforms) =>
             {
                 if (i >= context.Instances.Count) return false;
@@ -38,7 +38,7 @@ namespace SM2D.Shader
                 uniforms["TextureScale"].SetUniform2(instance.TextureScale);
 
                 return true;
-            });
+            });*/
 
             // Fragment Uniforms
             Uniforms["Tint"].SetUniform4(context.Material.Tint);

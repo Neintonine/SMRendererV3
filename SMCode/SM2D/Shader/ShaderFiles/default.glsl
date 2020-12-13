@@ -24,6 +24,6 @@ uniform sampler2D Texture;
 layout(location = 0) out vec4 color;
 
 void fmain() {
-    color = vColor * Tint;
-    if (UseTexture) color *= texture(Texture, vTexture);
+    color = vColor;
+    //if (UseTexture) color *= texture(Texture, vTexture);
 }

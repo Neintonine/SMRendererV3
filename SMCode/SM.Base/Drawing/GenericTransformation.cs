@@ -11,6 +11,8 @@ namespace SM.Base.Drawing
     /// </summary>
     public abstract class GenericTransformation
     {
+        public bool Ignore = false;
+
         /// <summary>
         ///     Contains the current model matrix.
         /// </summary>
@@ -27,6 +29,8 @@ namespace SM.Base.Drawing
         /// <returns></returns>
         public Matrix4 GetMatrix()
         {
+            if (Ignore) return Matrix4.Identity;
+
             if (_lastFrame != SMRenderer.CurrentFrame)
             {
                 _lastFrame = SMRenderer.CurrentFrame;
