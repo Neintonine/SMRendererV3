@@ -43,19 +43,21 @@ namespace SM_TEST
             window.Run();
         }
 
+        private static DrawObject2D kasten;
         private static DrawParticles particles;
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
             if (Keyboard.GetState()[Key.R])
                 particles.Trigger();
             //particles.Paused = Keyboard.GetState()[Key.P];
+            kasten.Transform.Position.Set( window.Mouse.InWorld());
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
         {
             //scene.ShowAxisHelper = true;
 
-            DrawObject2D kasten = new DrawObject2D();
+            kasten = new DrawObject2D();
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
             kasten.Transform.ApplyTextureSize(kasten.Texture, 500);
             scene.Objects.Add(kasten);

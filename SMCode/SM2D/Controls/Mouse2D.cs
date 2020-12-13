@@ -23,6 +23,7 @@ namespace SM2D.Controls
         public Vector2 InWorld()
         {
             var res = _window.WorldScale;
+            res.Y *= -1;
             return InScreenNormalized * res - res / 2;
         }
 
