@@ -25,6 +25,22 @@ namespace SM.Base.Textures
         /// </summary>
         public Bitmap Map;
 
+        /// <inheritdoc />
+        public override int Width
+        {
+            get => Map.Width;
+            protected set
+            { }
+        }
+
+        /// <inheritdoc />
+        public override int Height
+        {
+            get => Map.Height; 
+            protected set {}
+        }
+        public float Aspect { get; private set; }
+
         /// <summary>
         ///     Empty constructor
         /// </summary>
@@ -50,6 +66,9 @@ namespace SM.Base.Textures
         public Texture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode)
         {
             Map = map;
+
+            Aspect = (float)map.Width / map.Height;
+
             Filter = filter;
             WrapMode = wrapMode;
         }

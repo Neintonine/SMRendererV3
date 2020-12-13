@@ -32,12 +32,12 @@ namespace SM.OGL.Texture
         /// <summary>
         ///     The Width of the texture
         /// </summary>
-        public int Width { get; protected set; }
+        public virtual int Width { get; protected set; }
 
         /// <summary>
         ///     The height of the texture
         /// </summary>
-        public int Height { get; protected set; }
+        public virtual int Height { get; protected set; }
 
         public override void Dispose()
         {

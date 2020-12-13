@@ -1,8 +1,10 @@
 ﻿#region usings
 
+using System;
 using OpenTK;
 using SM.Base.Drawing;
 using SM.Base.Scene;
+using SM.Base.Textures;
 using SM.Base.Types;
 using SM.Utility;
 
@@ -37,6 +39,16 @@ namespace SM2D.Types
             var vec = Vector3.TransformNormal(Vector3.UnitX, _modelMatrix);
             vec.Normalize();
             return vec.Xy;
+        }
+
+        public void ApplyTextureSize(Texture texture)
+        {
+            Size.Set(texture.Width, texture.Height);
+        }
+
+        public void ApplyTextureSize(Texture texture, float width)
+        {
+            Size.Set(width, width / texture.Aspect);
         }
     }
 }
