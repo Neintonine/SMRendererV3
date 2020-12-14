@@ -14,6 +14,7 @@ using SM.Base.Time;
 using SM.Utility;
 using SM2D;
 using SM2D.Drawing;
+using SM2D.Light;
 using SM2D.Object;
 using SM2D.Scene;
 using Font = SM.Base.Drawing.Text.Font;
@@ -66,7 +67,10 @@ namespace SM_TEST
             text.Transform.Position.Set(0, 500);
             scene.HUD.Add(text);
 
-            scene.LightInformations.Ambient = Color4.Blue;
+            PointLight light = new PointLight();
+            scene.LightInformations.Lights.Add(light);
+
+            scene.LightInformations.Ambient = Color4.Black;
 
             //particles.Trigger();
         }

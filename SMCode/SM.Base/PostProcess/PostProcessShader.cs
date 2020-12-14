@@ -52,6 +52,7 @@ namespace SM.Base.PostProcess
             GL.BindVertexArray(Plate.Object);
 
             Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
+            Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
             Uniforms["renderedTexture"].SetTexture(color, 0);
 
             GL.DrawArrays(PrimitiveType.Quads, 0, 4);
@@ -72,6 +73,7 @@ namespace SM.Base.PostProcess
             GL.BindVertexArray(Plate.Object);
 
             Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
+            Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
             Uniforms["renderedTexture"].SetTexture(color, 0);
 
             setUniformAction(Uniforms);

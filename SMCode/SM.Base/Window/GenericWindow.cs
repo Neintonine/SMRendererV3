@@ -148,6 +148,8 @@ namespace SM.Base
                 MouseState = Mouse.GetState()
             };
 
+            if (context.KeyboardState[Key.AltLeft] && context.KeyboardState[Key.F4]) Close(); 
+
             Update(e, ref context);
         }
 

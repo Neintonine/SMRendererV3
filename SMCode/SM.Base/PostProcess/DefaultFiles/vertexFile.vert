@@ -11,7 +11,7 @@ out vec2 FragPos;
 
 void main() {
 	vTexture = aTex;
-
+	
 	FragPos = vec2(ModelMatrix * vec4(aPos, 1));
 
 	gl_Position = MVP * vec4(aPos, 1);

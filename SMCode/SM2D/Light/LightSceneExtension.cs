@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics;
+﻿using System.Collections.Generic;
+using OpenTK.Graphics;
 
 namespace SM2D.Light
 {
@@ -6,6 +7,6 @@ namespace SM2D.Light
     {
         public Color4 Ambient = Color4.White;
 
-
+        public List<LightObject> Lights = new List<LightObject>();
     }
 }
