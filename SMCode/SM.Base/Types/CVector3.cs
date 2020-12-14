@@ -1,62 +1,39 @@
-﻿#region usings
-
-using OpenTK;
-
-#endregion
+﻿using OpenTK;
 
 namespace SM.Base.Types
 {
-    /// <summary>
-    ///     Represents a Vector of three floats.
-    /// </summary>
     public class CVector3 : CVector2
     {
-        /// <inheritdoc />
+        public float Z { get; set; }
+
         public CVector3(float uniform) : base(uniform)
         {
+            Z = uniform;
         }
 
-        /// <inheritdoc />
-        public CVector3(float x, float y, float z) : base(x, y, z, default)
+        public CVector3(float x, float y, float z) : base(x, y)
         {
+            Z = z;
         }
 
-        /// <inheritdoc />
-        protected CVector3(float x, float y, float z, float w) : base(x, y, z, w)
+        public override void Set(float uniform)
         {
+            base.Set(uniform);
+            Z = uniform;
         }
 
-        /// <summary>
-        ///     Z-component
-        /// </summary>
-        public float Z
+        public void Set(float x, float y, float z)
         {
-            get => _Z;
-            set => _Z = value;
+            base.Set(x,y);
+            Z = z;
         }
 
-        /// <summary>
-        ///     Sets the X, Y and Z-component.
-        /// </summary>
-        public new void Set(float x, float y, float z)
+        public void Set(Vector3 vector)
         {
-            base.Set(x, y, z);
+            Set(vector.X, vector.Y, vector.Z);
         }
 
-        /// <summary>
-        ///     Sets the X, Y and Z-component from a <see cref="OpenTK.Vector3" />.
-        /// </summary>
-        public new void Set(Vector3 vector)
-        {
-            base.Set(vector);
-        }
-
-        /// <summary>
-        ///     Adds a <see cref="OpenTK.Vector3" /> to the X, Y and Z-component.
-        /// </summary>
-        public new void Add(Vector3 vector)
-        {
-            base.Add(vector);
-        }
+        public static implicit operator Vector3(CVector3 vector) => new Vector3(vector.X, vector.Y, vector.Z);
+        public static implicit operator CVector3(Vector3 vector) => new CVector3(vector.X, vector.Y, vector.Z);
     }
 }

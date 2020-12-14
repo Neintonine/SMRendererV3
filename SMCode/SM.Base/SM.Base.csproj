@@ -75,10 +75,9 @@
     <Compile Include="Time\Interval.cs" />
     <Compile Include="Time\Stopwatch.cs" />
     <Compile Include="Time\Timer.cs" />
-    <Compile Include="Types\CVector.cs" />
+    <Compile Include="Types\CVector1.cs" />
     <Compile Include="Types\CVector2.cs" />
     <Compile Include="Types\CVector3.cs" />
-    <Compile Include="Types\CVector4.cs" />
     <Compile Include="Utility\Assembly.cs" />
     <Compile Include="Utility\Deltatime.cs" />
     <Compile Include="Utility\Randomize.cs" />

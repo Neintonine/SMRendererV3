@@ -67,10 +67,10 @@ namespace SM_TEST
             text.Transform.Position.Set(0, 500);
             scene.HUD.Add(text);
 
-            PointLight light = new PointLight();
-            scene.LightInformations.Lights.Add(light);
+            /*PointLight light = new PointLight();
+            scene.LightInformations.Lights.Add(light);*/
 
-            scene.LightInformations.Ambient = Color4.Black;
+            scene.LightInformations.Ambient = Color4.White;
 
             //particles.Trigger();
         }
