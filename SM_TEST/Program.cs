@@ -44,31 +44,32 @@ namespace SM_TEST
             window.Run();
         }
 
-        private static DrawObject2D kasten;
+        private static PointLight light;
         private static DrawParticles particles;
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
             if (Keyboard.GetState()[Key.R])
                 particles.Trigger();
             //particles.Paused = Keyboard.GetState()[Key.P];
-            kasten.Transform.Position.Set( window.Mouse.InWorld());
+            light.Position.Set( window.Mouse.InWorld());
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
         { 
             scene.ShowAxisHelper = true;
 
-            kasten = new DrawObject2D();
+            DrawObject2D kasten = new DrawObject2D();
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
             kasten.Transform.ApplyTextureSize(kasten.Texture, 500);
             scene.Objects.Add(kasten);
 
             DrawText text = new DrawText(font, "Text");
             text.Transform.Position.Set(0, 500);
-            scene.HUD.Add(text);
+            scene.Objects.Add(text);
 
-            /*PointLight light = new PointLight();
-            scene.LightInformations.Lights.Add(light);*/
+            light = new PointLight();
+            light.Color = new Color4(0, 1,0,1);
+            scene.LightInformations.Lights.Add(light);
 
             scene.LightInformations.Ambient = Color4.White;
 
