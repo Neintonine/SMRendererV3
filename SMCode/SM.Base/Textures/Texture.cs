@@ -41,6 +41,9 @@ namespace SM.Base.Textures
             get => _height ?? Map.Height;
             protected set => _height = value;
         }
+        /// <summary>
+        /// Aspect ratio of Width and Height of the texture
+        /// </summary>
         public float Aspect { get; private set; }
 
         /// <summary>

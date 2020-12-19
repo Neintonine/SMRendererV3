@@ -182,6 +182,9 @@ namespace SM.Base
             if (!CursorVisible) CursorVisible = true;
         }
 
+        /// <summary>
+        /// Create a bitmap from the framebuffer.
+        /// </summary>
         public Bitmap TakeScreenshot(Framebuffer framebuffer, ReadBufferMode readBuffer, int x, int y, int width, int height)
         {
             GL.GetInteger(GetPName.FramebufferBinding, out int prevFBId);

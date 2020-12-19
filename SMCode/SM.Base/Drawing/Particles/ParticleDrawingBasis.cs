@@ -54,6 +54,10 @@ namespace SM.Base.Drawing.Particles
         /// </summary>
         public abstract Func<TDirection, ParticleContext, TDirection> MovementCalculation { get; set; }
 
+        /// <summary>
+        ///     Sets up the timer.
+        /// </summary>
+        /// <param name="duration">Duration how long the particles should live</param>
         protected ParticleDrawingBasis(TimeSpan duration)
         {
             timer = new Timer(duration);

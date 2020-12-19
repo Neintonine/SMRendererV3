@@ -11,6 +11,9 @@ namespace SM.Base.Drawing
     /// </summary>
     public abstract class GenericTransformation
     {
+        /// <summary>
+        ///     If true, ignores the transformation and sends <see cref="Matrix4.Identity"/>, when requested.
+        /// </summary>
         public bool Ignore = false;
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace SM2D.Object
 {
     public class Polygon : Mesh
     {
-        public Polygon(ICollection<Vector2> vertices)
+        public Polygon(ICollection<Vector2> vertices) : base(PrimitiveType.TriangleFan)
         {
             foreach (var vertex in vertices)
             {
@@ -25,7 +25,7 @@ namespace SM2D.Object
             foreach (var vertex in vertices) AddUV(vertex);
         }
 
-        public Polygon(ICollection<PolygonVertex> vertices)
+        public Polygon(ICollection<PolygonVertex> vertices) : base(PrimitiveType.TriangleFan)
         {
             foreach (var polygonVertex in vertices)
             {
@@ -36,11 +36,11 @@ namespace SM2D.Object
             foreach (var vertex in vertices) AddUV(vertex.Vertex);
         }
 
-        public override VBO Vertex { get; } = new VBO();
-        public override VBO UVs { get; } = new VBO(pointerSize: 2);
-        public override VBO Color { get; } = new VBO(pointerSize: 4);
+        public override VBO Vertex { get; protected set; } = new VBO();
+        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2);
+        public override VBO Color { get; protected set; } = new VBO(pointerSize: 4);
 
-        public override PrimitiveType PrimitiveType { get; } = PrimitiveType.TriangleFan;
+        public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.TriangleFan;
 
         private void AddVertex(Vector2 vertex)
         {

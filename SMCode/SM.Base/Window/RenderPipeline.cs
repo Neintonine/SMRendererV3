@@ -16,8 +16,14 @@ namespace SM.Base
     /// </summary>
     public abstract class RenderPipeline
     {
+        /// <summary>
+        /// If true, this pipeline was already once activated.
+        /// </summary>
         public bool IsInitialized { get; private set; } = false;
 
+        /// <summary>
+        /// The window the pipeline is connected to.
+        /// </summary>
         protected GenericWindow _window { get; private set; }
 
         /// <summary>
@@ -76,6 +82,10 @@ namespace SM.Base
         }
 
 
+        /// <summary>
+        ///     Occurs, when the pipeline was connected to a window the first time.
+        /// </summary>
+        /// <param name="window"></param>
         protected internal virtual void Initialization(GenericWindow window)
         {
 
@@ -88,6 +98,10 @@ namespace SM.Base
         {
         }
 
+        /// <summary>
+        /// Creates a framebuffer, that has specific (often) required settings already applied.
+        /// </summary>
+        /// <returns></returns>
         public static Framebuffer CreateWindowFramebuffer()
         {
             Framebuffer framebuffer = new Framebuffer(window: SMRenderer.CurrentWindow);
@@ -112,6 +126,10 @@ namespace SM.Base
             context.ActivePipeline = this;
         }
 
+        /// <summary>
+        ///     Event, that triggers, when the scene in the current window changes.
+        /// </summary>
+        /// <param name="scene"></param>
         protected internal virtual void SceneChanged(TScene scene)
         {
 

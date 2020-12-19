@@ -22,8 +22,6 @@ namespace SM2D.Light
 
         public override void Draw(Framebuffer main, Framebuffer target)
         {
-            base.Draw(main, target);
-
             _shader.Draw(main.ColorAttachments["color"], collection =>
             {
                 collection["FragSize"].SetUniform2((SMRenderer.CurrentWindow as GLWindow2D).WorldScale);

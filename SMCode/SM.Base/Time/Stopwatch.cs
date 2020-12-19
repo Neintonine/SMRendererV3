@@ -16,8 +16,15 @@ namespace SM.Base.Time
         private static List<Stopwatch> _activeStopwatches = new List<Stopwatch>();
         private bool _paused = false;
 
+        /// <summary>
+        /// If true, the stopwatch was started.
+        /// <para>This doesn't changed when paused.</para>
+        /// </summary>
         public bool Active { get; private set; } = false;
 
+        /// <summary>
+        /// Gets/Sets if the stopwatch is paused.
+        /// </summary>
         public bool Paused
         {
             get => _paused;
@@ -30,6 +37,9 @@ namespace SM.Base.Time
             }
         }
 
+        /// <summary>
+        /// If true, the stopwatch is active and not paused... (who would have guessed...)
+        /// </summary>
         public bool Running => Active && !Paused;
 
         /// <summary>

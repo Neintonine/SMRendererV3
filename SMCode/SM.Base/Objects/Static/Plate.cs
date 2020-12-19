@@ -25,7 +25,7 @@ namespace SM.Base.Objects.Static
         }
 
         /// <inheritdoc />
-        public override VBO Vertex { get; } = new VBO
+        public override VBO Vertex { get; protected set; } = new VBO
         {
             {-.5f, -.5f, 0},
             {-.5f, .5f, 0},
@@ -34,7 +34,7 @@ namespace SM.Base.Objects.Static
         };
 
         /// <inheritdoc />
-        public override VBO UVs { get; } = new VBO(pointerSize: 2)
+        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2)
         {
             {0, 1},
             {0, 0},
@@ -43,7 +43,7 @@ namespace SM.Base.Objects.Static
         };
 
         /// <inheritdoc />
-        public override PrimitiveType PrimitiveType { get; } = PrimitiveType.Quads;
+        public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.Quads;
 
         /// <inheritdoc />
         public override BoundingBox BoundingBox { get; } =

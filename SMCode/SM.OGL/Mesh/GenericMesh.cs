@@ -37,22 +37,22 @@ namespace SM.OGL.Mesh
         ///     The primitive type, that determinants how the mesh is drawn.
         ///     <para>Default: Triangles</para>
         /// </summary>
-        public virtual PrimitiveType PrimitiveType { get; } = PrimitiveType.Triangles;
+        public virtual PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.Triangles;
 
         /// <summary>
         ///     Contains the vertices for the mesh.
         /// </summary>
-        public virtual VBO Vertex { get; }
+        public virtual VBO Vertex { get; protected set; }
 
         /// <summary>
         ///     Contains the texture coords for the mesh.
         /// </summary>
-        public virtual VBO UVs { get; }
+        public virtual VBO UVs { get; protected set; }
 
         /// <summary>
         ///     Contains the normals for the mesh.
         /// </summary>
-        public virtual VBO Normals { get; }
+        public virtual VBO Normals { get; protected set; }
 
         /// <summary>
         ///     Represents the bounding box.

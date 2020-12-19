@@ -84,6 +84,9 @@ namespace SM.Utility
             return (float) Randomizer.NextDouble() * (max - min) + min;
         }
 
+        /// <summary>
+        /// Gets a random item from the provided list.
+        /// </summary>
         public static TSource GetRandomItem<TSource>(this IList<TSource> list)
         {
             return list[GetInt(0, list.Count - 1)];

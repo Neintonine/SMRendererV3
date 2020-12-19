@@ -12,8 +12,6 @@ namespace SM.Base.Time
     /// </summary>
     public class Interval : Timer
     {
-        private bool _stop;
-
         /// <inheritdoc />
         public Interval(float seconds) : base(seconds)
         {

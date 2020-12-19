@@ -4,13 +4,24 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Objects.Static
 {
+    /// <summary>
+    ///     An AxisHelper-Model
+    /// <para>White: -X, -Y, -Z</para>
+    /// <para>Red: +X </para>
+    /// <para>Green: +Y </para>
+    /// <para>Blue: +Z </para>
+    /// </summary>
     public class AxisHelper : Mesh
     {
+        /// <summary>
+        ///     Object
+        /// </summary>
         public static AxisHelper Object = new AxisHelper();
 
-        private AxisHelper() {}
+        private AxisHelper() : base(PrimitiveType.Lines) {}
 
-        public override VBO Vertex { get; } = new VBO()
+        /// <inheritdoc />
+        public override VBO Vertex { get; protected set; } = new VBO()
         {
             {0, 0, 0},
             {.5f, 0, 0},
@@ -20,7 +31,8 @@ namespace SM.Base.Objects.Static
             {0, 0, .5f},
         };
 
-        public override VBO Color { get; } = new VBO(pointerSize:4)
+        /// <inheritdoc />
+        public override VBO Color { get; protected set; } = new VBO(pointerSize:4)
         {
             {Color4.White},
             {Color4.Red},
@@ -29,7 +41,5 @@ namespace SM.Base.Objects.Static
             {Color4.White},
             {Color4.DarkBlue},
         };
-
-        public override PrimitiveType PrimitiveType { get; } = PrimitiveType.Lines;
     }
 }
