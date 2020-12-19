@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System.Collections.Generic;
+using System.Dynamic;
 using OpenTK;
 using SM.Base.Drawing;
 using SM.Base.Scene;
@@ -70,6 +71,11 @@ namespace SM.Base.Contexts
         ///     The last collection the context was passed though.
         /// </summary>
         public object LastPassthough;
+
+        /// <summary>
+        /// Arguments for shaders
+        /// </summary>
+        public IDictionary<string, object> ShaderArguments;
 
         /// <summary>
         ///     Returns the appropriate shader.

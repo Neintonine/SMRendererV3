@@ -38,7 +38,7 @@ namespace SM2D
             base.OnLoaded();
             SMRenderer.DefaultMaterialShader = Default2DShader.MaterialShader;
 
-            SetRenderPipeline(new Basic2DPipeline());
+            SetRenderPipeline(Default2DPipeline.Pipeline);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

@@ -53,11 +53,13 @@
     <Compile Include="Object\PolygonVertex.cs" />
     <Compile Include="Pipelines\Adv2DPipeline.cs" />
     <Compile Include="Pipelines\Basic2DPipeline.cs" />
+    <Compile Include="Pipelines\Default2DPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\I2DShowItem.cs" />
     <Compile Include="Scene\ItemCollection.cs" />
     <Compile Include="Scene\Scene.cs" />
+    <Compile Include="Shader\Basic2DShader.cs" />
     <Compile Include="Shader\Default2DShader.cs" />
     <Compile Include="Types\Transformation.cs" />
   </ItemGroup>
@@ -82,6 +84,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Light\light.frag" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Shader\ShaderFiles\basic.glsl" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

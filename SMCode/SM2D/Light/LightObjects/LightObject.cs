@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics;
+using SM.Base;
 using SM.Base.Types;
 using SM.OGL.Shaders;
 
@@ -7,6 +9,7 @@ namespace SM2D.Light
 {
     public abstract class LightObject
     {
+        private Vector2 _posNorm => Vector2.Divide(Position, (SMRenderer.CurrentWindow as GLWindow2D).WorldScale);
         internal abstract int Type { get; }
 
         public CVector2 Position = new CVector2(0);

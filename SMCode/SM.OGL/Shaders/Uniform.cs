@@ -458,7 +458,7 @@ namespace SM.OGL.Shaders
         /// <param name="texture"></param>
         public void SetTexture(TextureBase texture)
         {
-            if (Parent != null) SetTexture(texture, Parent.NextTexture++);
+            if (Parent != null) SetTexture(texture, Parent.NextTexture);
         }
 
         /// <summary>
@@ -468,6 +468,7 @@ namespace SM.OGL.Shaders
         /// <param name="texturePos"></param>
         public void SetTexture(TextureBase texture, int texturePos)
         {
+            Parent.NextTexture = texturePos + 1;
             GL.ActiveTexture(TextureUnit.Texture0 + texturePos);
             GL.BindTexture(TextureTarget.Texture2D, texture);
             SetUniform1(texturePos);

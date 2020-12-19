@@ -88,9 +88,9 @@ namespace SM.Base
         {
         }
 
-        protected Framebuffer CreateWindowFramebuffer()
+        public static Framebuffer CreateWindowFramebuffer()
         {
-            Framebuffer framebuffer = new Framebuffer(window: _window);
+            Framebuffer framebuffer = new Framebuffer(window: SMRenderer.CurrentWindow);
             framebuffer.Append("color", 0);
             framebuffer.Compile();
             return framebuffer;

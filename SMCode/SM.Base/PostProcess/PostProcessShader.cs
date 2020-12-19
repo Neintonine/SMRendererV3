@@ -53,12 +53,11 @@ namespace SM.Base.PostProcess
 
             Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
             Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
-            Uniforms["renderedTexture"].SetTexture(color, 0);
+            Uniforms["renderedTexture"].SetTexture(color);
 
             GL.DrawArrays(PrimitiveType.Quads, 0, 4);
 
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.BindVertexArray(0);
+            CleanUp();
             GL.UseProgram(0);
         }
 
@@ -74,14 +73,13 @@ namespace SM.Base.PostProcess
 
             Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
             Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
-            Uniforms["renderedTexture"].SetTexture(color, 0);
+            Uniforms["renderedTexture"].SetTexture(color);
 
             setUniformAction(Uniforms);
 
             GL.DrawArrays(PrimitiveType.Quads, 0, 4);
 
-            GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.BindVertexArray(0);
+            CleanUp();
             GL.UseProgram(0);
         }
     }

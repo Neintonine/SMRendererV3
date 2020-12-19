@@ -1,5 +1,4 @@
 ﻿#version 330
-
 //# region vertex
 
 //# import SM_base_vertex_basic
@@ -17,18 +16,13 @@ void vmain() {
 in vec2 vTexture;
 in vec4 vColor;
 
-uniform bool occlude;
-
 uniform vec4 Tint;
 uniform bool UseTexture;
 uniform sampler2D Texture;
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 occluder;
 
 void fmain() {
     color = vColor * Tint;
     if (UseTexture) color *= texture(Texture, vTexture);
-
-	occluder = vec4(occlude,0,0,1);
 }

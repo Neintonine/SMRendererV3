@@ -268,6 +268,7 @@ namespace SM.Base
                     new Instance
                         {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One}
                 },
+                ShaderArguments = new Dictionary<string, object>(),
                 Mesh = Plate.Object,
                 ForceViewport = ForceViewportCamera,
                 WorldScale = _worldScale,

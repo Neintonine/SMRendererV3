@@ -24,7 +24,7 @@ namespace SM.Base.PostProcess
             Init();
         }
 
-        public virtual void Draw(Framebuffer main)
+        public virtual void Draw(Framebuffer main, Framebuffer target)
         {
 
         }

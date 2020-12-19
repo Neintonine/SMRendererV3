@@ -12,7 +12,7 @@ namespace SM.Base.Objects
         /// <summary>
         ///     While initializing, it will add the <see cref="Color" /> to the data index.
         /// </summary>
-        protected Mesh()
+        public Mesh()
         {
             Attributes.Add(3, "color", Color);
         }

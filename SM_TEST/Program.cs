@@ -16,6 +16,7 @@ using SM2D;
 using SM2D.Drawing;
 using SM2D.Light;
 using SM2D.Object;
+using SM2D.Pipelines;
 using SM2D.Scene;
 using Font = SM.Base.Drawing.Text.Font;
 using Vector2 = OpenTK.Vector2;
@@ -38,6 +39,7 @@ namespace SM_TEST
 
             window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
             //window.GrabCursor();
+            window.SetRenderPipeline(Basic2DPipeline.Pipeline);
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
             window.RenderFrame += WindowOnUpdateFrame;
@@ -59,16 +61,22 @@ namespace SM_TEST
             scene.ShowAxisHelper = true;
 
             DrawObject2D kasten = new DrawObject2D();
+            kasten.ShadowCaster = true;
             kasten.Texture = new Texture(new Bitmap("herosword.png"));
             kasten.Transform.ApplyTextureSize(kasten.Texture, 500);
             scene.Objects.Add(kasten);
+
+            //scene.Background.Color = Color4.White;
 
             DrawText text = new DrawText(font, "Text");
             text.Transform.Position.Set(0, 500);
             scene.Objects.Add(text);
 
-            light = new PointLight();
-            light.Color = new Color4(0, 1,0,1);
+            light = new PointLight
+            {
+                Color = new Color4(0, 1, 1, 1), 
+                Power = 100
+            };
             scene.LightInformations.Lights.Add(light);
 
             scene.LightInformations.Ambient = Color4.White;

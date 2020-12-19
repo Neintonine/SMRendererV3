@@ -1,24 +1,16 @@
-﻿#region usings
-
-using OpenTK.Graphics.OpenGL4;
-using SM.Base.Contexts;
+﻿using SM.Base.Contexts;
 using SM.Base.Drawing;
-using SM.Base.Scene;
 using SM.OGL.Shaders;
 using SM.Utility;
 
-#endregion
-
 namespace SM2D.Shader
 {
-    public class Default2DShader : MaterialShader
+    public class Basic2DShader : MaterialShader
     {
-        public static Default2DShader MaterialShader = new Default2DShader();
-        
 
-        private Default2DShader() : base(AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.glsl"))
+        public static Basic2DShader Shader = new Basic2DShader();
+        private Basic2DShader() : base(AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.basic.glsl"))
         {
-            Load();
         }
 
         protected override void DrawProcess(DrawContext context)
@@ -27,7 +19,6 @@ namespace SM2D.Shader
             Uniforms["MVP"].SetMatrix4(context.ModelMaster * context.View * context.World);
             Uniforms["HasVColor"]
                 .SetUniform1(context.Mesh.Attributes["color"] != null);
-            Uniforms["occlude"].SetUniform1(context.ShaderArguments.ContainsKey("occluder"));
 
             UniformArray instances = Uniforms.GetArray("Instances");
             for (int i = 0; i < context.Instances.Count; i++)

@@ -42,15 +42,14 @@ namespace SM.Base.Drawing
             CleanUp();
 
             GL.UseProgram(0);
+
+            context.ShaderArguments.Clear();
         }
 
         /// <summary>
         ///     Draws the context.
         /// </summary>
         /// <param name="context"></param>
-        protected virtual void DrawProcess(DrawContext context)
-        {
-
-        }
+        protected abstract void DrawProcess(DrawContext context);
     }
 }

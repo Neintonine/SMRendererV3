@@ -10,7 +10,7 @@ namespace SM.OGL.Shaders
 {
     public class UniformCollection : Dictionary<string, IUniform>
     {
-        internal int NextTexture = 0;
+        public int NextTexture = 0;
         internal string KeyString = "";
         public GenericShader ParentShader { get; internal set; }
 
