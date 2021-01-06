@@ -35,14 +35,7 @@ namespace SM.Base.Types
             X = x;
         }
 
-        /// <summary>
-        /// Sets the X-Component.
-        /// </summary>
-        /// <param name="x">X-Component</param>
-        public virtual void Set(float x)
-        {
-            X = x;
-        }
+        
 
         /// <summary>
         /// Get the length of the vector.
@@ -66,6 +59,19 @@ namespace SM.Base.Types
             NormalizationProcess(length);
         }
 
+        /// <summary>
+        /// Sets the X-Component.
+        /// </summary>
+        /// <param name="x">X-Component</param>
+        public virtual void Set(float uniform)
+        {
+            X = uniform;
+        }
+
+        public virtual void Add(float uniform)
+        {
+            X += uniform;
+        }
 
         /// <summary>
         /// Conversion into <see cref="float"/>

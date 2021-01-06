@@ -75,9 +75,10 @@ namespace SM.OGL.Mesh
             _id = GL.GenVertexArray();
             GL.BindVertexArray(_id);
 
-            if (Attributes == null) throw new Exception("[Critical] The model requires attributes.");
+            if (Attributes == null || Attributes.Count == 0) throw new Exception("[Critical] The model requires attributes.");
 
-            foreach (var kvp in Attributes) kvp.ConnectedVBO?.BindBuffer(kvp.Index);
+            foreach (var kvp in Attributes) 
+                kvp.ConnectedVBO?.BindBuffer(kvp.Index);
 
             GL.BindVertexArray(0);
         }

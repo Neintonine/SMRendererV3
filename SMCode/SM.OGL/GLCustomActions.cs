@@ -7,6 +7,9 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL
 {
+    /// <summary>
+    /// Allows the system to send custom actions.
+    /// </summary>
     public class GLCustomActions
     {
         /// <summary>

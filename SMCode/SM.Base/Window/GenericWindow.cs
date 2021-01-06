@@ -49,6 +49,8 @@ namespace SM.Base
         /// </summary>
         public bool ReactWhileUnfocused = false;
 
+        internal GenericCamera _viewportCamera;
+
         /// <inheritdoc />
         protected GenericWindow() : this(1280, 720, "Generic OGL Title", GameWindowFlags.Default)
         {
@@ -223,13 +225,16 @@ namespace SM.Base
         /// <inheritdoc />
         protected GenericWindow()
         {
-            ViewportCamera = new TCamera();
+            _viewportCamera = new TCamera();
         }
 
         /// <summary>
         ///     The viewport camera.
         /// </summary>
-        public TCamera ViewportCamera { get; }
+        public TCamera ViewportCamera { 
+            get => (TCamera)_viewportCamera;
+            set => _viewportCamera = value;
+        }
 
         /// <summary>
         ///     This forces the render to use the viewport camera.
@@ -258,29 +263,37 @@ namespace SM.Base
         {
             if (!ReactWhileUnfocused && !Focused) return;
 
+            if (CurrentScene == null) return;
+
             SMRenderer.CurrentFrame++;
 
             Deltatime.RenderDelta = (float) e.Time;
             var drawContext = new DrawContext
             {
-                World = ViewportCamera.World,
-                View = ViewportCamera.CalculateViewMatrix(),
-                ModelMaster = Matrix4.Identity,
+                ForceViewport = ForceViewportCamera,
+                ActiveScene = CurrentScene,
+                Window = this,
+
                 Instances = new[]
                 {
                     new Instance
                         {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One}
                 },
-                ShaderArguments = new Dictionary<string, object>(),
                 Mesh = Plate.Object,
-                ForceViewport = ForceViewportCamera,
+
                 WorldScale = _worldScale,
-                LastPassthough = this
+                LastPassthough = this,
+
+                ShaderArguments = new Dictionary<string, object>(),
+
+                World = ViewportCamera.World,
+                View = ViewportCamera.CalculateViewMatrix(),
+                ModelMaster = Matrix4.Identity
             };
 
             base.OnRenderFrame(e);
 
-            RenderPipeline.Render(ref drawContext, CurrentScene);
+            RenderPipeline.Render(ref drawContext);
 
             SwapBuffers();
 

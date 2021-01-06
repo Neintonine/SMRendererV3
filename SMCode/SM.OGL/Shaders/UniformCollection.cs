@@ -74,6 +74,16 @@ namespace SM.OGL.Shaders
                 if (key.Contains("["))
                 {
                     var keySplits = key.Split('[', ']');
+                    if (keySplits[2] == "")
+                    {
+                        if (keySplits[1] == "0")
+                        {
+                            Add(keySplits[0], loc);
+                        }
+
+                        continue;
+                    }
+
                     if (keySplits[0] != lastArrayKey)
                     {
                         if (arrayFilled) Add(lastArrayKey, array);

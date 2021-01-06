@@ -21,8 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\SM.OGL.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -64,6 +63,7 @@
     <Compile Include="Shaders\Uniform.cs" />
     <Compile Include="Shaders\UniformArray.cs" />
     <Compile Include="Shaders\UniformCollection.cs" />
+    <Compile Include="Texture\PixelInformation.cs" />
     <Compile Include="Texture\TextureBase.cs" />
     <Compile Include="Version.cs" />
   </ItemGroup>

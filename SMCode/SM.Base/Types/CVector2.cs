@@ -70,6 +70,23 @@ namespace SM.Base.Types
             Y = y;
         }
 
+        public override void Add(float uniform)
+        {
+            base.Add(uniform);
+            Y += uniform;
+        }
+
+        public void Add(Vector2 vector)
+        {
+            Add(vector.X, vector.Y);
+        }
+
+        public void Add(float x, float y)
+        {
+            base.Add(x);
+            Y += y;
+        }
+
         /// <summary>
         /// Converts to <see cref="Vector2"/>
         /// </summary>

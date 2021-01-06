@@ -55,8 +55,10 @@
     <Compile Include="Drawing\Particles\ParticleStruct.cs" />
     <Compile Include="Drawing\Particles\ParticleDrawingBasis.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="Objects\InstancedMesh.cs" />
     <Compile Include="Objects\Mesh.cs" />
     <Compile Include="Objects\Static\AxisHelper.cs" />
+    <Compile Include="PostEffects\BloomEffect.cs" />
     <Compile Include="PostProcess\PostProcessEffect.cs" />
     <Compile Include="PostProcess\PostProcessShader.cs" />
     <Compile Include="Scene\IScriptable.cs" />
@@ -112,6 +114,8 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="PostEffects\Shaders\bloom_blur.glsl" />
+    <EmbeddedResource Include="PostEffects\Shaders\bloom_merge.glsl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

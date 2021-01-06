@@ -29,12 +29,14 @@ namespace SM.Base
         /// <summary>
         ///     The framebuffers, that are used in this Pipeline.
         /// </summary>
-        protected virtual List<Framebuffer> _framebuffers { get; }
+        public virtual List<Framebuffer> Framebuffers { get; private set; }
 
         /// <summary>
         ///     The default shader for the pipeline.
         /// </summary>
-        protected internal virtual MaterialShader _defaultShader { get; } = SMRenderer.DefaultMaterialShader;
+        protected internal virtual MaterialShader _defaultShader { get; set; }
+
+        public virtual Framebuffer MainFramebuffer { get; protected set; }= Framebuffer.Screen;
 
         /// <summary>
         ///     Occurs, when the window is loading.
@@ -48,14 +50,14 @@ namespace SM.Base
         /// </summary>
         protected internal virtual void Resize()
         {
-            if (_framebuffers == null) return;
+            if (Framebuffers == null) return;
 
-            foreach (var framebuffer in _framebuffers)
+            foreach (var framebuffer in Framebuffers)
                 framebuffer.Dispose();
 
             Thread.Sleep(50);
 
-            foreach (Framebuffer framebuffer in _framebuffers)
+            foreach (Framebuffer framebuffer in Framebuffers)
             {
                 framebuffer.Compile();
             }
@@ -67,7 +69,13 @@ namespace SM.Base
 
             if (!IsInitialized)
             {
+                if (_defaultShader == null) _defaultShader = SMRenderer.DefaultMaterialShader;
+                Framebuffers = new List<Framebuffer>();
+
                 Initialization(window);
+                
+                Framebuffers.Add(MainFramebuffer);
+
                 IsInitialized = true;
             }
 
@@ -106,7 +114,6 @@ namespace SM.Base
         {
             Framebuffer framebuffer = new Framebuffer(window: SMRenderer.CurrentWindow);
             framebuffer.Append("color", 0);
-            framebuffer.Compile();
             return framebuffer;
         }
     }
@@ -121,10 +128,14 @@ namespace SM.Base
         /// <summary>
         ///     The system to render stuff.
         /// </summary>
-        protected internal virtual void Render(ref DrawContext context, TScene scene)
+        internal void Render(ref DrawContext context)
         {
             context.ActivePipeline = this;
+
+            RenderProcess(ref context, (TScene)context.ActiveScene);
         }
+
+        protected abstract void RenderProcess(ref DrawContext context, TScene scene);
 
         /// <summary>
         ///     Event, that triggers, when the scene in the current window changes.

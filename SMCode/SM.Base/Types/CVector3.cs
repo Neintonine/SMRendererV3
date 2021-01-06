@@ -63,6 +63,23 @@ namespace SM.Base.Types
             Set(vector.X, vector.Y, vector.Z);
         }
 
+        public override void Add(float uniform)
+        {
+            base.Add(uniform);
+            Z += uniform;
+        }
+
+        public void Add(Vector3 vector)
+        {
+            Add(vector.X, vector.Y, vector.Z);
+        }
+
+        public void Add(float x, float y, float z)
+        {
+            base.Add(x,y);
+            Z += z;
+        }
+
         /// <summary>
         /// Converts to <see cref="Vector3"/>
         /// </summary>

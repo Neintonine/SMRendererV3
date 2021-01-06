@@ -63,6 +63,11 @@ namespace SM.OGL
             return hasError;
         }
 
+        /// <summary>
+        ///     Checks for OpenGL errors, while allowing to put stuff before and behind it.
+        /// </summary>
+        /// <param name="formating"></param>
+        /// <returns></returns>
         public static bool CheckGLErrors(string formating)
         {
             var hasError = false;

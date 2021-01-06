@@ -24,11 +24,9 @@ uniform bool UseTexture;
 uniform sampler2D Texture;
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 occluder;
+layout(location = 1) out vec4 bloom;
 
 void fmain() {
     color = vColor * Tint;
     if (UseTexture) color *= texture(Texture, vTexture);
-
-	occluder = vec4(occlude,0,0,1);
 }

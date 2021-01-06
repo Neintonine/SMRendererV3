@@ -16,8 +16,6 @@ namespace SM2D.Drawing
     {
         public int ZIndex { get; set; }
 
-        public bool ShadowCaster = false;
-
         public Texture Texture
         {
             get => (Texture) _material.Texture;
@@ -33,7 +31,6 @@ namespace SM2D.Drawing
         protected override void DrawContext(ref DrawContext context)
         {
             base.DrawContext(ref context);
-            context.ShaderArguments["occluder"] = ShadowCaster;
             context.Shader.Draw(context);
         }
 

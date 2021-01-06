@@ -13,7 +13,7 @@ namespace SM.Base.Objects
         /// <summary>
         ///     While initializing, it will add the <see cref="Color" /> to the data index.
         /// </summary>
-        public Mesh(PrimitiveType type)
+        public Mesh(PrimitiveType type) : base()
         {
             PrimitiveType = type;
             Attributes.Add(3, "color", Color);

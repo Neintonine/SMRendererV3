@@ -7,8 +7,14 @@ using System.Collections.Generic;
 
 namespace SM.OGL.Shaders
 {
+    /// <summary>
+    ///     Holds Actions for the preprocessor.
+    /// </summary>
     public class ShaderPreProcess
     {
+        /// <summary>
+        /// Holds actions for the preprocessor.
+        /// </summary>
         public static Dictionary<string, Action<ShaderFile, string>> Actions =
             new Dictionary<string, Action<ShaderFile, string>>
             {

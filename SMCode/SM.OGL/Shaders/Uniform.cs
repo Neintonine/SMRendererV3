@@ -24,14 +24,29 @@ namespace SM.OGL.Shaders
         /// </summary>
         public UniformCollection Parent { get; }
 
+        /// <summary>
+        ///     This creates a new uniform manager, that has a null parent.
+        /// </summary>
+        /// <param name="location"></param>
         public Uniform(int location) : this(location, null)
         {
         }
 
+        /// <summary>
+        ///     This creates a new uniform manager, that get the location from the provided shader and with a null parent.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="shader"></param>
         public Uniform(string name, GenericShader shader) : this(GL.GetUniformLocation(shader, name), null)
         {
 
         }
+        /// <summary>
+        ///     This creates a new uniform manager, that get the location from the provided shader and with a parent.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="shader"></param>
+        /// <param name="parent"></param>
         public Uniform(string name, GenericShader shader, UniformCollection parent) : this(GL.GetUniformLocation(shader, name), parent)
         {
 
@@ -60,9 +75,9 @@ namespace SM.OGL.Shaders
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(int count, params int[] values)
+        public void SetUniform1(params int[] values)
         {
-            GL.Uniform1(Location, count, values);
+            GL.Uniform1(Location, values.Length, values);
         }
 
         public void SetUniform1(int count, ref int values)
@@ -76,9 +91,9 @@ namespace SM.OGL.Shaders
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(int count, params uint[] values)
+        public void SetUniform1(params uint[] values)
         {
-            GL.Uniform1(Location, count, values);
+            GL.Uniform1(Location, values.Length, values);
         }
 
         public void SetUniform1(int count, ref uint values)
@@ -92,9 +107,9 @@ namespace SM.OGL.Shaders
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(int count, params float[] values)
+        public void SetUniform1(params float[] values)
         {
-            GL.Uniform1(Location, count, values);
+            GL.Uniform1(Location, values.Length, values);
         }
 
         public void SetUniform1(int count, ref float value)
@@ -108,9 +123,9 @@ namespace SM.OGL.Shaders
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(int count, params double[] values)
+        public void SetUniform1(params double[] values)
         {
-            GL.Uniform1(Location, count, values);
+            GL.Uniform1(Location, values.Length, values);
         }
 
         public void SetUniform1(int count, ref double value)
@@ -142,24 +157,24 @@ namespace SM.OGL.Shaders
             GL.Uniform2(Location, x, y);
         }
 
-        public void SetUniform2(int count, params float[] values)
+        public void SetUniform2(params float[] values)
         {
-            GL.Uniform2(Location, count, values);
+            GL.Uniform2(Location, values.Length / 2, values);
         }
 
-        public void SetUniform2(int count, params double[] values)
+        public void SetUniform2(params double[] values)
         {
-            GL.Uniform2(Location, count, values);
+            GL.Uniform2(Location, values.Length / 2, values);
         }
 
-        public void SetUniform2(int count, params int[] values)
+        public void SetUniform2(params int[] values)
         {
-            GL.Uniform2(Location, count, values);
+            GL.Uniform2(Location, values.Length / 2, values);
         }
 
-        public void SetUniform2(int count, params uint[] values)
+        public void SetUniform2(params uint[] values)
         {
-            GL.Uniform2(Location, count, values);
+            GL.Uniform2(Location, values.Length / 2, values);
         }
 
         public void SetUniform2(int count, ref float values)
@@ -211,24 +226,24 @@ namespace SM.OGL.Shaders
             GL.Uniform3(Location, x, y, z);
         }
 
-        public void SetUniform3(int count, params float[] values)
+        public void SetUniform3(params float[] values)
         {
-            GL.Uniform3(Location, count, values);
+            GL.Uniform3(Location, values.Length / 3, values);
         }
 
-        public void SetUniform3(int count, params double[] values)
+        public void SetUniform3(params double[] values)
         {
-            GL.Uniform3(Location, count, values);
+            GL.Uniform3(Location, values.Length / 3, values);
         }
 
-        public void SetUniform3(int count, params int[] values)
+        public void SetUniform3(params int[] values)
         {
-            GL.Uniform3(Location, count, values);
+            GL.Uniform3(Location, values.Length / 3, values);
         }
 
-        public void SetUniform3(int count, params uint[] values)
+        public void SetUniform3(params uint[] values)
         {
-            GL.Uniform3(Location, count, values);
+            GL.Uniform3(Location, values.Length / 3, values);
         }
 
         public void SetUniform3(int count, ref float values)
@@ -280,24 +295,24 @@ namespace SM.OGL.Shaders
             GL.Uniform4(Location, x, y, z, w);
         }
 
-        public void SetUniform4(int count, params float[] values)
+        public void SetUniform4(params float[] values)
         {
-            GL.Uniform4(Location, count, values);
+            GL.Uniform4(Location, values.Length / 4, values);
         }
 
-        public void SetUniform4(int count, params double[] values)
+        public void SetUniform4(params double[] values)
         {
-            GL.Uniform4(Location, count, values);
+            GL.Uniform4(Location, values.Length / 4, values);
         }
 
-        public void SetUniform4(int count, params int[] values)
+        public void SetUniform4(params int[] values)
         {
-            GL.Uniform4(Location, count, values);
+            GL.Uniform4(Location, values.Length / 4, values);
         }
 
-        public void SetUniform4(int count, params uint[] values)
+        public void SetUniform4(params uint[] values)
         {
-            GL.Uniform4(Location, count, values);
+            GL.Uniform4(Location, values.Length / 4, values);
         }
 
         public void SetUniform4(int count, ref float values)

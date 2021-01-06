@@ -39,7 +39,7 @@ namespace SM_TEST
 
             window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
             //window.GrabCursor();
-            window.SetRenderPipeline(Basic2DPipeline.Pipeline);
+            window.SetRenderPipeline(new TestRenderPipeline());
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
             window.RenderFrame += WindowOnUpdateFrame;
@@ -60,16 +60,12 @@ namespace SM_TEST
         { 
             scene.ShowAxisHelper = true;
 
-            DrawObject2D kasten = new DrawObject2D();
-            kasten.ShadowCaster = true;
-            kasten.Texture = new Texture(new Bitmap("herosword.png"));
-            kasten.Transform.ApplyTextureSize(kasten.Texture, 500);
-            scene.Objects.Add(kasten);
 
             //scene.Background.Color = Color4.White;
 
             DrawText text = new DrawText(font, "Text");
-            text.Transform.Position.Set(0, 500);
+            text.Transform.Position.Set(0, 0);
+            text.Transform.Size.Set(2);
             scene.Objects.Add(text);
 
             light = new PointLight

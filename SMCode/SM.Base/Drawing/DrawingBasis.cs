@@ -32,10 +32,17 @@ namespace SM.Base.Drawing
 
         /// <inheritdoc />
         public ICollection<string> Flags { get; set; }
+
+        /// <summary>
+        ///     This value determents if the object should draw something.
+        /// </summary>
+        public bool Active = true;
         
         /// <inheritdoc />
         public void Draw(DrawContext context)
         {
+            if (!Active) return;
+
             context.Material = _material;
             context.Mesh = _mesh;
 
@@ -76,6 +83,7 @@ namespace SM.Base.Drawing
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
+            base.DrawContext(ref context);
             context.ModelMaster *= Transform.GetMatrix();
         }
     }

@@ -17,6 +17,8 @@ namespace SM.OGL.Texture
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Texture;
 
+        public PixelInformation PixelInformation;
+
         /// <summary>
         ///     The texture filter.
         ///     <para>Default: <see cref="TextureMinFilter.Linear" /></para>

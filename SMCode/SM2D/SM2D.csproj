@@ -45,10 +45,6 @@
     <Compile Include="Drawing\DrawParticles.cs" />
     <Compile Include="Drawing\DrawText.cs" />
     <Compile Include="GLWindow2D.cs" />
-    <Compile Include="Light\LightObjects\LightObject.cs" />
-    <Compile Include="Light\LightObjects\PointLight.cs" />
-    <Compile Include="Light\LightPostEffect.cs" />
-    <Compile Include="Light\LightSceneExtension.cs" />
     <Compile Include="Object\Polygon.cs" />
     <Compile Include="Object\PolygonVertex.cs" />
     <Compile Include="Pipelines\Adv2DPipeline.cs" />
@@ -80,9 +76,6 @@
     <PackageReference Include="OpenTK">
       <Version>3.2.1</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Light\light.frag" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Shader\ShaderFiles\basic.glsl" />

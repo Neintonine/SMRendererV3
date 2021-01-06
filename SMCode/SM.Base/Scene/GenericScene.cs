@@ -30,6 +30,18 @@ namespace SM.Base.Scene
                 _background = value;
             }
         }
+
+        /// <summary>
+        ///     The active camera, that is used if the context doesn't force the viewport camera.
+        ///     <para>If none set, it automaticly uses the viewport camera.</para>
+        /// </summary>
+        internal GenericCamera _camera { get; set; }
+        
+        /// <summary>
+        ///     A collection for cameras to switch easier to different cameras.
+        /// </summary>
+        public Dictionary<string, GenericCamera> Cameras = new Dictionary<string, GenericCamera>();
+
         /// <summary>
         /// If true, the scene was already initialized.
         /// </summary>
@@ -50,7 +62,7 @@ namespace SM.Base.Scene
         public virtual void Draw(DrawContext context)
         {
         }
-
+        
         /// <summary>
         ///     Adds a extension to the scene.
         /// </summary>
@@ -102,8 +114,7 @@ namespace SM.Base.Scene
         ///     Called, when the user activates the scene.
         /// </summary>
         protected virtual void OnActivating()
-        {
-        }
+        { }
     }
 
     /// <summary>
@@ -126,15 +137,10 @@ namespace SM.Base.Scene
         public bool ShowAxisHelper { get; set; } = false;
 
         /// <summary>
-        ///     A collection for cameras to switch easier to different cameras.
-        /// </summary>
-        public Dictionary<string, TCamera> Cameras = new Dictionary<string, TCamera>();
-
-        /// <summary>
         ///     The active camera, that is used if the context doesn't force the viewport camera.
         ///     <para>If none set, it automaticly uses the viewport camera.</para>
         /// </summary>
-        public TCamera Camera { get; set; }
+        public TCamera Camera => (TCamera) _camera;
 
         /// <summary>
         ///     A camera to control the background.

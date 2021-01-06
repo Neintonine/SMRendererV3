@@ -12,16 +12,14 @@ namespace SM2D.Pipelines
     {
         public static Basic2DPipeline Pipeline = new Basic2DPipeline();
 
-        protected override MaterialShader _defaultShader { get; } = Basic2DShader.Shader;
 
         private Basic2DPipeline()
         {
-            Console.WriteLine();
+            _defaultShader = Basic2DShader.Shader;
         }
 
-        protected override void Render(ref DrawContext context, Scene.Scene scene)
+        protected override void RenderProcess(ref DrawContext context, Scene.Scene scene)
         {
-            base.Render(ref context, scene);
 
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (scene != null) scene.Draw(context);

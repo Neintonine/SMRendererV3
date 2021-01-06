@@ -6,7 +6,6 @@ using SM.Base.Contexts;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM2D.Drawing;
-using SM2D.Light;
 
 #endregion
 
@@ -17,7 +16,6 @@ namespace SM2D.Scene
         private static DrawObject2D _axisHelper;
 
         public float AxisHelperSize = 100;
-        public LightSceneExtension LightInformations;
         static Scene()
         {
             _axisHelper = new DrawObject2D();
@@ -27,8 +25,6 @@ namespace SM2D.Scene
         public Scene()
         {
             _Background = new DrawBackground(Color4.Black);
-
-            SetExtension(LightInformations = new LightSceneExtension());
         }
 
 

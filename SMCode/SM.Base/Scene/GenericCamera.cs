@@ -43,6 +43,8 @@ namespace SM.Base.Scene
         /// </summary>
         public abstract bool Orthographic { get; }
 
+        public float Exposure = 1;
+
         /// <summary>
         ///     Calculates the view matrix.
         /// </summary>

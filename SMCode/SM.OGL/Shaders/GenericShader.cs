@@ -14,6 +14,7 @@ namespace SM.OGL.Shaders
     /// </summary>
     public abstract class GenericShader : GLObject
     {
+        /// <inheritdoc />
         protected override bool AutoCompile { get; } = true;
 
         /// <summary>
@@ -26,6 +27,10 @@ namespace SM.OGL.Shaders
         /// </summary>
         protected UniformCollection Uniforms;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="combinedData"></param>
         protected GenericShader(string combinedData)
         {
             int firstPos = combinedData.IndexOf("//# region ", StringComparison.Ordinal);
@@ -106,7 +111,6 @@ namespace SM.OGL.Shaders
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <param name="amount">The amounts for instancing.</param>
-        /// <param name="bindVAO">Binds the vertex array for the mesh.</param>
         protected void DrawObject(GenericMesh mesh, int amount = 1)
         {
             if (mesh.Indices != null)

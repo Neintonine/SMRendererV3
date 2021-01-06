@@ -80,6 +80,7 @@ namespace SM.Base.Drawing.Text
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
+            base.DrawContext(ref context);
             if (_instances == null) GenerateMatrixes();
         }
 

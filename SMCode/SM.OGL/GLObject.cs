@@ -54,6 +54,7 @@ namespace SM.OGL
         /// <summary>
         ///     The action, that is called, when "ID" tries to compile something.
         /// </summary>
+        [DebuggerStepThrough]
         public virtual void Compile()
         {
         }

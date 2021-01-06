@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Input;
 using SM.Base.Controls;
 using SM2D.Scene;
+using SM2D.Types;
 
 #endregion
 
