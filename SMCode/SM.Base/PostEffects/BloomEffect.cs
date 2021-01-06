@@ -23,6 +23,7 @@ namespace SM.Base.PostEffects
         private bool _hdr;
 
         public int Iterations = 5;
+        public float Threshold = 0.8f;
         
         public float[] Weights = { 0.227027f, 0.1945946f, 0.1216216f, 0.054054f, 0.016216f };
         
@@ -34,7 +35,7 @@ namespace SM.Base.PostEffects
 
         protected override void InitProcess()
         {
-            Pipeline.MainFramebuffer.Append("bloom", new ColorAttachment(_bloomLocation, PixelInformation.RGBA_HDR));
+            Pipeline.MainFramebuffer.ColorAttachments["color"].PixelInformation = PixelInformation.RGBA_HDR;
 
             _bloomBuffer1 = new Framebuffer(SMRenderer.CurrentWindow);
             _bloomBuffer1.Append("xBuffer", _xBuffer = new ColorAttachment(0, PixelInformation.RGBA_HDR));
@@ -57,8 +58,11 @@ namespace SM.Base.PostEffects
             {
                 (hoz ? _bloomBuffer1 : _bloomBuffer2).Activate();
 
-                _shader.Draw(first ? Pipeline.MainFramebuffer.ColorAttachments["bloom"] : (hoz ? _yBuffer : _xBuffer), collection =>
+                _shader.Draw(first ? Pipeline.MainFramebuffer.ColorAttachments["color"] : (hoz ? _yBuffer : _xBuffer), collection =>
                 {
+                    collection["First"].SetUniform1(first);
+                    collection["Threshold"].SetUniform1(Threshold);
+
                     collection["Horizontal"].SetUniform1(hoz);
 
                     collection["Weights"].SetUniform1(Weights);

@@ -14,7 +14,6 @@ using SM.Base.Time;
 using SM.Utility;
 using SM2D;
 using SM2D.Drawing;
-using SM2D.Light;
 using SM2D.Object;
 using SM2D.Pipelines;
 using SM2D.Scene;
@@ -46,14 +45,12 @@ namespace SM_TEST
             window.Run();
         }
 
-        private static PointLight light;
         private static DrawParticles particles;
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
             if (Keyboard.GetState()[Key.R])
                 particles.Trigger();
             //particles.Paused = Keyboard.GetState()[Key.P];
-            light.Position.Set( window.Mouse.InWorld());
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
@@ -67,15 +64,6 @@ namespace SM_TEST
             text.Transform.Position.Set(0, 0);
             text.Transform.Size.Set(2);
             scene.Objects.Add(text);
-
-            light = new PointLight
-            {
-                Color = new Color4(0, 1, 1, 1), 
-                Power = 100
-            };
-            scene.LightInformations.Lights.Add(light);
-
-            scene.LightInformations.Ambient = Color4.White;
 
             //particles.Trigger();
         }
