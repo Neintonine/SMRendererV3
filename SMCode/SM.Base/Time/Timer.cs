@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using System.Diagnostics.Eventing.Reader;
 using SM.Base.Contexts;
 
 #endregion
@@ -43,7 +44,7 @@ namespace SM.Base.Time
         /// <summary>
         ///     The event, that is triggered when the timer stops.
         /// </summary>
-        public event Action<Timer, UpdateContext> EndAction;
+        public event Action<Timer, UpdateContext> End;
 
         /// <inheritdoc />
         public override void Start()
@@ -52,9 +53,9 @@ namespace SM.Base.Time
             Reset();
         }
 
-        private protected override void Tick(UpdateContext context)
+        private protected override void Ticking(UpdateContext context)
         {
-            base.Tick(context);
+            base.Ticking(context);
 
             ElapsedNormalized = Elapsed / Target;
             if (ElapsedNormalized >= 1) Stopping(context);
@@ -70,12 +71,12 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        ///     This will trigger <see cref="EndAction" />
+        ///     This will trigger <see cref="End" />
         /// </summary>
         /// <param name="context"></param>
         protected void TriggerEndAction(UpdateContext context)
         {
-            EndAction?.Invoke(this, context);
+            End?.Invoke(this, context);
         }
     }
 }

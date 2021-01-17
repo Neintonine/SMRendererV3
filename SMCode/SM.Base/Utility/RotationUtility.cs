@@ -18,7 +18,7 @@ namespace SM.Utility
         /// <returns></returns>
         public static float TurnTowards(Vector2 origin, Vector2 target)
         {
-            return MathHelper.RadiansToDegrees((float) Math.Atan2(target.Y - origin.Y, target.X - origin.X));
+            return MathHelper.RadiansToDegrees((float) Math.Atan2(origin.X - target.X, target.Y - origin.Y));
         }
     }
 }

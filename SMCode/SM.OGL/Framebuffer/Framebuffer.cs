@@ -25,7 +25,7 @@ namespace SM.OGL.Framebuffer
 
         private bool _canBeCompiled = true;
 
-        private INativeWindow _window;
+        private IFramebufferWindow _window;
         private float _windowScale;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         /// <param name="window"></param>
         /// <param name="scale"></param>
-        public Framebuffer(INativeWindow window, float scale = 1) : this(new Vector2(window.Width * scale,
+        public Framebuffer(IFramebufferWindow window, float scale = 1) : this(new Vector2(window.Width * scale,
             window.Height * scale))
         {
             _window = window;

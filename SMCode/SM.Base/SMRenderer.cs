@@ -55,6 +55,6 @@ namespace SM.Base
         /// <summary>
         ///     Represents the current active window.
         /// </summary>
-        public static GenericWindow CurrentWindow { get; internal set; }
+        public static IGenericWindow CurrentWindow { get; internal set; }
     }
 }

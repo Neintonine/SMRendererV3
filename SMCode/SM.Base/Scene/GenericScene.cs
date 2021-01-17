@@ -89,7 +89,7 @@ namespace SM.Base.Scene
 
             return (T)ext;
         }
-
+        
         /// <summary>
         ///     Called, when the user activates the scene.
         /// </summary>
@@ -177,7 +177,6 @@ namespace SM.Base.Scene
                 _hud = value;
             }
         }
-
 
         /// <inheritdoc />
         public override void Update(UpdateContext context)

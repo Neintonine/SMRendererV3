@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Security.Authentication.ExtendedProtection.Configuration;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base;
-using SM.Base.Scene;
-using SM.Base.Textures;
-using SM.Base.Time;
-using SM.Utility;
+using SM.Game.Controls;
 using SM2D;
 using SM2D.Drawing;
-using SM2D.Object;
-using SM2D.Pipelines;
 using SM2D.Scene;
 using Font = SM.Base.Drawing.Text.Font;
 using Vector2 = OpenTK.Vector2;
@@ -36,7 +25,7 @@ namespace SM_TEST
 
             Log.SetLogFile(compressionFolder:"logs");
 
-            window = new GLWindow2D {Scaling = new Vector2(0, 1000)};
+            window = new GLWindow2D {Scaling = new Vector2(0, 1000), VSync = VSyncMode.Off};
             //window.GrabCursor();
             window.SetRenderPipeline(new TestRenderPipeline());
             window.SetScene(scene = new Scene());
@@ -51,10 +40,13 @@ namespace SM_TEST
             if (Keyboard.GetState()[Key.R])
                 particles.Trigger();
             //particles.Paused = Keyboard.GetState()[Key.P];
+
+            GameControllerState s1 = new GameController(0).GetState();
+            GameControllerState s2 = new GameController(1).GetState();
         }
 
         private static void WindowOnLoad(object sender, EventArgs e)
-        { 
+        {
             scene.ShowAxisHelper = true;
 
 

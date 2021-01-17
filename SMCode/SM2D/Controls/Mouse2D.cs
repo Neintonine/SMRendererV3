@@ -10,9 +10,9 @@ using SM2D.Types;
 
 namespace SM2D.Controls
 {
-    public class Mouse2D : Mouse<GLWindow2D>
+    public class Mouse2D : Mouse<IGLWindow2D>
     {
-        protected internal Mouse2D(GLWindow2D window) : base(window)
+        protected internal Mouse2D(IGLWindow2D window) : base(window)
         {
         }
 

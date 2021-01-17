@@ -24,7 +24,7 @@ namespace SM.Base
         /// <summary>
         /// The window the pipeline is connected to.
         /// </summary>
-        protected GenericWindow _window { get; private set; }
+        protected IGenericWindow _window { get; private set; }
 
         /// <summary>
         ///     The framebuffers, that are used in this Pipeline.
@@ -63,7 +63,7 @@ namespace SM.Base
             }
         }
 
-        internal void Activate(GenericWindow window)
+        internal void Activate(IGenericWindow window)
         {
             _window = window;
 
@@ -85,7 +85,7 @@ namespace SM.Base
         /// <summary>
         ///     Occurs, when the pipeline was connected to a window.
         /// </summary>
-        protected internal virtual void Activation(GenericWindow window)
+        protected internal virtual void Activation(IGenericWindow window)
         {
         }
 
@@ -94,7 +94,7 @@ namespace SM.Base
         ///     Occurs, when the pipeline was connected to a window the first time.
         /// </summary>
         /// <param name="window"></param>
-        protected internal virtual void Initialization(GenericWindow window)
+        protected internal virtual void Initialization(IGenericWindow window)
         {
 
         }
@@ -131,6 +131,7 @@ namespace SM.Base
         internal void Render(ref DrawContext context)
         {
             context.ActivePipeline = this;
+            if (context.ActiveScene == null) return;
 
             RenderProcess(ref context, (TScene)context.ActiveScene);
         }

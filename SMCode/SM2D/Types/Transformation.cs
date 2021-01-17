@@ -36,7 +36,7 @@ namespace SM2D.Types
         {
             if (_modelMatrix.Determinant < 0.0001) return new Vector2(0);
 
-            var vec = Vector3.TransformNormal(Vector3.UnitX, _modelMatrix);
+            var vec = Vector3.TransformNormal(Vector3.UnitY, _modelMatrix);
             vec.Normalize();
             return vec.Xy;
         }

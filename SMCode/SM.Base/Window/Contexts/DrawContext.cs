@@ -27,11 +27,11 @@ namespace SM.Base.Contexts
         public RenderPipeline ActivePipeline;
 
         public GenericScene ActiveScene;
-        public GenericWindow Window;
+        public IGenericWindow Window;
 
 
         public GenericCamera UsedCamera =>
-            ForceViewport || ActiveScene._camera == null ? Window._viewportCamera : ActiveScene._camera;
+            ForceViewport || ActiveScene._camera == null ? Window.ViewportCamera : ActiveScene._camera;
 
 
 

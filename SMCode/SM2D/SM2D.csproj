@@ -31,12 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=3.2.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OpenTK.3.2.1\lib\net20\OpenTK.dll</HintPath>
-    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Mouse2D.cs" />
@@ -44,7 +45,8 @@
     <Compile Include="Drawing\DrawObject2D.cs" />
     <Compile Include="Drawing\DrawParticles.cs" />
     <Compile Include="Drawing\DrawText.cs" />
-    <Compile Include="GLWindow2D.cs" />
+    <Compile Include="Window\GLWindow2D.cs" />
+    <Compile Include="Window\GLWPFWindow2D.cs" />
     <Compile Include="Object\Polygon.cs" />
     <Compile Include="Object\PolygonVertex.cs" />
     <Compile Include="Pipelines\Adv2DPipeline.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Shader\Basic2DShader.cs" />
     <Compile Include="Shader\Default2DShader.cs" />
     <Compile Include="Types\Transformation.cs" />
+    <Compile Include="Window\IGLWindow2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.Base\SM.Base.csproj">
@@ -74,11 +77,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="OpenTK">
-      <Version>3.2.1</Version>
+      <Version>3.3.1</Version>
+    </PackageReference>
+    <PackageReference Include="OpenTK.GLWpfControl">
+      <Version>3.2.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Shader\ShaderFiles\basic.glsl" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

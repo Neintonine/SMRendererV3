@@ -34,8 +34,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=3.2.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OpenTK.3.2.1\lib\net20\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.3.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OpenTK.3.3.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Framebuffer\ColorAttachment.cs" />
     <Compile Include="Framebuffer\Framebuffer.cs" />
+    <Compile Include="Framebuffer\IFramebufferWindow.cs" />
     <Compile Include="GLCustomActions.cs" />
     <Compile Include="GLDebugging.cs" />
     <Compile Include="GLObject.cs" />
@@ -70,6 +71,9 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

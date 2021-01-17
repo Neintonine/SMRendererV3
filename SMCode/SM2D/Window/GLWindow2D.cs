@@ -14,7 +14,7 @@ using SM2D.Shader;
 
 namespace SM2D
 {
-    public class GLWindow2D : GenericWindow<Scene.Scene, Camera>
+    public class GLWindow2D : GenericWindow<Scene.Scene, Camera>, IGLWindow2D
     {
         public GLWindow2D()
         {
@@ -22,7 +22,6 @@ namespace SM2D
         }
 
         public Vector2? Scaling { get; set; }
-        public Vector2 WorldScale => _worldScale;
 
         public Mouse2D Mouse { get; }
 
@@ -47,13 +46,13 @@ namespace SM2D
             base.OnRenderFrame(e);
         }
 
-        protected override void SetWorldScale()
+        public override void SetWorldScale()
         {
             if (Scaling.HasValue)
             {
-                if (Scaling.Value.X > 0 && Scaling.Value.Y > 0) _worldScale = Scaling.Value;
-                else if (Scaling.Value.X > 0) _worldScale = new Vector2(Scaling.Value.X, Scaling.Value.X / Aspect);
-                else if (Scaling.Value.Y > 0) _worldScale = new Vector2(Aspect * Scaling.Value.Y, Scaling.Value.Y);
+                if (Scaling.Value.X > 0 && Scaling.Value.Y > 0) WorldScale = Scaling.Value;
+                else if (Scaling.Value.X > 0) WorldScale = new Vector2(Scaling.Value.X, Scaling.Value.X / Aspect);
+                else if (Scaling.Value.Y > 0) WorldScale = new Vector2(Aspect * Scaling.Value.Y, Scaling.Value.Y);
             }
         }
 

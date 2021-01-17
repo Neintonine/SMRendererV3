@@ -22,7 +22,7 @@ namespace SM2D.Pipelines
 
         }
 
-        protected override void Initialization(GenericWindow window)
+        protected override void Initialization(IGenericWindow window)
         {
             MainFramebuffer = CreateWindowFramebuffer();
         }
@@ -31,12 +31,9 @@ namespace SM2D.Pipelines
         {
             if (scene != null)
             {
-                MainFramebuffer.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 scene.DrawBackground(context);
 
                 scene.DrawMainObjects(context);
-
-                Framebuffer.Screen.Activate();
 
                 scene.DrawHUD(context);
                 scene.DrawDebug(context);

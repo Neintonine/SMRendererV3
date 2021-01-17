@@ -12,7 +12,7 @@ namespace SM.Base.Controls
     /// </summary>
     /// <typeparam name="TWindow">The type of window this controller is connected to.</typeparam>
     public class Mouse<TWindow>
-        where TWindow : GenericWindow
+        where TWindow : IGenericWindow
     {
         /// <summary>
         ///     The window it is connected to.

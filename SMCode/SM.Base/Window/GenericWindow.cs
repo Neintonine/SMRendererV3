@@ -26,20 +26,24 @@ namespace SM.Base
     /// <summary>
     ///     The base window.
     /// </summary>
-    public abstract class GenericWindow : GameWindow
+    public abstract class GenericWindow : GameWindow, IGenericWindow
     {
+        protected GenericCamera _viewportCamera;
+
         internal bool _loading = true;
         internal List<Action> _actionsAfterLoading = new List<Action>();
+
+        public bool Loading => _loading;
 
         /// <summary>
         ///     This tells you the current world scale.
         /// </summary>
-        protected Vector2 _worldScale = Vector2.Zero;
+        public Vector2 WorldScale { get; set; } = Vector2.Zero;
 
         /// <summary>
         ///     This tells you the current aspect ratio of this window.
         /// </summary>
-        public float Aspect { get; private set; }
+        public float Aspect { get; set; }
 
         /// <summary>
         ///     If false, the window will not react on updates and will not render something.
@@ -49,7 +53,8 @@ namespace SM.Base
         /// </summary>
         public bool ReactWhileUnfocused = false;
 
-        internal GenericCamera _viewportCamera;
+        public GenericCamera ViewportCamera => _viewportCamera;
+        public bool ForceViewportCamera { get; set; }
 
         /// <inheritdoc />
         protected GenericWindow() : this(1280, 720, "Generic OGL Title", GameWindowFlags.Default)
@@ -70,33 +75,7 @@ namespace SM.Base
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
-            SMRenderer.CurrentWindow = this;
-
-            GLSystem.INIT_SYSTEM();
-            GLSettings.ShaderPreProcessing = true;
-
-            var args = Environment.GetCommandLineArgs();
-            if (args.Contains("--advDebugging"))
-            {
-                SMRenderer.AdvancedDebugging = true;
-                GLSettings.InfoEveryUniform = true;
-            }
-
-            Log.Init();
-
-            Log.Write("#", ConsoleColor.Cyan, "----------------------",
-                "--- OpenGL Loading ---",
-                "----------------------------------",
-                $"--- {"DeviceVersion",14}: {GLSystem.DeviceVersion,-10} ---",
-                $"--- {"ForcedVersion",14}: {GLSettings.ForcedVersion,-10} ---",
-                $"--- {"ShadingVersion",14}: {GLSystem.ShadingVersion,-10} ---",
-                $"--- {"Debugging",14}: {GLSystem.Debugging,-10} ---",
-                $"--- {"AdvDebugging",14}: {SMRenderer.AdvancedDebugging,-10} ---",
-                "----------------------------------");
-
-            if (SMRenderer.AdvancedDebugging) Log.Write("Extension", ConsoleColor.DarkCyan, GLSystem.Extensions);
-
-            ExtensionManager.InitExtensions();
+            GenericWindowCode.Load(this);
 
             base.OnLoad(e);
         }
@@ -106,17 +85,14 @@ namespace SM.Base
         {
             base.OnResize(e);
 
-            Aspect = (float) Width / Height;
-            _worldScale = new Vector2(Width, Height);
-            SetWorldScale();
-            GL.Viewport(ClientRectangle);
+            GenericWindowCode.Resize(this);
 
             if (_loading)
             {
                 _loading = false;
 
                 OnLoaded();
-                
+
                 _actionsAfterLoading.ForEach(a => a());
                 _actionsAfterLoading = null;
             }
@@ -132,7 +108,7 @@ namespace SM.Base
         /// <summary>
         ///     Sets the world scale.
         /// </summary>
-        protected virtual void SetWorldScale()
+        public virtual void SetWorldScale()
         {
         }
 
@@ -218,10 +194,13 @@ namespace SM.Base
     /// </summary>
     /// <typeparam name="TScene">The scene type</typeparam>
     /// <typeparam name="TCamera">The camera type</typeparam>
-    public abstract class GenericWindow<TScene, TCamera> : GenericWindow
+    public abstract class GenericWindow<TScene, TCamera> : GenericWindow, IGenericWindow<TScene, TCamera>
         where TScene : GenericScene, new()
         where TCamera : GenericCamera, new()
     {
+        private RenderPipeline<TScene> _renderPipeline;
+        private TScene _scene;
+
         /// <inheritdoc />
         protected GenericWindow()
         {
@@ -244,17 +223,18 @@ namespace SM.Base
         /// <summary>
         ///     The current scene.
         /// </summary>
-        public TScene CurrentScene { get; private set; }
+        public TScene CurrentScene => _scene;
 
         /// <summary>
         ///     Controls how a scene is rendered.
         /// </summary>
-        public RenderPipeline<TScene> RenderPipeline { get; private set; }
+        public RenderPipeline<TScene> RenderPipeline => _renderPipeline;
 
         /// <inheritdoc />
         protected override void Update(FrameEventArgs e, ref UpdateContext context)
         {
             base.Update(e, ref context);
+            context.CurrentScene = CurrentScene;
             CurrentScene?.Update(context);
         }
 
@@ -263,37 +243,9 @@ namespace SM.Base
         {
             if (!ReactWhileUnfocused && !Focused) return;
 
-            if (CurrentScene == null) return;
-
-            SMRenderer.CurrentFrame++;
-
-            Deltatime.RenderDelta = (float) e.Time;
-            var drawContext = new DrawContext
-            {
-                ForceViewport = ForceViewportCamera,
-                ActiveScene = CurrentScene,
-                Window = this,
-
-                Instances = new[]
-                {
-                    new Instance
-                        {ModelMatrix = Matrix4.Identity, TexturePosition = Vector2.Zero, TextureScale = Vector2.One}
-                },
-                Mesh = Plate.Object,
-
-                WorldScale = _worldScale,
-                LastPassthough = this,
-
-                ShaderArguments = new Dictionary<string, object>(),
-
-                World = ViewportCamera.World,
-                View = ViewportCamera.CalculateViewMatrix(),
-                ModelMaster = Matrix4.Identity
-            };
-
             base.OnRenderFrame(e);
 
-            RenderPipeline.Render(ref drawContext);
+            GenericWindowCode.Render(this, (float)e.Time);
 
             SwapBuffers();
 
@@ -305,13 +257,7 @@ namespace SM.Base
         {
             base.OnResize(e);
 
-            ViewportCamera.RecalculateWorld(_worldScale, Aspect);
-            RenderPipeline.Resize();
-
-            PostProcessEffect.Model = Matrix4.CreateScale(_worldScale.X, -_worldScale.Y, 1);
-            PostProcessEffect.Mvp = PostProcessEffect.Model *
-                                    Matrix4.LookAt(0, 0, 1, 0, 0, 0, 0, 1, 0) *
-                                    GenericCamera.OrthographicWorld;
+            GenericWindowCode.Resize(this);
         }
 
         /// <summary>
@@ -326,7 +272,7 @@ namespace SM.Base
                 return;
             }
 
-            CurrentScene = scene;
+            _scene = scene;
             scene.Activate();
             RenderPipeline.SceneChanged(scene);
         }
@@ -343,7 +289,7 @@ namespace SM.Base
                 return;
             }
 
-            RenderPipeline = pipeline;
+            _renderPipeline = pipeline;
             pipeline.Activate(this);
         }
     }

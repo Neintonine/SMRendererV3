@@ -18,7 +18,6 @@ namespace SM2D.Shader
 
         private Default2DShader() : base(AssemblyUtility.ReadAssemblyFile("SM2D.Shader.ShaderFiles.default.glsl"))
         {
-            Load();
         }
 
         protected override void DrawProcess(DrawContext context)

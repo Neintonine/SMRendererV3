@@ -52,6 +52,8 @@ namespace SM.Base.Time
         /// </summary>
         public TimeSpan ElapsedSpan { get; protected set; }
 
+        public event Action<Stopwatch, UpdateContext> Tick;
+
         /// <summary>
         ///     Starts the stopwatch.
         /// </summary>
@@ -69,10 +71,12 @@ namespace SM.Base.Time
         ///     Performs a tick.
         /// </summary>
         /// <param name="context"></param>
-        private protected virtual void Tick(UpdateContext context)
+        private protected virtual void Ticking(UpdateContext context)
         {
             Elapsed += context.Deltatime;
             ElapsedSpan = TimeSpan.FromSeconds(Elapsed);
+
+            Tick?.Invoke(this, context);
         }
 
         /// <summary>
@@ -115,7 +119,7 @@ namespace SM.Base.Time
             for (var i = 0; i < _activeStopwatches.Count; i++)
             {
                 if (_activeStopwatches[i].Paused) continue;
-                _activeStopwatches[i].Tick(context);
+                _activeStopwatches[i].Ticking(context);
             }
         }
     }

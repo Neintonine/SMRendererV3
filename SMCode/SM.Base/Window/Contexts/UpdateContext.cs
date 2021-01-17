@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using OpenTK.Input;
+using SM.Base.Scene;
 
 #endregion
 
@@ -25,5 +26,7 @@ namespace SM.Base.Contexts
         ///     The current mouse state.
         /// </summary>
         public MouseState MouseState;
+
+        public GenericScene CurrentScene;
     }
 }
