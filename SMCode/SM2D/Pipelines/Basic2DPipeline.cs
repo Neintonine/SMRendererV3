@@ -20,9 +20,7 @@ namespace SM2D.Pipelines
 
         protected override void RenderProcess(ref DrawContext context, Scene.Scene scene)
         {
-
-            Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            if (scene != null) scene.Draw(context);
+            scene?.Draw(context);
         }
     }
 }

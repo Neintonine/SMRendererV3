@@ -62,7 +62,7 @@ namespace SM.OGL.Shaders
             foreach (var kvp in StringOverrides)
                 _data = _data.Replace("//!" + kvp.Key, kvp.Value);
         }
-
+        
         internal void Compile(GenericShader shader, ShaderType type)
         {
             if (_id < 0)

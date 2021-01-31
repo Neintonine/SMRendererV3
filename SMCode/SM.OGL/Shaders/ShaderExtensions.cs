@@ -47,6 +47,9 @@ namespace SM.OGL.Shaders
                 {
                     var name =
                         $"{prefix}{Path.GetFileNameWithoutExtension(filePath.Substring(path.Length)).Replace('.', '_')}";
+
+                    if (Extensions.ContainsKey(name)) continue;
+
                     Extensions.Add(name, new ShaderFile(reader.ReadToEnd()));
                 }
             }

@@ -11,8 +11,6 @@ namespace SM.Base
 {
     public class GenericWPFWindow : OpenTK.Wpf.GLWpfControl, IGenericWindow
     {
-        private bool _renderContinuesly;
-
         protected GenericCamera _viewportCamera;
 
         public bool Loading => !base.IsInitialized;
@@ -24,9 +22,8 @@ namespace SM.Base
         public Rectangle ClientRectangle => new Rectangle((int)base.RenderTransformOrigin.X, (int)RenderTransformOrigin.Y, Width, Height);
         public Vector2 WorldScale { get; set; }
         
-        public GenericWPFWindow(bool renderContinuesly = false)
+        public GenericWPFWindow()
         {
-            _renderContinuesly = renderContinuesly;
 
             Ready += Init;
             Render += Rendering;
@@ -49,13 +46,13 @@ namespace SM.Base
             GenericWindowCode.Resize(this);
         }
 
-        public void Start()
+        public void Start(bool renderContinuesly = false)
         {
             GLWpfControlSettings settings = new GLWpfControlSettings()
             {
                 MajorVersion = GLSettings.ForcedVersion.MajorVersion,
                 MinorVersion = GLSettings.ForcedVersion.MinorVersion,
-                RenderContinuously = _renderContinuesly
+                RenderContinuously = renderContinuesly
             };
             base.Start(settings);
         }
@@ -74,7 +71,7 @@ namespace SM.Base
         public TScene CurrentScene => _scene;
         public RenderPipeline<TScene> RenderPipeline => _renderPipeline;
 
-        public GenericWPFWindow(bool renderContinuesly = false) : base(renderContinuesly)
+        public GenericWPFWindow() : base()
         {
             _viewportCamera = new TCamera();
         }
@@ -97,7 +94,7 @@ namespace SM.Base
         {
             _scene = scene;
             scene.Activate();
-            RenderPipeline.SceneChanged(scene);
+            RenderPipeline?.SceneChanged(scene);
         }
 
         public void SetRenderPipeline(RenderPipeline<TScene> renderPipeline)

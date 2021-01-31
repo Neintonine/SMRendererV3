@@ -64,6 +64,7 @@ namespace SM.OGL
         /// </summary>
         public virtual void Dispose()
         {
+
         }
 
         /// <summary>

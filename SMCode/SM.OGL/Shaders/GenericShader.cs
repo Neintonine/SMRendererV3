@@ -82,6 +82,12 @@ namespace SM.OGL.Shaders
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Program;
 
+        public void Update(ShaderFileCollection newShaderFiles)
+        {
+            ShaderFileFiles = newShaderFiles;
+            Recompile();
+        }
+
         /// <summary>
         ///     Loads the shader to the GPU.
         /// </summary>
@@ -104,6 +110,11 @@ namespace SM.OGL.Shaders
         public override void Compile()
         {
             Load();
+        }
+
+        public override void Dispose()
+        {
+            GL.DeleteShader(this);
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace SM2D
 
             SMRenderer.DefaultMaterialShader = Default2DShader.MaterialShader;
             
-            SetRenderPipeline(Default2DPipeline.Pipeline);
+            //SetRenderPipeline(Default2DPipeline.Pipeline);
         }
 
         protected override void Rendering(TimeSpan delta)

@@ -60,7 +60,7 @@ namespace SM.Base
             where TCamera : GenericCamera, new()
         {
             window.ViewportCamera.RecalculateWorld(window.WorldScale, window.Aspect);
-            window.RenderPipeline.Resize();
+            window.RenderPipeline?.Resize();
 
             PostProcessEffect.Model = Matrix4.CreateScale(window.WorldScale.X, -window.WorldScale.Y, 1);
             PostProcessEffect.Mvp = PostProcessEffect.Model *

@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using OpenTK.Graphics;
 using SM2D;
@@ -21,30 +20,28 @@ using SM2D.Scene;
 namespace SM_WPF_TEST
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Window1 : Window
     {
-        public MainWindow()
+        public Window1()
         {
             InitializeComponent();
 
             GLWPFWindow2D gl;
             Scene scene;
-            gl = new GLWPFWindow2D();
-            Grid.SetColumn(gl, 1);
-            grid.Children.Add(gl);
-
+            Content = gl = new GLWPFWindow2D();
             gl.Start();
 
             gl.SetScene(scene = new Scene());
-            gl.SetRenderPipeline(Default2DPipeline.Pipeline);
+            gl.SetRenderPipeline(Basic2DPipeline.Pipeline);
 
-            DrawObject2D cube = new DrawObject2D();
-            cube.Color = Color4.Blue;
-            scene.Objects.Add(cube);
-
-            new Window1().Show();
+            DrawObject2D obj = new DrawObject2D()
+            {
+                Color = Color4.Red
+            };
+            obj.ApplyCircle();
+            scene.Objects.Add(obj);
         }
     }
 }
