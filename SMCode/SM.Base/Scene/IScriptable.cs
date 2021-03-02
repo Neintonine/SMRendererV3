@@ -1,4 +1,5 @@
-﻿using SM.Base.Contexts;
+﻿using SM.Base;
+using SM.Base.Windows;
 
 namespace SM.Base.Scene
 {
@@ -7,6 +8,8 @@ namespace SM.Base.Scene
     /// </summary>
     public interface IScriptable
     {
+        bool Active { get; set; }
+
         /// <summary>
         ///     Updates the object.
         /// </summary>

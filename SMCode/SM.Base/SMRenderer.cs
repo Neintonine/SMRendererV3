@@ -4,6 +4,7 @@ using SM.Base.Drawing;
 using SM.Base.Drawing.Text;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
+using SM.Base.Windows;
 using SM.OGL.Mesh;
 using SM.OGL.Shaders;
 using SM.Utility;
@@ -17,6 +18,8 @@ namespace SM.Base
     /// </summary>
     public class SMRenderer
     {
+        internal const string PostProcessPath = "SM.Base.PostEffects.Shaders";
+
         /// <summary>
         ///     Defines, how many instances the 'SM_base_vertex_basic'-extension can handle.
         /// </summary>
@@ -50,7 +53,7 @@ namespace SM.Base
         /// <summary>
         ///     Current Frame
         /// </summary>
-        public static ulong CurrentFrame { get; internal set; } = 0;
+        public static ulong CurrentFrame { get; internal set; } = 1;
 
         /// <summary>
         ///     Represents the current active window.

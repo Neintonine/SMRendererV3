@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenTK;
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Time;
 using SM.Base.Types;
+using SM.Base.Windows;
 using SM.OGL.Shaders;
 
 namespace SM.Base.Drawing.Particles

@@ -3,7 +3,8 @@
 using System;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base.Contexts;
+using SM.Base;
+using SM.Base.Windows;
 
 #endregion
 
@@ -32,13 +33,19 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public float Spacing = 1;
 
+        public float ActualSpacing => Spacing * Font.Spacing;
+
+        public float Width;
+        public float Height;
+
         /// <summary>
         ///     Creates a text object with a font.
         /// </summary>
         /// <param name="font">The font.</param>
         protected TextDrawingBasis(Font font)
         {
-            _material.Texture = font;
+            Material.Texture = font;
+            Material.Blending = true;
         }
 
         /// <summary>
@@ -46,10 +53,10 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public Font Font
         {
-            get => (Font) _material.Texture;
+            get => (Font) Material.Texture;
             set
             {
-                _material.Texture = value;
+                Material.Texture = value;
                 GenerateMatrixes();
             }
         }
@@ -72,8 +79,8 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public Color4 Color
         {
-            get => _material.Tint;
-            set => _material.Tint = value;
+            get => Material.Tint;
+            set => Material.Tint = value;
         }
 
 
@@ -92,15 +99,26 @@ namespace SM.Base.Drawing.Text
         {
             if (!Font.WasCompiled) Font.RegenerateTexture();
 
+            _text = _text.Replace("\r\n", "\n").Replace("\t", "    ");
+
             _instances = new Instance[_text.Length];
 
             float x = 0;
+            float y = 0;
             var _last = new CharParameter();
             for (var i = 0; i < _text.Length; i++)
             {
-                if (_text[i] == 32)
+                if (_text[i] == ' ')
                 {
-                    x += _last.Width * Spacing;
+                    x += Font.FontSize * ActualSpacing;
+                    continue;
+                }
+
+                if (_text[i] == '\n')
+                {
+                    y += Font.Height;
+                    Width = Math.Max(Width, x);
+                    x = 0;
                     continue;
                 }
 
@@ -115,17 +133,19 @@ namespace SM.Base.Drawing.Text
                 }
 
                 var matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
-                             Matrix4.CreateTranslation(x, 0, 0);
+                             Matrix4.CreateTranslation(x, -y, 0);
                 _instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
-                    TexturePosition = new Vector2(parameter.NormalizedX, 0),
-                    TextureScale = new Vector2(parameter.NormalizedWidth, 1)
+                    TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(parameter.NormalizedX, 0), new Vector2(parameter.NormalizedWidth, 1), 0),
                 };
 
-                x += parameter.Width * Spacing;
+                x += parameter.Width * ActualSpacing;
                 _last = parameter;
             }
+
+            Width = Math.Max(Width, x);
+            Height = y + Font.Height;
         }
     }
 }

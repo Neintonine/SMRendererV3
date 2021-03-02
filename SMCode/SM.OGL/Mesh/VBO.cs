@@ -40,6 +40,8 @@ namespace SM.OGL.Mesh
         /// </summary>
         public int PointerStride;
 
+        public bool Active = true;
+
         /// <summary>
         ///     Specifies the data type of each component in the array.
         /// </summary>
@@ -133,6 +135,14 @@ namespace SM.OGL.Mesh
             Add(vector.X, vector.Y, z, w);
         }
 
+        public void Add(params Vector2[] vectors)
+        {
+            foreach (Vector2 vector in vectors)
+            {
+                Add(vector);
+            }
+        }
+
         /// <summary>
         ///     Adds a Vector3.
         /// </summary>
@@ -149,6 +159,13 @@ namespace SM.OGL.Mesh
             Add(vector.X, vector.Y, vector.Z, w);
         }
 
+        public void Add(params Vector3[] vectors)
+        {
+            foreach (Vector3 vector in vectors)
+            {
+                Add(vector);
+            }
+        }
         /// <summary>
         ///     Adds a vector4.
         /// </summary>
@@ -172,6 +189,8 @@ namespace SM.OGL.Mesh
         /// <param name="attribID">The id for the attribute.</param>
         internal void BindBuffer(int attribID)
         {
+            if (!Active) return;
+
             var data = ToArray();
 
             var buffer = GL.GenBuffer();

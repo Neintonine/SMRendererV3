@@ -28,56 +28,56 @@ namespace SM.Base.Types
             Z = z;
         }
 
-        private protected override float GetLengthProcess()
+        protected override float GetLengthProcess()
         {
             return base.GetLengthProcess() + Z * Z;
         }
 
-        private protected override void NormalizationProcess(float length)
+        protected override void NormalizationProcess(float length)
         {
             base.NormalizationProcess(length);
             Z *= length;
         }
 
         /// <inheritdoc />
-        public override void Set(float uniform)
+        public override void Set(float uniform, bool triggerChanged = true)
         {
-            base.Set(uniform);
             Z = uniform;
+            base.Set(uniform, triggerChanged);
         }
 
         /// <summary>
         /// Sets the a own value to each component.
         /// </summary>
-        public void Set(float x, float y, float z)
+        public void Set(float x, float y, float z, bool triggerChanged = true)
         {
-            base.Set(x,y);
             Z = z;
+            base.Set(x,y, triggerChanged);
         }
         /// <summary>
         /// Sets each component to the <see cref="Vector3"/> counter-part.
         /// </summary>
         /// <param name="vector"></param>
-        public void Set(Vector3 vector)
+        public void Set(Vector3 vector, bool triggerChanged = true)
         {
-            Set(vector.X, vector.Y, vector.Z);
+            Set(vector.X, vector.Y, vector.Z, triggerChanged);
         }
 
-        public override void Add(float uniform)
+        public override void Add(float uniform, bool triggerChanged = true)
         {
-            base.Add(uniform);
             Z += uniform;
+            base.Add(uniform, triggerChanged);
         }
 
-        public void Add(Vector3 vector)
+        public void Add(Vector3 vector, bool triggerChanged = true)
         {
-            Add(vector.X, vector.Y, vector.Z);
+            Add(vector.X, vector.Y, vector.Z, triggerChanged);
         }
 
-        public void Add(float x, float y, float z)
+        public void Add(float x, float y, float z, bool triggerChanged = true)
         {
-            base.Add(x,y);
             Z += z;
+            base.Add(x,y, triggerChanged);
         }
 
         /// <summary>

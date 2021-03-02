@@ -45,22 +45,19 @@
     <Compile Include="Drawing\DrawObject2D.cs" />
     <Compile Include="Drawing\DrawParticles.cs" />
     <Compile Include="Drawing\DrawText.cs" />
-    <Compile Include="Window\GLWindow2D.cs" />
-    <Compile Include="Window\GLWPFWindow2D.cs" />
     <Compile Include="Object\Polygon.cs" />
     <Compile Include="Object\PolygonVertex.cs" />
-    <Compile Include="Pipelines\Adv2DPipeline.cs" />
+    <Compile Include="Object\PolyLine.cs" />
     <Compile Include="Pipelines\Basic2DPipeline.cs" />
-    <Compile Include="Pipelines\Default2DPipeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\Camera.cs" />
     <Compile Include="Scene\I2DShowItem.cs" />
     <Compile Include="Scene\ItemCollection.cs" />
     <Compile Include="Scene\Scene.cs" />
-    <Compile Include="Shader\Basic2DShader.cs" />
-    <Compile Include="Shader\Default2DShader.cs" />
+    <Compile Include="Shader\ShaderCollection.cs" />
     <Compile Include="Types\Transformation.cs" />
-    <Compile Include="Window\IGLWindow2D.cs" />
+    <Compile Include="Window\Window2DSetup.cs" />
+    <Compile Include="Window\I2DSetup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SM.Base\SM.Base.csproj">
@@ -71,9 +68,6 @@
       <Project>{f604d684-bc1d-4819-88b5-8b5d03a17be0}</Project>
       <Name>SM.OGL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Shader\ShaderFiles\default.glsl" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="OpenTK">

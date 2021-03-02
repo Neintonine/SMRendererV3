@@ -1,7 +1,8 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using SM.Base.Contexts;
+using SM.Base;
+using SM.Base.Windows;
 
 #endregion
 
@@ -11,12 +12,12 @@ namespace SM.Base.Scene
     ///     Adds functions, that is required for a collection.
     /// </summary>
     /// <typeparam name="TItem">The type of show item.</typeparam>
-    public interface IShowCollection<TItem> where TItem : IShowItem
+    public interface IShowCollection
     {
         /// <summary>
         ///     The object collection.
         /// </summary>
-        List<TItem> Objects { get; }
+        List<IShowItem> Objects { get; }
 
         /// <summary>
         ///     This draws the objects in the <see cref="Objects" /> list.

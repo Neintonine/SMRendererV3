@@ -12,6 +12,7 @@ namespace SM.OGL.Shaders
         public string Name { get; internal set; }
         public UniformCollection Parent { get; internal set; }
         public GenericShader ParentShader { get; internal set; }
+        public int Length => storedUniforms.Count;
 
         public Dictionary<string, Uniform> this[int index] => Get(index);
 

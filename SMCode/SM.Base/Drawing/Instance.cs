@@ -16,14 +16,6 @@ namespace SM.Base.Drawing
         /// </summary>
         public Matrix4 ModelMatrix = Matrix4.Identity;
 
-        /// <summary>
-        ///     The texture offset.
-        /// </summary>
-        public Vector2 TexturePosition = Vector2.Zero;
-
-        /// <summary>
-        ///     The texture scale.
-        /// </summary>
-        public Vector2 TextureScale = Vector2.One;
+        public Matrix3 TextureMatrix = Matrix3.Identity;
     }
 }

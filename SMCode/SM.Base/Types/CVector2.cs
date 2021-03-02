@@ -29,12 +29,12 @@ namespace SM.Base.Types
             Y = y;
         }
 
-        private protected override float GetLengthProcess()
+        protected override float GetLengthProcess()
         {
             return base.GetLengthProcess() + Y * Y;
         }
 
-        private protected override void NormalizationProcess(float length)
+        protected override void NormalizationProcess(float length)
         {
             base.NormalizationProcess(length);
             Y *= length;
@@ -44,19 +44,19 @@ namespace SM.Base.Types
         /// Sets each component to the same value
         /// </summary>
         /// <param name="uniform"></param>
-        public override void Set(float uniform)
+        public override void Set(float uniform, bool triggerChanged = true)
         {
-            base.Set(uniform);
             Y = uniform;
+            base.Set(uniform, triggerChanged);
         }
 
         /// <summary>
         /// Sets each component to the <see cref="Vector2"/> counter-part.
         /// </summary>
         /// <param name="vector"></param>
-        public void Set(Vector2 vector)
+        public void Set(Vector2 vector, bool triggerChanged = true)
         {
-            Set(vector.X, vector.Y);
+            Set(vector.X, vector.Y, triggerChanged);
         }
 
         /// <summary>
@@ -64,27 +64,27 @@ namespace SM.Base.Types
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void Set(float x, float y)
+        public void Set(float x, float y, bool triggerChanged = true)
         {
-            base.Set(x);
             Y = y;
+            base.Set(x, triggerChanged);
         }
 
-        public override void Add(float uniform)
+        public override void Add(float uniform, bool triggerChanged = true)
         {
-            base.Add(uniform);
             Y += uniform;
+            base.Add(uniform, triggerChanged);
         }
 
-        public void Add(Vector2 vector)
+        public void Add(Vector2 vector, bool triggerChanged = true)
         {
-            Add(vector.X, vector.Y);
+            Add(vector.X, vector.Y, triggerChanged);
         }
 
-        public void Add(float x, float y)
+        public void Add(float x, float y, bool triggerChanged = true)
         {
-            base.Add(x);
             Y += y;
+            base.Add(x, triggerChanged);
         }
 
         /// <summary>

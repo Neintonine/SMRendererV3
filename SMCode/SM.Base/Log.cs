@@ -138,7 +138,7 @@ namespace SM.Base
 
             _logStream = new StreamWriter(path) {AutoFlush = true};
 
-            Write(LogType.Info, $"Activated new log file. ['{path}']");
+            Write(LogType.Info, $"Activate new log file. ['{path}']");
         }
 
         internal static void Init()

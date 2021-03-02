@@ -43,44 +43,22 @@ namespace SM.Base.PostProcess
         }
 
         /// <summary>
-        /// Draws the shader without special uniforms.
-        /// </summary>
-        /// <param name="color"></param>
-        public void Draw(ColorAttachment color)
-        {
-            GL.UseProgram(this);
-            GL.BindVertexArray(Plate.Object);
-
-            Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
-            Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
-            Uniforms["renderedTexture"].SetTexture(color);
-
-            GL.DrawArrays(PrimitiveType.Quads, 0, 4);
-
-            CleanUp();
-            GL.UseProgram(0);
-        }
-
-        /// <summary>
         /// Draws the shader with special uniforms.
         /// </summary>
         /// <param name="color"></param>
         /// <param name="setUniformAction"></param>
-        public void Draw(ColorAttachment color, Action<UniformCollection> setUniformAction)
+        public void Draw(Action<UniformCollection> setUniformAction)
         {
-            GL.UseProgram(this);
-            GL.BindVertexArray(Plate.Object);
+            Activate();
+            Plate.Object.Activate();
 
             Uniforms["MVP"].SetMatrix4(PostProcessEffect.Mvp);
-            Uniforms["ModelMatrix"].SetMatrix4(PostProcessEffect.Model);
-            Uniforms["renderedTexture"].SetTexture(color);
 
             setUniformAction(Uniforms);
 
             GL.DrawArrays(PrimitiveType.Quads, 0, 4);
 
             CleanUp();
-            GL.UseProgram(0);
         }
     }
 }

@@ -58,15 +58,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Keyboard.cs" />
     <Compile Include="Controls\Mouse.cs" />
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
-    <Compile Include="Drawing\MaterialShader.cs" />
+    <Compile Include="Drawing\ShaderArguments.cs" />
+    <Compile Include="Drawing\TextureTransformation.cs" />
+    <Compile Include="PostEffects\PostProcessFinals.cs" />
+    <Compile Include="Shaders\MaterialShader.cs" />
     <Compile Include="Drawing\Particles\ParticleContext.cs" />
     <Compile Include="Drawing\Particles\ParticleMovement.cs" />
     <Compile Include="Drawing\Particles\ParticleStruct.cs" />
     <Compile Include="Drawing\Particles\ParticleDrawingBasis.cs" />
+    <Compile Include="Shaders\SimpleShader.cs" />
+    <Compile Include="Utility\IInitializable.cs" />
+    <Compile Include="Utility\Util.cs" />
+    <Compile Include="Window\Contexts\DrawContext.cs" />
+    <Compile Include="Window\Contexts\UpdateContext.cs" />
+    <Compile Include="Window\GLWindow.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Objects\InstancedMesh.cs" />
     <Compile Include="Objects\Mesh.cs" />
@@ -80,7 +90,7 @@
     <Compile Include="Drawing\Material.cs" />
     <Compile Include="Scene\IBackgroundItem.cs" />
     <Compile Include="Scene\GenericItemCollection.cs" />
-    <Compile Include="ShaderExtension\ExtensionManager.cs" />
+    <Compile Include="Shaders\Extensions\ExtensionManager.cs" />
     <Compile Include="SMRenderer.cs" />
     <Compile Include="Textures\Texture.cs" />
     <Compile Include="Drawing\Text\CharParameter.cs" />
@@ -98,20 +108,17 @@
     <Compile Include="Utility\Randomize.cs" />
     <Compile Include="Utility\RotationUtility.cs" />
     <Compile Include="Utility\ShaderUtility.cs" />
-    <Compile Include="Window\Contexts\DrawContext.cs" />
-    <Compile Include="Window\Contexts\UpdateContext.cs" />
-    <Compile Include="Window\GenericWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene\GenericCamera.cs" />
     <Compile Include="Scene\GenericScene.cs" />
     <Compile Include="Objects\Static\Plate.cs" />
-    <Compile Include="Window\GenericWindowCode.cs" />
-    <Compile Include="Window\GenericWPFWindow.cs" />
     <Compile Include="Window\IGenericWindow.cs" />
+    <Compile Include="Window\ISetup.cs" />
     <Compile Include="Window\RenderPipeline.cs" />
+    <Compile Include="Window\WindowCode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ShaderExtension\vertex\basic.vert" />
+    <EmbeddedResource Include="Shaders\Extensions\vertex\basic.vert" />
     <EmbeddedResource Include="PostProcess\DefaultFiles\vertexFile.vert" />
     <EmbeddedResource Include="PostProcess\DefaultFiles\extensions.frag" />
   </ItemGroup>
@@ -121,9 +128,7 @@
       <Name>SM.OGL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ShaderExtension\fragment\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="PostProcess\DefaultFiles\vertexWithExt.vert" />
   </ItemGroup>
@@ -134,6 +139,13 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Shaders\SimpleShaderPresets\basic_vertex.glsl" />
+    <EmbeddedResource Include="Shaders\SimpleShaderPresets\instanced_vertex.glsl" />
+    <EmbeddedResource Include="PostEffects\Shaders\bloom_merge_vert.glsl" />
+    <EmbeddedResource Include="PostEffects\Shaders\finalize_hdr.glsl" />
+    <EmbeddedResource Include="PostEffects\Shaders\finalize_gamma.glsl" />
+    <EmbeddedResource Include="Shaders\Extensions\fragment\textureGamma.glsl" />
+    <EmbeddedResource Include="Shaders\Extensions\fragment\noise.glsl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

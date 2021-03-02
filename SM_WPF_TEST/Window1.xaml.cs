@@ -28,7 +28,7 @@ namespace SM_WPF_TEST
         {
             InitializeComponent();
 
-            GLWPFWindow2D gl;
+            /*GLWPFWindow2D gl;
             Scene scene;
             Content = gl = new GLWPFWindow2D();
             gl.Start();
@@ -41,7 +41,7 @@ namespace SM_WPF_TEST
                 Color = Color4.Red
             };
             obj.ApplyCircle();
-            scene.Objects.Add(obj);
+            scene.Objects.Add(obj);*/
         }
     }
 }

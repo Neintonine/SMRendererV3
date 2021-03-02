@@ -1,15 +1,16 @@
 ﻿#region usings
 
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Types;
+using SM.Base.Windows;
 using SM2D.Types;
 
 #endregion
 
 namespace SM2D.Scene
 {
-    public class ItemCollection : GenericItemCollection<I2DShowItem, Transformation>, I2DShowItem
+    public class ItemCollection : GenericItemCollection<Transformation>
     {
         public ItemCollection()
         {
@@ -18,11 +19,7 @@ namespace SM2D.Scene
 
         public override void Draw(DrawContext context)
         {
-            Sort((x, y) => x.ZIndex - y.ZIndex);
-
             base.Draw(context);
         }
-
-        public int ZIndex { get; set; }
     }
 }

@@ -1,26 +1,23 @@
 ﻿using System;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base;
-using SM.Base.Contexts;
 using SM.Base.Drawing;
+using SM.Base.Windows;
 using SM.OGL.Framebuffer;
 using SM2D.Shader;
 
 namespace SM2D.Pipelines
 {
-    public class Basic2DPipeline : RenderPipeline<Scene.Scene>
+    public class Basic2DPipeline : RenderPipeline
     {
         public static Basic2DPipeline Pipeline = new Basic2DPipeline();
 
+        public override MaterialShader DefaultShader { get; protected set; } = ShaderCollection.Instanced;
 
-        private Basic2DPipeline()
-        {
-            _defaultShader = Basic2DShader.Shader;
-        }
 
-        protected override void RenderProcess(ref DrawContext context, Scene.Scene scene)
+        protected override void RenderProcess(ref DrawContext context)
         {
-            scene?.Draw(context);
+            context.Scene?.Draw(context);
         }
     }
 }

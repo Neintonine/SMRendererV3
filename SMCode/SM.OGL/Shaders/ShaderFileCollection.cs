@@ -14,17 +14,17 @@ namespace SM.OGL.Shaders
         /// <summary>
         ///     Contains the vertex file.
         /// </summary>
-        public ShaderFile Vertex;
+        public ShaderFile[] Vertex;
 
         /// <summary>
         ///     Contains the geometry file.
         /// </summary>
-        public ShaderFile Geometry;
+        public ShaderFile[] Geometry;
 
         /// <summary>
         ///     Contains the fragment file.
         /// </summary>
-        public ShaderFile Fragment;
+        public ShaderFile[] Fragment;
 
         /// <summary>
         ///     Creating the collection with vertex and fragment files.
@@ -45,6 +45,14 @@ namespace SM.OGL.Shaders
         /// <param name="geometry"></param>
         public ShaderFileCollection(ShaderFile vertex, ShaderFile fragment, ShaderFile geometry = default)
         {
+            Vertex = new []{vertex};
+            if (geometry != null) Geometry = new[] {geometry};
+            else Geometry = default;
+            Fragment = new []{fragment};
+        }
+
+        public ShaderFileCollection(ShaderFile[] vertex, ShaderFile[] fragment, ShaderFile[] geometry = default)
+        {
             Vertex = vertex;
             Geometry = geometry;
             Fragment = fragment;
@@ -56,9 +64,15 @@ namespace SM.OGL.Shaders
         /// <param name="shader"></param>
         internal void Append(GenericShader shader)
         {
-            Vertex.Compile(shader, ShaderType.VertexShader);
-            Geometry?.Compile(shader, ShaderType.GeometryShader);
-            Fragment.Compile(shader, ShaderType.FragmentShader);
+            foreach (ShaderFile file in Vertex) 
+                file.Compile(shader, ShaderType.VertexShader);
+
+            if (Geometry != null) 
+                foreach (ShaderFile file in Geometry)
+                    file.Compile(shader, ShaderType.GeometryShader);
+
+            foreach (ShaderFile file in Fragment) 
+                file.Compile(shader, ShaderType.FragmentShader);
         }
 
         /// <summary>
@@ -67,9 +81,15 @@ namespace SM.OGL.Shaders
         /// <param name="shader"></param>
         internal void Detach(GenericShader shader)
         {
-            GL.DetachShader(shader, Vertex);
-            if (Geometry != null) GL.DetachShader(shader, Geometry);
-            GL.DetachShader(shader, Fragment);
+            foreach (ShaderFile file in Vertex) 
+                GL.DetachShader(shader, file);
+
+            if (Geometry != null) 
+                foreach (ShaderFile file in Geometry)
+                    GL.DetachShader(shader, file);
+
+            foreach (ShaderFile file in Fragment)
+                GL.DetachShader(shader, file);
 
             GLDebugging.CheckGLErrors($"Error at detaching '{shader.GetType()}'");
         }

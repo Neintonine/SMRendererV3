@@ -7,9 +7,8 @@ using SM2D.Types;
 
 namespace SM2D.Drawing
 {
-    public class DrawParticles : ParticleDrawingBasis<Transformation, Vector2>, I2DShowItem
+    public class DrawParticles : ParticleDrawingBasis<Transformation, Vector2>
     {
-        public int ZIndex { get; set; }
         public override Func<Vector2, ParticleContext, Vector2> MovementCalculation { get; set; } = ParticleMovement.Default2D;
 
         public DrawParticles(TimeSpan duration) : base(duration)

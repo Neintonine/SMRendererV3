@@ -1,8 +1,9 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Scene;
+using SM.Base.Windows;
 using SM.OGL.Mesh;
 
 #endregion
@@ -12,17 +13,21 @@ namespace SM.Base.Drawing
     /// <summary>
     ///     Contains general basis systems for drawing objects.
     /// </summary>
-    public abstract class DrawingBasis : IShowItem
+    public abstract class DrawingBasis : IShowItem, IModelItem
     {
         /// <summary>
         ///     The material it should use.
         /// </summary>
-        protected Material _material = new Material();
+        public Material Material = new Material();
+
 
         /// <summary>
         ///     The mesh it should use.
         /// </summary>
-        protected GenericMesh _mesh = SMRenderer.DefaultMesh;
+        public GenericMesh Mesh { get; set; } = SMRenderer.DefaultMesh;
+
+        public ShaderArguments ShaderArguments => Material.ShaderArguments;
+        public TextureTransformation TextureTransform = new TextureTransformation();
 
         /// <inheritdoc />
         public object Parent { get; set; }
@@ -36,15 +41,13 @@ namespace SM.Base.Drawing
         /// <summary>
         ///     This value determents if the object should draw something.
         /// </summary>
-        public bool Active = true;
+        public bool Active { get; set; } = true;
         
         /// <inheritdoc />
         public void Draw(DrawContext context)
         {
-            if (!Active) return;
-
-            context.Material = _material;
-            context.Mesh = _mesh;
+            context.Material = Material;
+            context.Mesh = Mesh;
 
             DrawContext(ref context);
         }
@@ -65,6 +68,7 @@ namespace SM.Base.Drawing
         /// <param name="context"></param>
         protected virtual void DrawContext(ref DrawContext context)
         {
+            context.TextureMatrix *= TextureTransform.GetMatrix();
         }
     }
 
@@ -72,19 +76,20 @@ namespace SM.Base.Drawing
     ///     Contains general basis systems for drawing objects.
     /// </summary>
     /// <typeparam name="TTransformation">The transformation type</typeparam>
-    public abstract class DrawingBasis<TTransformation> : DrawingBasis
+    public abstract class DrawingBasis<TTransformation> : DrawingBasis, IShowTransformItem<TTransformation>
         where TTransformation : GenericTransformation, new()
     {
         /// <summary>
         ///     The current transformation.
         /// </summary>
-        public TTransformation Transform = new TTransformation();
+        public TTransformation Transform { get; set; } = new TTransformation();
 
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
             base.DrawContext(ref context);
-            context.ModelMaster *= Transform.GetMatrix();
+            Transform.LastMaster = context.ModelMatrix;
+            context.ModelMatrix = Transform.MergeMatrix(context.ModelMatrix);
         }
     }
 }

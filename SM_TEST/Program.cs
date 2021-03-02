@@ -1,7 +1,9 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base;
+using SM.Base.Windows;
 using SM.Game.Controls;
 using SM2D;
 using SM2D.Drawing;
@@ -15,7 +17,7 @@ namespace SM_TEST
     {
         static Scene scene;
         private static Font font;
-        private static GLWindow2D window;
+        private static GLWindow window;
         static void Main(string[] args)
         {
             font = new Font(@"C:\Windows\Fonts\Arial.ttf")
@@ -25,8 +27,8 @@ namespace SM_TEST
 
             Log.SetLogFile(compressionFolder:"logs");
 
-            window = new GLWindow2D {Scaling = new Vector2(0, 1000), VSync = VSyncMode.Off};
-            //window.GrabCursor();
+            window = new GLWindow {VSync = VSyncMode.Off};
+            window.ApplySetup(new Window2DSetup() {WorldScale = new Vector2(0,1000)});
             window.SetRenderPipeline(new TestRenderPipeline());
             window.SetScene(scene = new Scene());
             window.Load += WindowOnLoad;
@@ -45,15 +47,16 @@ namespace SM_TEST
             GameControllerState s2 = new GameController(1).GetState();
         }
 
-        private static void WindowOnLoad(object sender, EventArgs e)
+        private static void WindowOnLoad(IGenericWindow window)
         {
             scene.ShowAxisHelper = true;
-
-
             //scene.Background.Color = Color4.White;
 
+            DrawObject2D box = new DrawObject2D();
+            scene.Objects.Add(box);
+
             DrawText text = new DrawText(font, "Text");
-            text.Transform.Position.Set(0, 0);
+            text.Transform.Position.Set(50, 0);
             text.Transform.Size.Set(2);
             scene.Objects.Add(text);
 

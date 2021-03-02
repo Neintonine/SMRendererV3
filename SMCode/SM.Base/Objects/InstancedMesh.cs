@@ -4,7 +4,7 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Objects
 {
-    public class InstancedMesh : Mesh
+    public class InstancedMesh : Mesh, ILineMesh
     {
         public InstancedMesh(PrimitiveType type, string[] enabledAttibute) : base(type)
         {
@@ -26,5 +26,7 @@ namespace SM.Base.Objects
                 }
             }
         }
+
+        public float LineWidth { get; set; } = 1;
     }
 }

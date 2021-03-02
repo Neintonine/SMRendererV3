@@ -16,6 +16,8 @@ namespace SM.Base.Drawing
         /// </summary>
         public bool Ignore = false;
 
+        public Matrix4 LastMaster { get; internal set; }
+
         /// <summary>
         ///     Contains the current model matrix.
         /// </summary>
@@ -41,6 +43,11 @@ namespace SM.Base.Drawing
             }
 
             return _modelMatrix;
+        }
+
+        public Matrix4 MergeMatrix(Matrix4 matrix)
+        {
+            return GetMatrix() * matrix;
         }
 
         /// <summary>

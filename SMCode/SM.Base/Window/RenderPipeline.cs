@@ -1,150 +1,57 @@
-﻿#region usings
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using SM.Base.Contexts;
 using SM.Base.Drawing;
-using SM.Base.Scene;
 using SM.OGL.Framebuffer;
+using SM.OGL.Texture;
+using SM.Utility;
 
-#endregion
-
-namespace SM.Base
+namespace SM.Base.Windows
 {
-    /// <summary>
-    ///     Definition of specific render options.
-    /// </summary>
-    public abstract class RenderPipeline
+    public abstract class RenderPipeline : IInitializable
     {
-        /// <summary>
-        /// If true, this pipeline was already once activated.
-        /// </summary>
-        public bool IsInitialized { get; private set; } = false;
+        public IGenericWindow ConnectedWindow { get; internal set; }
 
-        /// <summary>
-        /// The window the pipeline is connected to.
-        /// </summary>
-        protected IGenericWindow _window { get; private set; }
+        public Framebuffer MainFramebuffer { get; protected set; }
 
-        /// <summary>
-        ///     The framebuffers, that are used in this Pipeline.
-        /// </summary>
-        public virtual List<Framebuffer> Framebuffers { get; private set; }
+        public List<Framebuffer> Framebuffers { get; } = new List<Framebuffer>();
 
-        /// <summary>
-        ///     The default shader for the pipeline.
-        /// </summary>
-        protected internal virtual MaterialShader _defaultShader { get; set; }
+        public virtual MaterialShader DefaultShader { get; protected set; }
+        public virtual Material DefaultMaterial { get; protected set; }
 
-        public virtual Framebuffer MainFramebuffer { get; protected set; }= Framebuffer.Screen;
+        public bool IsInitialized { get; set; }
 
-        /// <summary>
-        ///     Occurs, when the window is loading.
-        /// </summary>
-        protected internal virtual void Load()
-        {
-        }
+        internal void Render(ref DrawContext context) => RenderProcess(ref context);
 
-        /// <summary>
-        ///     Occurs, when the window is resizing.
-        /// </summary>
-        protected internal virtual void Resize()
+        protected abstract void RenderProcess(ref DrawContext context);
+
+        public virtual void Resize()
         {
             if (Framebuffers == null) return;
-
-            foreach (var framebuffer in Framebuffers)
+            foreach(var framebuffer in Framebuffers) 
                 framebuffer.Dispose();
 
             Thread.Sleep(50);
 
-            foreach (Framebuffer framebuffer in Framebuffers)
-            {
+            foreach(var framebuffer in Framebuffers) 
                 framebuffer.Compile();
-            }
         }
 
-        internal void Activate(IGenericWindow window)
+        public virtual void Activate()
         {
-            _window = window;
-
-            if (!IsInitialized)
-            {
-                if (_defaultShader == null) _defaultShader = SMRenderer.DefaultMaterialShader;
-                Framebuffers = new List<Framebuffer>();
-
-                Initialization(window);
-                
-                Framebuffers.Add(MainFramebuffer);
-
-                IsInitialized = true;
-            }
-
-            Activation(window);
+            
         }
 
-        /// <summary>
-        ///     Occurs, when the pipeline was connected to a window.
-        /// </summary>
-        protected internal virtual void Activation(IGenericWindow window)
+        public virtual void Initialization()
         {
+            if (MainFramebuffer != null) Framebuffers.Add(MainFramebuffer);
+            DefaultShader ??= SMRenderer.DefaultMaterialShader;
         }
 
-
-        /// <summary>
-        ///     Occurs, when the pipeline was connected to a window the first time.
-        /// </summary>
-        /// <param name="window"></param>
-        protected internal virtual void Initialization(IGenericWindow window)
+        public Framebuffer CreateWindowFramebuffer(int multisamples)
         {
-
-        }
-
-        /// <summary>
-        ///     Occurs, when the window is unloading.
-        /// </summary>
-        protected internal virtual void Unload()
-        {
-        }
-
-        /// <summary>
-        /// Creates a framebuffer, that has specific (often) required settings already applied.
-        /// </summary>
-        /// <returns></returns>
-        public static Framebuffer CreateWindowFramebuffer()
-        {
-            Framebuffer framebuffer = new Framebuffer(window: SMRenderer.CurrentWindow);
-            framebuffer.Append("color", 0);
+            Framebuffer framebuffer = new Framebuffer(window: ConnectedWindow);
+            framebuffer.Append("color", new ColorAttachment(0, PixelInformation.RGBA_LDR, multisamples));
             return framebuffer;
-        }
-    }
-
-    /// <summary>
-    ///     Represents a render pipeline.
-    /// </summary>
-    /// <typeparam name="TScene">The scene type</typeparam>
-    public abstract class RenderPipeline<TScene> : RenderPipeline
-        where TScene : GenericScene
-    {
-        /// <summary>
-        ///     The system to render stuff.
-        /// </summary>
-        internal void Render(ref DrawContext context)
-        {
-            context.ActivePipeline = this;
-            if (context.ActiveScene == null) return;
-
-            RenderProcess(ref context, (TScene)context.ActiveScene);
-        }
-
-        protected abstract void RenderProcess(ref DrawContext context, TScene scene);
-
-        /// <summary>
-        ///     Event, that triggers, when the scene in the current window changes.
-        /// </summary>
-        /// <param name="scene"></param>
-        protected internal virtual void SceneChanged(TScene scene)
-        {
-
         }
     }
 }

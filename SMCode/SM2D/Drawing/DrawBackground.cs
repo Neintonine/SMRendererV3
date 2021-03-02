@@ -4,20 +4,38 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Drawing;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.Base.Textures;
+using SM.Base.Windows;
 using SM.OGL.Texture;
+using SM2D.Scene;
 
 #endregion
 
 namespace SM2D.Drawing
 {
-    public class DrawBackground : IBackgroundItem
+    public class DrawBackground : DrawingBasis, IBackgroundItem
     {
-        private Material _material = new Material();
+        public Color4 Color
+        {
+            get => Material.Tint;
+            set => Material.Tint = value;
+        }
+
+        public TextureBase Texture
+        {
+            get => Material.Texture;
+            set
+            {
+                if (Material.Tint == Color4.Black) Material.Tint = Color4.White;
+                Material.Texture = value;
+            }
+        }
+
+        public DrawBackground() : this(Color4.Black) {}
 
         public DrawBackground(Color4 color)
         {
@@ -35,41 +53,12 @@ namespace SM2D.Drawing
             Texture = (Texture) texture;
         }
 
-        public Color4 Color
+
+        protected override void DrawContext(ref DrawContext context)
         {
-            get => _material.Tint;
-            set => _material.Tint = value;
-        }
-
-        public TextureBase Texture
-        {
-            get => _material.Texture;
-            set => _material.Texture = value;
-        }
-
-        public object Parent { get; set; }
-        public string Name { get; set; } = "Background";
-        public ICollection<string> Flags { get; set; } = new string[0];
-
-        public void Update(UpdateContext context)
-        {
-        }
-
-        public void Draw(DrawContext context)
-        {
-            context.Material = _material;
-            context.Mesh = Plate.Object;
-
-            context.ModelMaster = Matrix4.CreateScale(context.WorldScale.X, context.WorldScale.Y, 1);
+            base.DrawContext(ref context);
+            context.ModelMatrix = Matrix4.CreateScale((context.UseCamera as Camera).WorldScale.X, (context.UseCamera as Camera).WorldScale.Y, 1);
             context.Shader.Draw(context);
-        }
-
-        public void OnAdded(object sender)
-        {
-        }
-
-        public void OnRemoved(object sender)
-        {
         }
     }
 }

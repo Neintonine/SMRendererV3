@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
+using SM.Base.Windows;
 using SM.OGL.Framebuffer;
 using SM.OGL.Shaders;
 
@@ -16,8 +17,7 @@ namespace SM.Base.PostProcess
     /// </summary>
     public abstract class PostProcessEffect
     {
-        internal static Matrix4 Mvp;
-        internal static Matrix4 Model;
+        public static Matrix4 Mvp = Matrix4.Identity;
 
         protected RenderPipeline Pipeline;
 

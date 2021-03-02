@@ -10,7 +10,7 @@ namespace SM.Base.ShaderExtension
     {
         internal static void InitExtensions()
         {
-            ShaderExtensions.AddAssemblyExtensions("SM_base", "SM.Base.ShaderExtension");
+            ShaderExtensions.AddAssemblyExtensions("SM_base", "SM.Base.Shaders.Extensions");
 
             ShaderExtensions.Extensions["SM_base_vertex_basic"].StringOverrides["instanceMax"] =
                 SMRenderer.MaxInstances.ToString();

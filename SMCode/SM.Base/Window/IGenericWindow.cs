@@ -1,37 +1,48 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System;
+using System.Drawing;
 using OpenTK;
+using SM.Base.Controls;
 using SM.Base.Scene;
 using SM.OGL.Framebuffer;
 
-namespace SM.Base
+namespace SM.Base.Windows
 {
     public interface IGenericWindow : IFramebufferWindow
     {
         bool Loading { get; }
-        float Aspect { get; set; }
+        float AspectRatio { get; set; }
+        float AspectRatioReverse { get; set; }
 
-        GenericCamera ViewportCamera { get; }
+        GenericCamera ViewportCamera { get; set; }
         bool ForceViewportCamera { get; set; }
+
+        bool DrawWhileUnfocused { get; set; }
+        bool UpdateWhileUnfocused { get; set; }
 
         int Width { get; }
         int Height { get; }
+        Vector2 WindowSize { get; set; }
 
         Rectangle ClientRectangle { get; }
-        Vector2 WorldScale { get; set; }
 
-        void SetWorldScale();
-    }
+        ISetup AppliedSetup { get; }
 
-    public interface IGenericWindow<TScene, TCamera> : IGenericWindow
-        where TScene : GenericScene, new()
-        where TCamera : GenericCamera, new()
-    {
-        TScene CurrentScene { get; }
+        event Action<IGenericWindow> Resize;
+        event Action<IGenericWindow> Load;
 
-        RenderPipeline<TScene> RenderPipeline { get; }
+        GenericScene CurrentScene { get; }
+        RenderPipeline CurrentRenderPipeline { get; }
 
-        void SetScene(TScene scene);
-        void SetRenderPipeline(RenderPipeline<TScene> renderPipeline);
+        void Update(UpdateContext context);
+
+        void ApplySetup(ISetup setup);
+
+        void SetScene(GenericScene scene);
+        void SetRenderPipeline(RenderPipeline renderPipeline);
+
+        void TriggerLoad();
+        void TriggerResize();
+
+        void Close();
     }
 }

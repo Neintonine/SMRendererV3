@@ -2,6 +2,7 @@
 
 using System;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 #endregion
 
@@ -47,9 +48,35 @@ namespace SM.OGL.Mesh
         /// <param name="y">If true, it takes the Y-value of maximum, otherwise the minimum.</param>
         /// <param name="z">If true, it takes the Z-value of maximum, otherwise the minimum.</param>
         /// <returns></returns>
-        public Vector3 this[bool x, bool y, bool z] =>
-            new Vector3(x ? Max.X : Min.X, y ? Max.Y : Min.Y, z ? Max.Z : Min.Z);
+        public Vector3 this[bool x, bool y, bool z] => Get(x,y,z);
 
+        public Vector3 Get(bool x, bool y, bool z)
+        {
+            return new Vector3(x ? Max.X : Min.X, y ? Max.Y : Min.Y, z ? Max.Z : Min.Z);
+        }
+
+        public Vector3 Get(bool xyz) => Get(xyz, xyz, xyz);
+
+        public Vector3 Get(Matrix4 transformation, bool x, bool y, bool z)
+        {
+            Vector3 get = Get(x, y, z);
+            return (new Vector4(get, 1) * transformation).Xyz;
+        }
+
+        public Vector3 Get(Matrix4 transformation, bool xyz) => Get(transformation, xyz, xyz, xyz);
+
+        public void Update(GenericMesh mesh)
+        {
+            int pos = 0;
+            foreach (float f in mesh.Vertex)
+            {
+                Min[pos] = Math.Min(Min[pos], f);
+                Max[pos] = Math.Max(Max[pos], f);
+
+                pos++;
+                pos %= mesh.Vertex.PointerSize;
+            }
+        }
         /// <summary>
         ///     Updates the bounding box.
         /// </summary>

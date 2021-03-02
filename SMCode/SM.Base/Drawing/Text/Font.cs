@@ -32,6 +32,8 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public float FontSize = 12;
 
+        public float Spacing = 1;
+
         /// <summary>
         ///     The font style.
         ///     <para>Default: <see cref="System.Drawing.FontStyle.Regular" /></para>

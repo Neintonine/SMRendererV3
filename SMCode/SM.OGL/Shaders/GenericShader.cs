@@ -106,6 +106,11 @@ namespace SM.OGL.Shaders
             GLDebugging.CheckGLErrors($"A error occured at shader creation for '{GetType()}': %code%");
         }
 
+        public void Activate()
+        {
+            GL.UseProgram(ID);
+        }
+
         /// <inheritdoc />
         public override void Compile()
         {
@@ -122,7 +127,7 @@ namespace SM.OGL.Shaders
         /// </summary>
         /// <param name="mesh">The mesh.</param>
         /// <param name="amount">The amounts for instancing.</param>
-        protected void DrawObject(GenericMesh mesh, int amount = 1)
+        public static void DrawObject(GenericMesh mesh, int amount = 1)
         {
             if (mesh.Indices != null)
                 GL.DrawElementsInstanced(mesh.PrimitiveType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
@@ -138,7 +143,6 @@ namespace SM.OGL.Shaders
             Uniforms.NextTexture = 0;
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.BindVertexArray(0);
         }
     }
 }

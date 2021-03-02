@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using OpenTK.Graphics.OpenGL;
 
 namespace SM.OGL.Mesh
 {
@@ -49,6 +50,12 @@ namespace SM.OGL.Mesh
         {
             //if (vbo == null) return;
             Add(new MeshAttribute(id, name, vbo));
+        }
+
+        public bool Has(string name)
+        {
+            VBO attribute = this[name];
+            return attribute != null && attribute.Active;
         }
     }
 }

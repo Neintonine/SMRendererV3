@@ -354,7 +354,7 @@ namespace SM.OGL.Shaders
 
         #region Matrix2
 
-        public void SetMatrix2(ref Matrix2 matrix, bool transpose = false)
+        public void SetMatrix2(Matrix2 matrix, bool transpose = false)
         {
             GL.UniformMatrix2(Location, transpose, ref matrix);
         }
@@ -383,7 +383,7 @@ namespace SM.OGL.Shaders
 
         #region Matrix3
 
-        public void SetMatrix3(ref Matrix3 matrix, bool transpose = false)
+        public void SetMatrix3(Matrix3 matrix, bool transpose = false)
         {
             GL.UniformMatrix3(Location, transpose, ref matrix);
         }
@@ -485,7 +485,7 @@ namespace SM.OGL.Shaders
         {
             Parent.NextTexture = texturePos + 1;
             GL.ActiveTexture(TextureUnit.Texture0 + texturePos);
-            GL.BindTexture(TextureTarget.Texture2D, texture);
+            GL.BindTexture(texture.Target, texture);
             SetUniform1(texturePos);
         }
 

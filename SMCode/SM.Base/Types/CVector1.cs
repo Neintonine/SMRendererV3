@@ -7,11 +7,15 @@ namespace SM.Base.Types
     /// A One-dimensional Vector (also known as <see cref="float"/>), in a class.
     /// </summary>
     public class CVector1
-    { 
+    {
         /// <summary>
         /// X - Component
         /// </summary>
-        public float X { get; set; }
+        public float X
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The length/magnitute of the vector.
@@ -25,6 +29,8 @@ namespace SM.Base.Types
         /// for comparisons.
         /// </remarks>
         public float LengthSquared => GetLength(true);
+
+        public event Action Changed; 
 
         /// <summary>
         /// Creates a class vector
@@ -63,14 +69,16 @@ namespace SM.Base.Types
         /// Sets the X-Component.
         /// </summary>
         /// <param name="x">X-Component</param>
-        public virtual void Set(float uniform)
+        public virtual void Set(float uniform, bool triggerChanged = true)
         {
             X = uniform;
+            if (triggerChanged) TriggerChanged();
         }
 
-        public virtual void Add(float uniform)
+        public virtual void Add(float uniform, bool triggerChanged = true)
         {
             X += uniform;
+            if (triggerChanged) TriggerChanged();
         }
 
         /// <summary>
@@ -82,15 +90,20 @@ namespace SM.Base.Types
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
-        public static implicit operator CVector1(float f) => new CVector1(f);
+        //public static implicit operator CVector1(float f) => new CVector1(f);
 
-        private protected virtual float GetLengthProcess()
+        protected virtual float GetLengthProcess()
         {
             return X * X;
         }
-        private protected virtual void NormalizationProcess(float length)
+        protected virtual void NormalizationProcess(float length)
         {
             X *= length;
+        }
+
+        protected void TriggerChanged()
+        {
+            Changed?.Invoke();
         }
     }
 }

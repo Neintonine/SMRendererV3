@@ -28,7 +28,7 @@ namespace SM_WPF_TEST
         public MainWindow()
         {
             InitializeComponent();
-
+            /*
             GLWPFWindow2D gl;
             Scene scene;
             gl = new GLWPFWindow2D();
@@ -44,7 +44,7 @@ namespace SM_WPF_TEST
             cube.Color = Color4.Blue;
             scene.Objects.Add(cube);
 
-            new Window1().Show();
+            new Window1().Show();*/
         }
     }
 }

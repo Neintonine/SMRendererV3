@@ -16,13 +16,16 @@ namespace SM2D.Object
     {
         public Polygon(ICollection<Vector2> vertices) : base(PrimitiveType.TriangleFan)
         {
+            Color.Active = false;
+            
             foreach (var vertex in vertices)
             {
-                Color.Add(Color4.White);
-                AddVertex(vertex);
+                Vertex.Add(vertex, 0);
             }
 
-            foreach (var vertex in vertices) AddUV(vertex);
+            UpdateBoundingBox();
+
+            if (UVs.Active) foreach (var vertex in vertices) AddUV(vertex);
         }
 
         public Polygon(ICollection<PolygonVertex> vertices) : base(PrimitiveType.TriangleFan)
@@ -30,10 +33,12 @@ namespace SM2D.Object
             foreach (var polygonVertex in vertices)
             {
                 Color.Add(polygonVertex.Color);
-                AddVertex(polygonVertex.Vertex);
+                Vertex.Add(polygonVertex.Vertex, 0);
             }
 
-            foreach (var vertex in vertices) AddUV(vertex.Vertex);
+            UpdateBoundingBox();
+
+            if (UVs.Active) foreach (var vertex in vertices) AddUV(vertex.Vertex);
         }
 
         public override VBO Vertex { get; protected set; } = new VBO();
@@ -41,12 +46,6 @@ namespace SM2D.Object
         public override VBO Color { get; protected set; } = new VBO(pointerSize: 4);
 
         public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.TriangleFan;
-
-        private void AddVertex(Vector2 vertex)
-        {
-            BoundingBox.Update(vertex);
-            Vertex.Add(vertex, 0);
-        }
 
         private void AddUV(Vector2 vertex)
         {

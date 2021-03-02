@@ -1,41 +1,63 @@
-﻿#region usings
-
+﻿using System.Collections.Generic;
 using OpenTK;
-using OpenTK.Input;
 using SM.Base.Controls;
+using SM.Base.Drawing;
+using SM.Base.Scene;
 using SM2D.Scene;
 using SM2D.Types;
 
-#endregion
-
 namespace SM2D.Controls
 {
-    public class Mouse2D : Mouse<IGLWindow2D>
+    public class Mouse2D
     {
-        protected internal Mouse2D(IGLWindow2D window) : base(window)
+        public static Vector2 InWorld(Vector2 worldScale)
         {
-        }
-
-        internal new void MouseMoveEvent(MouseMoveEventArgs mmea)
-        {
-            base.MouseMoveEvent(mmea);
-        }
-
-        public Vector2 InWorld()
-        {
-            var res = _window.WorldScale;
+            var res = worldScale;
             res.Y *= -1;
-            return InScreenNormalized * res - res / 2;
+            return Mouse.InScreenNormalized * res - res / 2;
         }
 
-        public Vector2 InWorld(Camera cam)
+        public static Vector2 InWorld(Camera cam)
         {
-            return InWorld() + cam.Position;
+            return InWorld(cam.WorldScale) + cam.Position;
         }
 
-        public Vector2 InWorld(Vector2 position)
+        public static Vector2 InWorld(Vector2 worldScale, Vector2 position)
         {
-            return InWorld() + position;
+            return InWorld(worldScale) + position;
+        }
+
+        public static bool MouseOver<TObject>(Vector2 mousePos, params TObject[] checkingObjects)
+            where TObject : IModelItem, ITransformItem<Transformation>
+            => MouseOver(mousePos, out _, checkingObjects);
+
+        public static bool MouseOver<TObject>(Vector2 mousePos, ICollection<TObject> checkingObjects)
+            where TObject : IModelItem, ITransformItem<Transformation>
+            => MouseOver<TObject>(mousePos, out _, checkingObjects);
+
+        public static bool MouseOver<TObject>(Vector2 mousePos, out TObject clicked, params TObject[] checkingObjects) 
+            where TObject : IModelItem, ITransformItem<Transformation>
+            => MouseOver<TObject>(mousePos, out clicked, (ICollection<TObject>)checkingObjects);
+
+        public static bool MouseOver<TObject>(Vector2 mousePos, out TObject clickedObj, ICollection<TObject> checkingObjects)
+            where TObject : IModelItem, ITransformItem<Transformation>
+        {
+            clickedObj = default;
+
+            foreach (TObject obj in checkingObjects)
+            {
+                Vector3 min = obj.Mesh.BoundingBox.Get(obj.Transform.MergeMatrix(obj.Transform.LastMaster), false);
+                Vector3 max = obj.Mesh.BoundingBox.Get(obj.Transform.MergeMatrix(obj.Transform.LastMaster), true);
+
+                if (mousePos.X > min.X && mousePos.X < max.X &&
+                    mousePos.Y > min.Y && mousePos.Y < max.Y)
+                {
+                    clickedObj = obj;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

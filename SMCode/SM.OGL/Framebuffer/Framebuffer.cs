@@ -14,6 +14,8 @@ namespace SM.OGL.Framebuffer
     /// </summary>
     public class Framebuffer : GLObject
     {
+        protected override bool AutoCompile { get; } = true;
+
         /// <summary>
         /// Represents the screen buffer.
         /// </summary>
@@ -92,7 +94,7 @@ namespace SM.OGL.Framebuffer
 
             GL.DrawBuffers(enums.Length, enums);
             foreach (var pair in ColorAttachments)
-                GL.FramebufferTexture(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.ID,
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.Target, pair.Value.ID,
                     0);
 
             var err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
@@ -122,7 +124,6 @@ namespace SM.OGL.Framebuffer
         {
             ColorAttachments.Add(key, value);
         }
-
 
         /// <summary>
         /// Activates the framebuffer without clearing the buffer.

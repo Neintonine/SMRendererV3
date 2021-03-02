@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using System.Drawing.Drawing2D;
 using OpenTK;
 using SM.Base.Drawing;
 using SM.Base.Scene;
@@ -14,22 +15,32 @@ namespace SM2D.Types
 {
     public class Transformation : GenericTransformation
     {
+        public static int ZIndexPercision = 300;
+
         public CVector2 Position { get; set; } = new CVector2(0);
 
         public CVector2 Size { get; set; } = new CVector2(50);
 
-        public float Rotation { get; set; }
+        public CVector1 Rotation { get; set; } = new CVector1(0);
+
+        public bool HorizontalFlip { get; set; } = false;
+
+        public bool VerticalFlip { get; set; } = false;
+
+        public int ZIndex { get; set; }
 
         protected override Matrix4 RequestMatrix()
         {
             return Matrix4.CreateScale(Size.X, Size.Y, 1) *
+                   Matrix4.CreateRotationX(MathHelper.DegreesToRadians(HorizontalFlip ? 180 : 0)) *
+                   Matrix4.CreateRotationY(MathHelper.DegreesToRadians(VerticalFlip ? 180 : 0)) *
                    Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotation)) *
-                   Matrix4.CreateTranslation(Position.X, Position.Y, 0);
+                   Matrix4.CreateTranslation(Position.X, Position.Y, -(1 / (float)ZIndexPercision * ZIndex));
         }
 
         public void TurnTo(Vector2 v)
         {
-            Rotation = RotationUtility.TurnTowards(Position, v);
+            Rotation.Set(RotationUtility.TurnTowards(Position, v));
         }
 
         public Vector2 LookAtVector()

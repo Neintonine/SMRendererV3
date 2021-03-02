@@ -1,7 +1,10 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using SM.Base.Contexts;
+using SM.Base;
+using SM.Base.Drawing;
+using SM.Base.Windows;
+using SM.OGL.Mesh;
 
 #endregion
 
@@ -26,6 +29,8 @@ namespace SM.Base.Scene
         ///     Contains specific flags for the object.
         /// </summary>
         ICollection<string> Flags { get; set; }
+
+        bool Active { get; set; }
         
         /// <summary>
         ///     Tells the object to draw its object.
@@ -42,5 +47,20 @@ namespace SM.Base.Scene
         ///     Action, that is called, when the object was removed from a GenericItemCollection.
         /// </summary>
         void OnRemoved(object sender);
+    }
+
+    public interface ITransformItem<TTransform> 
+        where TTransform : GenericTransformation
+    {
+        TTransform Transform { get; set; }
+    }
+
+    public interface IShowTransformItem<TTransform> : IShowItem, ITransformItem<TTransform>
+        where TTransform : GenericTransformation
+    {}
+
+    public interface IModelItem
+    {
+        GenericMesh Mesh { get; set; }
     }
 }

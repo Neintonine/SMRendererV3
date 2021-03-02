@@ -1,7 +1,9 @@
 ﻿#region usings
 
 using OpenTK.Graphics.OpenGL4;
-using SM.Base.Contexts;
+using SM.Base;
+using SM.Base.Windows;
+using SM.OGL.Mesh;
 using SM.OGL.Shaders;
 
 #endregion
@@ -33,17 +35,22 @@ namespace SM.Base.Drawing
         /// <param name="context">The context</param>
         public virtual void Draw(DrawContext context)
         {
-            GL.UseProgram(this);
+            context.Shader.Activate();
 
-            GL.BindVertexArray(context.Mesh);
+            context.Mesh.Activate();
+
+            if (context.Mesh is ILineMesh lineMesh) 
+                GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth)); 
+
+            if (context.Material.Blending)
+            {
+                GL.Enable(EnableCap.Blend);
+                GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            } else GL.Disable(EnableCap.Blend);
 
             DrawProcess(context);
 
             CleanUp();
-
-            GL.UseProgram(0);
-
-            context.ShaderArguments.Clear();
         }
 
         /// <summary>

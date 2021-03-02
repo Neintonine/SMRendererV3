@@ -2,16 +2,17 @@
 
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
+using SM.Base.Windows;
 using SM2D.Drawing;
 
 #endregion
 
 namespace SM2D.Scene
 {
-    public class Scene : GenericScene<Camera, ItemCollection, I2DShowItem>
+    public class Scene : GenericScene<Camera, ItemCollection>
     {
         private static DrawObject2D _axisHelper;
 
@@ -19,16 +20,24 @@ namespace SM2D.Scene
         static Scene()
         {
             _axisHelper = new DrawObject2D();
-            _axisHelper.ApplyMesh(AxisHelper.Object);
+            _axisHelper.Mesh = AxisHelper.Object;
         }
 
         public Scene()
         {
             _Background = new DrawBackground(Color4.Black);
+            Objects = new ItemCollection();
+
+            BackgroundCamera = new Camera();
+            HUDCamera = new Camera();
         }
 
 
-        public DrawBackground Background => (DrawBackground) _Background;
+        public DrawBackground Background
+        {
+            get => (DrawBackground) _Background;
+            set => _Background = value;
+        }
 
         public override void DrawDebug(DrawContext context)
         {

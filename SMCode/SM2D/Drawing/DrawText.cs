@@ -1,8 +1,9 @@
 ﻿#region usings
 
-using SM.Base.Contexts;
+using SM.Base;
 using SM.Base.Drawing.Text;
 using SM.Base.Types;
+using SM.Base.Windows;
 using SM2D.Scene;
 using SM2D.Types;
 
@@ -10,15 +11,13 @@ using SM2D.Types;
 
 namespace SM2D.Drawing
 {
-    public class DrawText : TextDrawingBasis<Transformation>, I2DShowItem
+    public class DrawText : TextDrawingBasis<Transformation>
     {
         public DrawText(Font font, string text) : base(font)
         {
             _text = text;
             Transform.Size = new CVector2(1);
         }
-
-        public int ZIndex { get; set; }
 
         protected override void DrawContext(ref DrawContext context)
         {

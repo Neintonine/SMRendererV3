@@ -3,8 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using SM.Base.Contexts;
+using System.Windows.Controls;
+using SM.Base;
 using SM.Base.Drawing;
+using SM.Base.Windows;
+using SM.Utility;
 
 #endregion
 
@@ -13,8 +16,11 @@ namespace SM.Base.Scene
     /// <summary>
     ///     A generic scene, that imports functions for scene control.
     /// </summary>
-    public abstract class GenericScene
+    public abstract class GenericScene : IInitializable
     {
+
+        private GenericItemCollection _hud;
+        private GenericItemCollection _objectCollection;
         private IBackgroundItem _background;
         private Dictionary<Type, object> _extensions = new Dictionary<Type, object>();
         
@@ -32,11 +38,31 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        ///     The active camera, that is used if the context doesn't force the viewport camera.
-        ///     <para>If none set, it automaticly uses the viewport camera.</para>
+        ///     Objects inside the scene.
         /// </summary>
-        internal GenericCamera _camera { get; set; }
-        
+        public GenericItemCollection Objects
+        {
+            get => _objectCollection;
+            set
+            {
+                value.Parent = this;
+                _objectCollection = value;
+            }
+        }
+
+        /// <summary>
+        ///     This defines the HUD objects.
+        /// </summary>
+        public GenericItemCollection HUD
+        {
+            get => _hud;
+            set
+            {
+                value.Parent = this;
+                _hud = value;
+            }
+        }
+
         /// <summary>
         ///     A collection for cameras to switch easier to different cameras.
         /// </summary>
@@ -45,8 +71,29 @@ namespace SM.Base.Scene
         /// <summary>
         /// If true, the scene was already initialized.
         /// </summary>
-        public bool IsInitialized { get; private set; }
+        public bool IsInitialized { get; set; }
 
+
+        /// <summary>
+        ///     If true, shows a axis helper at (0,0,0)
+        /// </summary>
+        public bool ShowAxisHelper { get; set; } = false;
+
+        /// <summary>
+        ///     The active camera, that is used if the context doesn't force the viewport camera.
+        ///     <para>If none set, it automaticly uses the viewport camera.</para>
+        /// </summary>
+        public GenericCamera Camera { get; set; }
+
+        /// <summary>
+        ///     A camera to control the background.
+        /// </summary>
+        public GenericCamera BackgroundCamera { get; set; }
+
+        /// <summary>
+        ///     A camera to control the HUD.
+        /// </summary>
+        public GenericCamera HUDCamera { get; set; }
 
         /// <summary>
         ///     Updates this scene.
@@ -54,6 +101,8 @@ namespace SM.Base.Scene
         /// <param name="context"></param>
         public virtual void Update(UpdateContext context)
         {
+            _objectCollection?.Update(context);
+            _hud?.Update(context);
         }
 
         /// <summary>
@@ -61,15 +110,61 @@ namespace SM.Base.Scene
         /// </summary>
         public virtual void Draw(DrawContext context)
         {
+            DrawBackground(context);
+
+            DrawMainObjects(context);
+
+            DrawHUD(context);
+            DrawDebug(context);
         }
-        
+
+        /// <summary>
+        ///     Draws only the background.
+        /// </summary>
+        /// <param name="context"></param>
+        public void DrawBackground(DrawContext context)
+        {
+            var backgroundDrawContext = context;
+            backgroundDrawContext.SetCamera(BackgroundCamera);
+            _Background?.Draw(backgroundDrawContext);
+        }
+
+        /// <summary>
+        ///     Draws only the main objects
+        /// </summary>
+        /// <param name="context"></param>
+        public void DrawMainObjects(DrawContext context)
+        {
+            if (!context.Window.ForceViewportCamera && Camera != null) context.SetCamera(Camera);
+            _objectCollection.Draw(context);
+        }
+
+        /// <summary>
+        ///     Draws only the HUD
+        /// </summary>
+        /// <param name="context"></param>
+        public void DrawHUD(DrawContext context)
+        {
+            context.SetCamera(HUDCamera);
+            _hud?.Draw(context);
+        }
+
+        /// <summary>
+        ///     Draw the debug informations.
+        /// </summary>
+        /// <param name="context"></param>
+        public virtual void DrawDebug(DrawContext context)
+        {
+
+        }
+
         /// <summary>
         ///     Adds a extension to the scene.
         /// </summary>
         /// <param name="extension"></param>
         public virtual void SetExtension(object extension)
         {
-            _extensions[extension.GetType()] =  extension;
+            _extensions[extension.GetType()] = extension;
         }
 
         /// <summary>
@@ -89,32 +184,19 @@ namespace SM.Base.Scene
 
             return (T)ext;
         }
-        
-        /// <summary>
-        ///     Called, when the user activates the scene.
-        /// </summary>
-        internal void Activate()
-        {
-            if (!IsInitialized)
-            {
-                OnInitialization();
-                IsInitialized = true;
-            }
 
-            OnActivating();
+       
+        public virtual void Activate()
+        {
+            
         }
 
-        /// <summary>
-        ///     Called, when the user activates the scene for the first time.
-        /// </summary>
-        protected virtual void OnInitialization()
-        { }
+        public virtual void Initialization()
+        {
 
-        /// <summary>
-        ///     Called, when the user activates the scene.
-        /// </summary>
-        protected virtual void OnActivating()
-        { }
+        }
+
+        public virtual void Deactivate() {}
     }
 
     /// <summary>
@@ -123,117 +205,43 @@ namespace SM.Base.Scene
     /// <typeparam name="TCamera">The type of cameras.</typeparam>
     /// <typeparam name="TItem">The type of show items.</typeparam>
     /// <typeparam name="TCollection">The type for collections</typeparam>
-    public abstract class GenericScene<TCamera, TCollection, TItem> : GenericScene
+    public abstract class GenericScene<TCamera, TCollection> : GenericScene
         where TCamera : GenericCamera, new()
-        where TCollection : GenericItemCollection<TItem>, new()
-        where TItem : IShowItem
+        where TCollection : GenericItemCollection, new()
     {
-        private TCollection _hud = new TCollection();
-        private TCollection _objectCollection = new TCollection();
-
-        /// <summary>
-        ///     If true, shows a axis helper at (0,0,0)
-        /// </summary>
-        public bool ShowAxisHelper { get; set; } = false;
-
-        /// <summary>
-        ///     The active camera, that is used if the context doesn't force the viewport camera.
-        ///     <para>If none set, it automaticly uses the viewport camera.</para>
-        /// </summary>
-        public TCamera Camera => (TCamera) _camera;
-
-        /// <summary>
-        ///     A camera to control the background.
-        /// </summary>
-        public TCamera BackgroundCamera { get; set; } = new TCamera();
-
-        /// <summary>
-        ///     A camera to control the HUD.
-        /// </summary>
-        public TCamera HUDCamera { get; set; } = new TCamera();
-
-        /// <summary>
-        ///     Objects inside the scene.
-        /// </summary>
-        public TCollection Objects
+        public new TCollection Objects
         {
-            get => _objectCollection;
-            set
+            get => (TCollection) base.Objects;
+            set => base.Objects = value;
+        }
+
+        public new TCollection HUD
+        {
+            get
             {
-                value.Parent = this;
-                _objectCollection = value;
+                base.HUD ??= new TCollection();
+                return (TCollection) base.HUD;
             }
+            set => base.HUD = value;
         }
 
-        /// <summary>
-        ///     This defines the HUD objects.
-        /// </summary>
-        public TCollection HUD
+        public new TCamera Camera
         {
-            get => _hud;
-            set
-            {
-                value.Parent = this;
-                _hud = value;
-            }
+            get => (TCamera) base.Camera;
+            set => base.Camera = value;
         }
 
-        /// <inheritdoc />
-        public override void Update(UpdateContext context)
+        public new TCamera HUDCamera
         {
-            _objectCollection.Update(context);
-            _hud.Update(context);
+            get => (TCamera) base.HUDCamera;
+            set => base.HUDCamera = value;
         }
 
-        /// <inheritdoc />
-        public override void Draw(DrawContext context)
+        public new TCamera BackgroundCamera
         {
-            DrawBackground(context);
-
-            DrawMainObjects(context);
-
-            DrawHUD(context);
-            DrawDebug(context);
+            get => (TCamera) base.BackgroundCamera;
+            set => base.BackgroundCamera = value;
         }
 
-        /// <summary>
-        ///     Draws only the background.
-        /// </summary>
-        /// <param name="context"></param>
-        public void DrawBackground(DrawContext context)
-        {
-            var backgroundDrawContext = context;
-            backgroundDrawContext.View = BackgroundCamera.CalculateViewMatrix();
-            _Background?.Draw(backgroundDrawContext);
-        }
-
-        /// <summary>
-        ///     Draws only the main objects
-        /// </summary>
-        /// <param name="context"></param>
-        public void DrawMainObjects(DrawContext context)
-        {
-            if (!context.ForceViewport && Camera != null) context.View = Camera.CalculateViewMatrix();
-            _objectCollection.Draw(context);
-        }
-
-        /// <summary>
-        ///     Draws only the HUD
-        /// </summary>
-        /// <param name="context"></param>
-        public void DrawHUD(DrawContext context)
-        {
-            context.View = HUDCamera.CalculateViewMatrix();
-            _hud.Draw(context);
-        }
-
-        /// <summary>
-        ///     Draw the debug informations.
-        /// </summary>
-        /// <param name="context"></param>
-        public virtual void DrawDebug(DrawContext context)
-        {
-
-        }
     }
 }

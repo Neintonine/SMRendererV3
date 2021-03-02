@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System.Collections.Generic;
 using OpenTK.Graphics;
 using SM.OGL.Texture;
 
@@ -26,5 +27,9 @@ namespace SM.Base.Drawing
         ///     The tint or color.
         /// </summary>
         public Color4 Tint = Color4.White;
+
+        public ShaderArguments ShaderArguments { get; internal set; } = new ShaderArguments();
+
+        public bool Blending = false;
     }
 }

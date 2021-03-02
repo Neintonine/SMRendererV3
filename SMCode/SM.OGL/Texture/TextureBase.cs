@@ -13,11 +13,14 @@ namespace SM.OGL.Texture
     {
         /// <inheritdoc />
         protected override bool AutoCompile { get; } = true;
+        
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Texture;
 
         public PixelInformation PixelInformation;
+
+        public TextureTarget Target { get; set; } = TextureTarget.Texture2D;
 
         /// <summary>
         ///     The texture filter.

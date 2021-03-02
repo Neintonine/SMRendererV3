@@ -2,7 +2,8 @@
 
 using System;
 using System.Diagnostics.Eventing.Reader;
-using SM.Base.Contexts;
+using SM.Base;
+using SM.Base.Windows;
 
 #endregion
 
