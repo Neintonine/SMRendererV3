@@ -114,6 +114,7 @@ namespace SM.Base.Windows
             };
             drawContext.SetCamera(window.ViewportCamera);
 
+            GL.DepthFunc(DepthFunction.Lequal);
             window.CurrentRenderPipeline?.Render(ref drawContext);
         }
 

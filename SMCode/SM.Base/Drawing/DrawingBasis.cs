@@ -1,10 +1,12 @@
 ﻿#region usings
 
 using System.Collections.Generic;
+using OpenTK.Graphics.ES11;
 using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Windows;
 using SM.OGL.Mesh;
+using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 #endregion
 
@@ -38,6 +40,8 @@ namespace SM.Base.Drawing
         /// <inheritdoc />
         public ICollection<string> Flags { get; set; }
 
+        public PrimitiveType? ForcedMeshType { get; set; }
+
         /// <summary>
         ///     This value determents if the object should draw something.
         /// </summary>
@@ -68,7 +72,9 @@ namespace SM.Base.Drawing
         /// <param name="context"></param>
         protected virtual void DrawContext(ref DrawContext context)
         {
+            context.ForcedType = ForcedMeshType;
             context.TextureMatrix *= TextureTransform.GetMatrix();
+            context.LastObject = this;
         }
     }
 

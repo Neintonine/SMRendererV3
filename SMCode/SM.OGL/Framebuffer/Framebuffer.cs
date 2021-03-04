@@ -30,6 +30,22 @@ namespace SM.OGL.Framebuffer
         private IFramebufferWindow _window;
         private float _windowScale;
 
+        /// <inheritdoc />
+        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
+
+        /// <summary>
+        /// Contains the size of the framebuffer.
+        /// </summary>
+        public Vector2 Size { get; private set; }
+
+        /// <summary>
+        /// Contains all color attachments.
+        /// </summary>
+        public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } =
+            new Dictionary<string, ColorAttachment>();
+
+        public List<RenderbufferAttachment> RenderbufferAttachments { get; } = new List<RenderbufferAttachment>();
+
         /// <summary>
         /// Creates a buffer without any options.
         /// </summary>
@@ -59,20 +75,6 @@ namespace SM.OGL.Framebuffer
         }
 
         /// <inheritdoc />
-        public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
-
-        /// <summary>
-        /// Contains the size of the framebuffer.
-        /// </summary>
-        public Vector2 Size { get; private set; }
-
-        /// <summary>
-        /// Contains all color attachments.
-        /// </summary>
-        public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } =
-            new Dictionary<string, ColorAttachment>();
-
-        /// <inheritdoc />
         public override void Compile()
         {
             if (!_canBeCompiled) return;
@@ -96,6 +98,12 @@ namespace SM.OGL.Framebuffer
             foreach (var pair in ColorAttachments)
                 GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.Target, pair.Value.ID,
                     0);
+
+            foreach (RenderbufferAttachment attachment in RenderbufferAttachments)
+            {
+                int att = attachment.Generate(this);
+                GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment.FramebufferAttachment, RenderbufferTarget.Renderbuffer, att);
+            }
 
             var err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
             if (err != FramebufferErrorCode.FramebufferComplete)
@@ -123,6 +131,11 @@ namespace SM.OGL.Framebuffer
         public void Append(string key, ColorAttachment value)
         {
             ColorAttachments.Add(key, value);
+        }
+
+        public void AppendRenderbuffer(RenderbufferAttachment attachment)
+        {
+            RenderbufferAttachments.Add(attachment);
         }
 
         /// <summary>

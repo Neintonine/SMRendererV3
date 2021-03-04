@@ -17,5 +17,7 @@ namespace SM2D.Object
             Vertex = vertex;
             Color = color;
         }
+
+        public static implicit operator PolygonVertex(Vector2 vec) => new PolygonVertex(vec, Color4.White);
     }
 }

@@ -57,7 +57,7 @@ namespace SM.Base.Drawing
             uniforms["HasVColor"]
                 .SetUniform1(context.Mesh.Attributes.Has("color"));
 
-            DrawObject(context.Mesh);
+            DrawObject(context.ForcedType.GetValueOrDefault(context.Mesh.PrimitiveType), context.Mesh);
         }
 
         static void InstancedSetUniforms(UniformCollection uniforms, DrawContext context)
@@ -86,7 +86,7 @@ namespace SM.Base.Drawing
 
                 shaderInstanceI++;
             }
-            DrawObject(context.Mesh, shaderInstanceI);
+            DrawObject(context.ForcedType.GetValueOrDefault(context.Mesh.PrimitiveType), context.Mesh, shaderInstanceI);
         }
 
         private string _vertexPreset;

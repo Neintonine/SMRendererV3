@@ -44,6 +44,7 @@
     <Compile Include="Framebuffer\ColorAttachment.cs" />
     <Compile Include="Framebuffer\Framebuffer.cs" />
     <Compile Include="Framebuffer\IFramebufferWindow.cs" />
+    <Compile Include="Framebuffer\RenderbufferAttachment.cs" />
     <Compile Include="GLCustomActions.cs" />
     <Compile Include="GLDebugging.cs" />
     <Compile Include="GLObject.cs" />

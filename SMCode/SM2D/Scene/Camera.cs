@@ -38,7 +38,7 @@ namespace SM2D.Scene
 
         protected override Matrix4 ViewCalculation(IGenericWindow window)
         {
-            return Matrix4.LookAt(Position.X, Position.Y, 1, Position.X, Position.Y, 0, 0, 1, 0);
+            return Matrix4.LookAt(Position.X, Position.Y, 2f, Position.X, Position.Y, 0f, 0, 1, 0);
         }
 
         protected override bool WorldCalculation(IGenericWindow window, out Matrix4 world)
@@ -50,7 +50,7 @@ namespace SM2D.Scene
                 _resizeCounter = ResizeCounter;
                 CalculateWorldScale(window);
 
-                world = Matrix4.CreateOrthographic(WorldScale.X, WorldScale.Y, .0001f, 1.5f);
+                world = Matrix4.CreateOrthographic(WorldScale.X, WorldScale.Y, .001f, 3.2f);
                 return true;
             }
 

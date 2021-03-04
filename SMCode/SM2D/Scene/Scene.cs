@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System.Drawing.Drawing2D;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base;
@@ -37,6 +38,13 @@ namespace SM2D.Scene
         {
             get => (DrawBackground) _Background;
             set => _Background = value;
+        }
+
+        public override void DrawHUD(DrawContext context)
+        {
+            context.ModelMatrix *= Matrix4.CreateTranslation(0,0,1);
+
+            base.DrawHUD(context);
         }
 
         public override void DrawDebug(DrawContext context)

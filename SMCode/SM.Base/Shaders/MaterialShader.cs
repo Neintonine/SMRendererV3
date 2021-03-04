@@ -41,6 +41,8 @@ namespace SM.Base.Drawing
 
             if (context.Mesh is ILineMesh lineMesh) 
                 GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth)); 
+            else if (context.Material.ShaderArguments.ContainsKey("LineWidth"))
+                GL.LineWidth((float)context.Material.ShaderArguments["LineWidth"]);
 
             if (context.Material.Blending)
             {

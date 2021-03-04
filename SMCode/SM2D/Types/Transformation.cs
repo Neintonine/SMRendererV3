@@ -27,15 +27,17 @@ namespace SM2D.Types
 
         public bool VerticalFlip { get; set; } = false;
 
-        public int ZIndex { get; set; }
+        public CVector1 ZIndex { get; set; } = new CVector1(0);
 
         protected override Matrix4 RequestMatrix()
         {
+            float z = 1 / (float) ZIndexPercision * ZIndex;
+
             return Matrix4.CreateScale(Size.X, Size.Y, 1) *
                    Matrix4.CreateRotationX(MathHelper.DegreesToRadians(HorizontalFlip ? 180 : 0)) *
                    Matrix4.CreateRotationY(MathHelper.DegreesToRadians(VerticalFlip ? 180 : 0)) *
                    Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotation)) *
-                   Matrix4.CreateTranslation(Position.X, Position.Y, -(1 / (float)ZIndexPercision * ZIndex));
+                   Matrix4.CreateTranslation(Position.X, Position.Y, z);
         }
 
         public void TurnTo(Vector2 v)

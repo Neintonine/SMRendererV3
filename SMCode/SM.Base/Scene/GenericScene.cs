@@ -122,7 +122,7 @@ namespace SM.Base.Scene
         ///     Draws only the background.
         /// </summary>
         /// <param name="context"></param>
-        public void DrawBackground(DrawContext context)
+        public virtual void DrawBackground(DrawContext context)
         {
             var backgroundDrawContext = context;
             backgroundDrawContext.SetCamera(BackgroundCamera);
@@ -133,7 +133,7 @@ namespace SM.Base.Scene
         ///     Draws only the main objects
         /// </summary>
         /// <param name="context"></param>
-        public void DrawMainObjects(DrawContext context)
+        public virtual void DrawMainObjects(DrawContext context)
         {
             if (!context.Window.ForceViewportCamera && Camera != null) context.SetCamera(Camera);
             _objectCollection.Draw(context);
@@ -143,7 +143,7 @@ namespace SM.Base.Scene
         ///     Draws only the HUD
         /// </summary>
         /// <param name="context"></param>
-        public void DrawHUD(DrawContext context)
+        public virtual void DrawHUD(DrawContext context)
         {
             context.SetCamera(HUDCamera);
             _hud?.Draw(context);

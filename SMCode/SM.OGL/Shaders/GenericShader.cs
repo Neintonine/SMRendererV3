@@ -132,7 +132,19 @@ namespace SM.OGL.Shaders
             if (mesh.Indices != null)
                 GL.DrawElementsInstanced(mesh.PrimitiveType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
             else
-                GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
+                GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
+        }
+        /// <summary>
+        ///     Draws the mesh while forcing a primitive type instead of using the mesh type.
+        /// </summary>
+        /// <param name="mesh">The mesh.</param>
+        /// <param name="amount">The amounts for instancing.</param>
+        public static void DrawObject(PrimitiveType forcedType, GenericMesh mesh, int amount = 1)
+        {
+            if (mesh.Indices != null)
+                GL.DrawElementsInstanced(forcedType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
+            else
+                GL.DrawArraysInstanced(forcedType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace SM2D.Drawing
         protected override void DrawContext(ref DrawContext context)
         {
             base.DrawContext(ref context);
-            context.ModelMatrix = Matrix4.CreateScale((context.UseCamera as Camera).WorldScale.X, (context.UseCamera as Camera).WorldScale.Y, 1);
+            context.ModelMatrix = Matrix4.CreateScale((context.UseCamera as Camera).WorldScale.X, (context.UseCamera as Camera).WorldScale.Y, 0) * Matrix4.CreateTranslation(0,0, -1.1f);
             context.Shader.Draw(context);
         }
     }

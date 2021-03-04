@@ -47,10 +47,13 @@ namespace SM.Base.Windows
             DefaultShader ??= SMRenderer.DefaultMaterialShader;
         }
 
-        public Framebuffer CreateWindowFramebuffer(int multisamples)
+        public Framebuffer CreateWindowFramebuffer(int multisamples = 0)
         {
             Framebuffer framebuffer = new Framebuffer(window: ConnectedWindow);
             framebuffer.Append("color", new ColorAttachment(0, PixelInformation.RGBA_LDR, multisamples));
+            RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
+            depthAttach.Multisample = multisamples;
+            framebuffer.AppendRenderbuffer(depthAttach);
             return framebuffer;
         }
     }
