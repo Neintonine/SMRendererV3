@@ -11,7 +11,6 @@ namespace SM.Base.Windows
     {
         bool Loading { get; }
         float AspectRatio { get; set; }
-        float AspectRatioReverse { get; set; }
 
         GenericCamera ViewportCamera { get; set; }
         bool ForceViewportCamera { get; set; }

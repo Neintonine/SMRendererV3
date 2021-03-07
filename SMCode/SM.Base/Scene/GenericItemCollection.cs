@@ -45,7 +45,7 @@ namespace SM.Base.Scene
 
             for (var i = 0; i < _scriptableObjects.Count; i++)
             {
-                if (!_scriptableObjects[i].Active) continue;
+                if (!_scriptableObjects[i].Active || !_scriptableObjects[i].UpdateActive) continue;
                 _scriptableObjects[i].Update(context);
             }
         }
@@ -57,7 +57,7 @@ namespace SM.Base.Scene
 
             for (var i = 0; i < Objects.Count; i++)
             {
-                if (!this[i].Active) continue;
+                if (!this[i].Active || !this[i].RenderActive) continue;
                 this[i].Draw(context);
             }
         }

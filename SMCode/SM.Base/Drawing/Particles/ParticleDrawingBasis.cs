@@ -73,7 +73,9 @@ namespace SM.Base.Drawing.Particles
 
             CreateParticles();
         }
-        
+
+        public bool UpdateActive { get; set; }
+
         /// <inheritdoc />
         public void Update(UpdateContext context)
         {

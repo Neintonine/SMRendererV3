@@ -61,7 +61,7 @@ namespace SM2D.Scene
         {
             if (RequestedWorldScale.HasValue)
             {
-                float aspect = window.Width > window.Height ? window.AspectRatio : window.AspectRatioReverse;
+                float aspect = window.AspectRatio;
                 Vector2 requested = RequestedWorldScale.Value;
 
                 if (requested.X > 0 && requested.Y > 0)

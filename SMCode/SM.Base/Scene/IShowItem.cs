@@ -31,7 +31,8 @@ namespace SM.Base.Scene
         ICollection<string> Flags { get; set; }
 
         bool Active { get; set; }
-        
+        bool RenderActive { get; set; }
+
         /// <summary>
         ///     Tells the object to draw its object.
         /// </summary>

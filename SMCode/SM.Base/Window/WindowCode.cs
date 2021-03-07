@@ -55,7 +55,6 @@ namespace SM.Base.Windows
         {
             window.WindowSize = new Vector2(window.Width, window.Height);
             window.AspectRatio = (float) window.Width / window.Height;
-            window.AspectRatioReverse = (float) window.Height / window.Width;
             GL.Viewport(window.ClientRectangle);
 
             window.CurrentRenderPipeline?.Resize();

@@ -9,6 +9,7 @@ namespace SM.Base.Scene
     public interface IScriptable
     {
         bool Active { get; set; }
+        bool UpdateActive { get; set; }
 
         /// <summary>
         ///     Updates the object.

@@ -46,7 +46,8 @@ namespace SM.Base.Drawing
         ///     This value determents if the object should draw something.
         /// </summary>
         public bool Active { get; set; } = true;
-        
+        public bool RenderActive { get; set; } = true;
+
         /// <inheritdoc />
         public void Draw(DrawContext context)
         {

@@ -8,8 +8,11 @@ using SM.OGL.Mesh;
 namespace SM.Base.Objects
 {
     /// <inheritdoc />
-    public class Mesh : GenericMesh
+    public class Mesh : GenericMesh, ILineMesh
     {
+
+        public float LineWidth { get; set; } = 1;
+
         /// <summary>
         ///     While initializing, it will add the <see cref="Color" /> to the data index.
         /// </summary>
@@ -23,5 +26,6 @@ namespace SM.Base.Objects
         ///     Contains vertex colors
         /// </summary>
         public virtual VBO Color { get; protected set; }
+
     }
 }
