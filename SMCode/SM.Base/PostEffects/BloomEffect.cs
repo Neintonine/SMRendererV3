@@ -78,8 +78,12 @@ namespace SM.Base.PostEffects
             }
         }
 
+        
+
         protected override void InitProcess()
         {
+            _source = Pipeline.MainFramebuffer;
+
             _source.ColorAttachments["color"].PixelInformation = PixelInformation.RGBA_HDR;
 
             _bloomBuffer1 = new Framebuffer(Pipeline.ConnectedWindow, _textureScale);

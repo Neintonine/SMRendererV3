@@ -15,7 +15,7 @@ namespace SM.Base.Windows
 
         public List<Framebuffer> Framebuffers { get; } = new List<Framebuffer>();
 
-        public virtual MaterialShader DefaultShader { get; protected set; }
+        public virtual MaterialShader DefaultShader { get; protected set; } = SMRenderer.DefaultMaterialShader;
         public virtual Material DefaultMaterial { get; protected set; }
 
         public bool IsInitialized { get; set; }

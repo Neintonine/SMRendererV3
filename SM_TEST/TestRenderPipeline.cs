@@ -16,7 +16,7 @@ namespace SM_TEST
 
         public override void Initialization()
         {
-            _bloom = new BloomEffect(1);
+            _bloom = new BloomEffect(hdr: true);
 
             MainFramebuffer = CreateWindowFramebuffer();
 
