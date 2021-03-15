@@ -18,6 +18,8 @@ namespace SM.Base.Drawing
 
         public Matrix4 LastMaster { get; internal set; }
 
+        public Matrix4 InWorldSpace => MergeMatrix(LastMaster);
+
         /// <summary>
         ///     Contains the current model matrix.
         /// </summary>

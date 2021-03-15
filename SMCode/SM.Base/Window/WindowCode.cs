@@ -94,6 +94,8 @@ namespace SM.Base.Windows
 
             SMRenderer.CurrentFrame++;
 
+            GLObject.DisposeMarkedObjects();
+
             Deltatime.RenderDelta = deltatime;
             var drawContext = new DrawContext()
             {

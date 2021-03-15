@@ -1,4 +1,6 @@
-﻿namespace SM.Utility
+﻿using System;
+
+namespace SM.Utility
 {
     public class Util
     {
@@ -10,6 +12,12 @@
                 obj.IsInitialized = true;
             }
             obj.Activate();
+        }
+
+        public static void CallGarbageCollector()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 }

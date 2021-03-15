@@ -119,7 +119,8 @@ namespace SM.OGL.Shaders
 
         public override void Dispose()
         {
-            GL.DeleteShader(this);
+            GL.DeleteProgram(this);
+            base.Dispose();
         }
 
         /// <summary>

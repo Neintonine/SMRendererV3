@@ -116,9 +116,11 @@ namespace SM.OGL.Framebuffer
         /// <inheritdoc />
         public override void Dispose()
         {
-            base.Dispose();
+            
             foreach (var attachment in ColorAttachments.Values) attachment.Dispose();
             GL.DeleteFramebuffer(this);
+            base.Dispose();
+
         }
 
         /// <summary>
@@ -180,6 +182,7 @@ namespace SM.OGL.Framebuffer
             Framebuffer buffer = new Framebuffer()
             {
                 _canBeCompiled = false,
+                ReportAsNotCompiled = true
             };
             switch (target)
             {

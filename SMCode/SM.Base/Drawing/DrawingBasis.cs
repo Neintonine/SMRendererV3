@@ -96,7 +96,7 @@ namespace SM.Base.Drawing
         {
             base.DrawContext(ref context);
             Transform.LastMaster = context.ModelMatrix;
-            context.ModelMatrix = Transform.MergeMatrix(context.ModelMatrix);
+            context.ModelMatrix = Transform.InWorldSpace;
         }
     }
 }

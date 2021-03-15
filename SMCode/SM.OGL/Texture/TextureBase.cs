@@ -46,8 +46,8 @@ namespace SM.OGL.Texture
 
         public override void Dispose()
         {
-            base.Dispose();
             GL.DeleteTexture(_id);
+            base.Dispose();
         }
     }
 }

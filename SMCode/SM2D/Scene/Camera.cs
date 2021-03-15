@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using System.Runtime.Serialization.Formatters;
 using OpenTK;
 using SM.Base;
 using SM.Base.Scene;
@@ -14,6 +15,7 @@ namespace SM2D.Scene
     public class Camera : GenericCamera
     {
         internal static int ResizeCounter = 0;
+        internal static float Distance = 2F;
 
         private int _resizeCounter = 0;
         private bool _updateWorldScale = false;
@@ -38,7 +40,7 @@ namespace SM2D.Scene
 
         protected override Matrix4 ViewCalculation(IGenericWindow window)
         {
-            return Matrix4.LookAt(Position.X, Position.Y, 2f, Position.X, Position.Y, 0f, 0, 1, 0);
+            return Matrix4.LookAt(Position.X, Position.Y, Distance, Position.X, Position.Y, 0f, 0, 1, 0);
         }
 
         protected override bool WorldCalculation(IGenericWindow window, out Matrix4 world)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
@@ -11,6 +13,8 @@ namespace SM.Base.Windows
 {
     public class GLWindow : GameWindow, IGenericWindow
     {
+        private Vector2 _flagWindowSize;
+
         public bool Loading { get; private set; } = true;
         public float AspectRatio { get; set; }
 
@@ -30,12 +34,17 @@ namespace SM.Base.Windows
         public GenericScene CurrentScene { get; private set; }
         public RenderPipeline CurrentRenderPipeline { get; private set; }
 
-        public GLWindow() : this(1280, 720, "Generic OpenGL Title", GameWindowFlags.Default) {}
+        public WindowFlags WindowFlags;
+        
+        public GLWindow() : this(1280, 720, "Generic OpenGL Title", WindowFlags.Window) {}
 
-        public GLWindow(int width, int height, string title, GameWindowFlags flags, VSyncMode vSync = VSyncMode.On) :
-            base(width, height, default, title, flags, DisplayDevice.Default, GLSettings.ForcedVersion.MajorVersion, GLSettings.ForcedVersion.MinorVersion, GraphicsContextFlags.Default)
+        public GLWindow(int width, int height, string title, WindowFlags flags, VSyncMode vSync = VSyncMode.On) :
+            base(width, height, default, title, (GameWindowFlags)flags, DisplayDevice.Default, GLSettings.ForcedVersion.MajorVersion, GLSettings.ForcedVersion.MinorVersion, GraphicsContextFlags.Default)
         {
             VSync = vSync;
+            _flagWindowSize = new Vector2(width, height);
+            
+            ChangeWindowFlag(flags);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -51,6 +60,8 @@ namespace SM.Base.Windows
             base.OnResize(e);
 
             WindowCode.Resize(this);
+
+            if (WindowFlags == WindowFlags.Window) _flagWindowSize = WindowSize;
 
             if (Loading)
             {
@@ -125,5 +136,40 @@ namespace SM.Base.Windows
         public void TriggerLoad() => Load?.Invoke(this);
 
         public void TriggerResize() => Resize?.Invoke(this);
+
+        public void ChangeWindowFlag(WindowFlags newFlag)
+        {
+            WindowFlags = newFlag;
+
+            switch (newFlag)
+            {
+                case WindowFlags.Window:
+                    Width = (int)_flagWindowSize.X;
+                    Height = (int)_flagWindowSize.Y;
+
+                    WindowBorder = WindowBorder.Resizable;
+                    break;
+                case WindowFlags.BorderlessWindow:
+                    WindowBorder = WindowBorder.Hidden;
+                    
+                    X = Screen.PrimaryScreen.Bounds.Left;
+                    Y = Screen.PrimaryScreen.Bounds.Top;
+                    Width = Screen.PrimaryScreen.Bounds.Width;
+                    Height = Screen.PrimaryScreen.Bounds.Height;
+
+                    break;
+                case WindowFlags.ExclusiveFullscreen:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newFlag), newFlag, null);
+            }
+
+            if (newFlag == WindowFlags.BorderlessWindow)
+            {
+                WindowBorder = WindowBorder.Hidden;
+                X = Screen.PrimaryScreen.Bounds.X;
+                Y = Screen.PrimaryScreen.Bounds.Y;
+            }
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Controls;
 using OpenTK;
 using SM.Base.Controls;
 using SM.Base.Drawing;
 using SM.Base.Scene;
+using SM.Utility;
 using SM2D.Scene;
 using SM2D.Types;
 
@@ -43,21 +45,30 @@ namespace SM2D.Controls
             where TObject : IModelItem, ITransformItem<Transformation>
         {
             clickedObj = default;
+            bool success = false;
 
-            foreach (TObject obj in checkingObjects)
+            float distance = -10;
+
+            foreach (TObject item in checkingObjects)
             {
-                Vector3 min = obj.Mesh.BoundingBox.Get(obj.Transform.MergeMatrix(obj.Transform.LastMaster), false);
-                Vector3 max = obj.Mesh.BoundingBox.Get(obj.Transform.MergeMatrix(obj.Transform.LastMaster), true);
+                Matrix4 worldPos = item.Transform.InWorldSpace;
+                item.Mesh.BoundingBox.GetBounds(worldPos, out Vector3 min, out Vector3 max);
 
                 if (mousePos.X > min.X && mousePos.X < max.X &&
                     mousePos.Y > min.Y && mousePos.Y < max.Y)
                 {
-                    clickedObj = obj;
-                    return true;
+                    // if z is greater than distance
+                    if (worldPos[3, 2] > distance)
+                    {
+                        clickedObj = item;
+                        distance = worldPos[3, 2];
+                    }
+
+                    success = true;
                 }
             }
 
-            return false;
+            return success;
         }
     }
 }

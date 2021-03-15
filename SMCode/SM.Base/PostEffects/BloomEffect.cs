@@ -15,7 +15,9 @@ namespace SM.Base.PostEffects
     {
         private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, new Vector2(0.32f, 1), new Vector2(0.432f, 0), new Vector2(1,0));
 
-        private const float _textureScale = .75f;
+        private const float _defaultTextureScale = .75f;
+
+        private float _textureScale = .75f;
 
         private Framebuffer _bloomBuffer1;
         private Framebuffer _bloomBuffer2;
@@ -56,10 +58,11 @@ namespace SM.Base.PostEffects
         public int WeightCurvePickAmount = 4;
 
 
-        public BloomEffect(Framebuffer source = null, bool hdr = false)
+        public BloomEffect(Framebuffer source = null, bool hdr = false, float? textureScale = null)
         {
             _source = source;
             _hdr = hdr;
+            _textureScale = textureScale.GetValueOrDefault(_defaultTextureScale);
 
             WeightCurve = _defaultCurve;
         }

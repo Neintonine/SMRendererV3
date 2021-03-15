@@ -73,6 +73,7 @@
     <Compile Include="Drawing\Particles\ParticleDrawingBasis.cs" />
     <Compile Include="Shaders\SimpleShader.cs" />
     <Compile Include="Utility\IInitializable.cs" />
+    <Compile Include="Utility\Ray.cs" />
     <Compile Include="Utility\Util.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Window\ISetup.cs" />
     <Compile Include="Window\RenderPipeline.cs" />
     <Compile Include="Window\WindowCode.cs" />
+    <Compile Include="Window\WindowFlags.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Shaders\Extensions\vertex\basic.vert" />

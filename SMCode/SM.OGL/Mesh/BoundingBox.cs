@@ -65,6 +65,21 @@ namespace SM.OGL.Mesh
 
         public Vector3 Get(Matrix4 transformation, bool xyz) => Get(transformation, xyz, xyz, xyz);
 
+        public void GetBounds(Matrix4 transformation, out Vector3 min, out Vector3 max)
+        {
+            min = Get(transformation, false);
+            max = Get(transformation, true);
+
+            for (int i = 0; i < 3; i++)
+            {
+                float newmin = Math.Min(min[i], max[i]);
+                float newmax = Math.Max(min[i], max[i]);
+
+                min[i] = newmin;
+                max[i] = newmax;
+            }
+        }
+
         public void Update(GenericMesh mesh)
         {
             int pos = 0;

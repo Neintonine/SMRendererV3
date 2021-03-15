@@ -99,5 +99,11 @@ namespace SM.OGL.Mesh
 
             GL.BindVertexArray(0);
         }
+
+        public override void Dispose()
+        {
+            GL.DeleteVertexArray(_id);
+            base.Dispose();
+        }
     }
 }
