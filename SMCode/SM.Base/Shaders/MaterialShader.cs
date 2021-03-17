@@ -15,6 +15,8 @@ namespace SM.Base.Drawing
     /// </summary>
     public abstract class MaterialShader : GenericShader
     {
+        static bool _canLineWidth = true;
+
         /// <inheritdoc />
         protected MaterialShader(string combinedData) : base(combinedData)
         {}
@@ -39,10 +41,20 @@ namespace SM.Base.Drawing
 
             context.Mesh.Activate();
 
-            if (context.Mesh is ILineMesh lineMesh) 
-                GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth)); 
-            else if (context.Material.ShaderArguments.ContainsKey("LineWidth"))
-                GL.LineWidth((float)context.Material.ShaderArguments["LineWidth"]);
+            if (_canLineWidth)
+            {
+                try
+                {
+                    if (context.Mesh is ILineMesh lineMesh)
+                        GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth));
+                    else if (context.Material.ShaderArguments.ContainsKey("LineWidth"))
+                        GL.LineWidth((float)context.Material.ShaderArguments["LineWidth"]);
+                }
+                catch
+                {
+                    _canLineWidth = false;
+                }
+            }
 
             if (context.Material.Blending)
             {

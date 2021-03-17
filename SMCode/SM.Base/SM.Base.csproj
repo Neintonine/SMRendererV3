@@ -66,6 +66,7 @@
     <Compile Include="Drawing\ShaderArguments.cs" />
     <Compile Include="Drawing\TextureTransformation.cs" />
     <Compile Include="PostEffects\PostProcessFinals.cs" />
+    <Compile Include="Scene\IFixedScriptable.cs" />
     <Compile Include="Shaders\MaterialShader.cs" />
     <Compile Include="Drawing\Particles\ParticleContext.cs" />
     <Compile Include="Drawing\Particles\ParticleMovement.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Utility\Ray.cs" />
     <Compile Include="Utility\Util.cs" />
     <Compile Include="Window\Contexts\DrawContext.cs" />
+    <Compile Include="Window\Contexts\FixedUpdateContext.cs" />
     <Compile Include="Window\Contexts\UpdateContext.cs" />
     <Compile Include="Window\GLWindow.cs" />
     <Compile Include="Log.cs" />

@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Windows.Controls;
 using SM.Base;
 using SM.Base.Drawing;
+using SM.Base.Window.Contexts;
 using SM.Base.Windows;
 using SM.Utility;
 
@@ -103,6 +104,12 @@ namespace SM.Base.Scene
         {
             _objectCollection?.Update(context);
             _hud?.Update(context);
+        }
+
+        public virtual void FixedUpdate(FixedUpdateContext context)
+        {
+            _objectCollection?.FixedUpdate(context);
+            _hud?.FixedUpdate(context);
         }
 
         /// <summary>

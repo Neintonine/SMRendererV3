@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using OpenTK;
@@ -6,7 +9,9 @@ using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base.Controls;
 using SM.Base.Scene;
+using SM.Base.Window.Contexts;
 using SM.OGL;
+using SM.Utility;
 using Mouse = SM.Base.Controls.Mouse;
 
 namespace SM.Base.Windows
@@ -14,6 +19,7 @@ namespace SM.Base.Windows
     public class GLWindow : GameWindow, IGenericWindow
     {
         private Vector2 _flagWindowSize;
+        private Thread _fixedUpdateThread;
 
         public bool Loading { get; private set; } = true;
         public float AspectRatio { get; set; }
@@ -98,6 +104,12 @@ namespace SM.Base.Windows
             Mouse.MouseMoveEvent(e, this);
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            _fixedUpdateThread.Abort();
+        }
+
         public void Update(UpdateContext context)
         {
             
@@ -163,12 +175,29 @@ namespace SM.Base.Windows
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newFlag), newFlag, null);
             }
+        }
 
-            if (newFlag == WindowFlags.BorderlessWindow)
+        public void RunFixedUpdate(float updatesPerSecond)
+        {
+            Deltatime.FixedUpdateDelta = 1 / (float)updatesPerSecond;
+
+            _fixedUpdateThread = new Thread(ExecuteFixedUpdate);
+            _fixedUpdateThread.Start();
+        }
+
+        private void ExecuteFixedUpdate()
+        {
+            Stopwatch deltaStop = new Stopwatch();
+            while (Thread.CurrentThread.ThreadState != System.Threading.ThreadState.AbortRequested)
             {
-                WindowBorder = WindowBorder.Hidden;
-                X = Screen.PrimaryScreen.Bounds.X;
-                Y = Screen.PrimaryScreen.Bounds.Y;
+                deltaStop.Restart();
+
+                FixedUpdateContext context = new FixedUpdateContext();
+
+                CurrentScene?.FixedUpdate(context);
+
+                long delta = deltaStop.ElapsedMilliseconds;
+                Thread.Sleep(Math.Max((int)(Deltatime.FixedUpdateDelta * 1000) - (int)delta, 0));
             }
         }
     }
