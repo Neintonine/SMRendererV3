@@ -1,5 +1,8 @@
-﻿using OpenTK;
-using SM.Base.Types;
+﻿#region usings
+
+using OpenTK;
+
+#endregion
 
 namespace SM.Base.Drawing.Particles
 {
@@ -13,10 +16,12 @@ namespace SM.Base.Drawing.Particles
         ///     A direction, that the particle should travel.
         /// </summary>
         public TDirection Direction;
+
         /// <summary>
         ///     A matrix to store rotation and scale.
         /// </summary>
         public Matrix4 Matrix;
+
         /// <summary>
         ///     Speeeeeeeeeed
         /// </summary>

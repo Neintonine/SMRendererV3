@@ -2,12 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Windows.Controls;
-using SM.Base;
-using SM.Base.Drawing;
-using SM.Base.Windows;
-using SM.Utility;
+using SM.Base.Utility;
+using SM.Base.Window;
 
 #endregion
 
@@ -18,12 +14,17 @@ namespace SM.Base.Scene
     /// </summary>
     public abstract class GenericScene : IInitializable
     {
+        private IBackgroundItem _background;
+        private readonly Dictionary<Type, object> _extensions = new Dictionary<Type, object>();
 
         private GenericItemCollection _hud;
         private GenericItemCollection _objectCollection;
-        private IBackgroundItem _background;
-        private Dictionary<Type, object> _extensions = new Dictionary<Type, object>();
-        
+
+        /// <summary>
+        ///     A collection for cameras to switch easier to different cameras.
+        /// </summary>
+        public Dictionary<string, GenericCamera> Cameras = new Dictionary<string, GenericCamera>();
+
         /// <summary>
         ///     This contains the background.
         /// </summary>
@@ -63,16 +64,6 @@ namespace SM.Base.Scene
             }
         }
 
-        /// <summary>
-        ///     A collection for cameras to switch easier to different cameras.
-        /// </summary>
-        public Dictionary<string, GenericCamera> Cameras = new Dictionary<string, GenericCamera>();
-
-        /// <summary>
-        /// If true, the scene was already initialized.
-        /// </summary>
-        public bool IsInitialized { get; set; }
-
 
         /// <summary>
         ///     If true, shows a axis helper at (0,0,0)
@@ -94,6 +85,20 @@ namespace SM.Base.Scene
         ///     A camera to control the HUD.
         /// </summary>
         public GenericCamera HUDCamera { get; set; }
+
+        /// <summary>
+        ///     If true, the scene was already initialized.
+        /// </summary>
+        public bool IsInitialized { get; set; }
+
+
+        public virtual void Activate()
+        {
+        }
+
+        public virtual void Initialization()
+        {
+        }
 
         /// <summary>
         ///     Updates this scene.
@@ -155,7 +160,6 @@ namespace SM.Base.Scene
         /// <param name="context"></param>
         public virtual void DrawDebug(DrawContext context)
         {
-
         }
 
         /// <summary>
@@ -178,25 +182,20 @@ namespace SM.Base.Scene
             object ext = _extensions[typeof(T)];
             if (ext == null)
             {
-                Log.Write(LogType.Warning, $"Tried to get the extension '{typeof(T).Name}', that doesn't exist in the scene.");
+                Log.Write(LogType.Warning,
+                    $"Tried to get the extension '{typeof(T).Name}', that doesn't exist in the scene.");
                 return null;
             }
 
-            return (T)ext;
+            return (T) ext;
         }
 
-       
-        public virtual void Activate()
+        /// <summary>
+        /// This is triggered when the scene gets deactivated.
+        /// </summary>
+        public virtual void Deactivate()
         {
-            
         }
-
-        public virtual void Initialization()
-        {
-
-        }
-
-        public virtual void Deactivate() {}
     }
 
     /// <summary>
@@ -242,6 +241,5 @@ namespace SM.Base.Scene
             get => (TCamera) base.BackgroundCamera;
             set => base.BackgroundCamera = value;
         }
-
     }
 }

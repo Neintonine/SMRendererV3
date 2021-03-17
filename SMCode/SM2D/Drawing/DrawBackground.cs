@@ -1,15 +1,12 @@
 ﻿#region usings
 
-using System.Collections.Generic;
 using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base;
 using SM.Base.Drawing;
-using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.Base.Textures;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Texture;
 using SM2D.Scene;
 

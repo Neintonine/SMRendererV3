@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
-using SM.Base.Objects;
 using SM.OGL.Mesh;
 
 namespace SM2D.Object
@@ -16,8 +14,6 @@ namespace SM2D.Object
 
     public class PolyLine : Polygon, ILineMesh
     {
-        public float LineWidth { get; set; } = 1;
-
         public PolyLine(ICollection<Vector2> vertices, PolyLineType lineType = PolyLineType.NotConnected) : base(vertices)
         {
             UVs.Active = false;

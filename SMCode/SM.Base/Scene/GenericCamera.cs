@@ -1,7 +1,7 @@
 ﻿#region usings
 
 using OpenTK;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 
@@ -12,6 +12,11 @@ namespace SM.Base.Scene
     /// </summary>
     public abstract class GenericCamera
     {
+        /// <summary>
+        ///     Exposure defines the exposure to the Scene.
+        /// </summary>
+        public float Exposure = 1;
+
         /// <summary>
         ///     This defines what is up. (Normalized)
         ///     <para>Default: <see cref="Vector3.UnitY" /></para>
@@ -35,21 +40,13 @@ namespace SM.Base.Scene
         public abstract bool Orthographic { get; }
 
         /// <summary>
-        ///     Exposure defines the exposure to the Scene.
-        /// </summary>
-        public float Exposure = 1;
-
-        /// <summary>
         ///     Calculates the view matrix.
         /// </summary>
         /// <returns>The calculated view matrix. Same as <see cref="View" /></returns>
         internal void CalculateViewMatrix(IGenericWindow window)
         {
             View = ViewCalculation(window);
-            if (WorldCalculation(window, out Matrix4 world))
-            {
-                World = world;
-            }
+            if (WorldCalculation(window, out Matrix4 world)) World = world;
         }
 
         /// <summary>
@@ -61,6 +58,12 @@ namespace SM.Base.Scene
         /// </returns>
         protected abstract Matrix4 ViewCalculation(IGenericWindow window);
 
+        /// <summary>
+        /// This calculates the world.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <param name="world"></param>
+        /// <returns></returns>
         protected abstract bool WorldCalculation(IGenericWindow window, out Matrix4 world);
     }
 }

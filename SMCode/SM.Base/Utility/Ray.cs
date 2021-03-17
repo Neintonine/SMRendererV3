@@ -1,11 +1,12 @@
-﻿using System;
-using System.Windows;
+﻿#region usings
+
+using System;
 using OpenTK;
-using SM.Base.Drawing;
-using SM.Base.Scene;
 using SM.OGL.Mesh;
 
-namespace SM.Utility
+#endregion
+
+namespace SM.Base.Utility
 {
     public struct Ray
     {
@@ -23,9 +24,9 @@ namespace SM.Utility
             distance = 0.0f;
             float tMin = 0.0f;
             float tMax = 100000.0f;
-            
+
             Vector3 delta = modelMatrix.Row3.Xyz - Position;
-            
+
             for (int i = 0; i < 3; i++)
             {
                 Vector3 axis = new Vector3(modelMatrix[i, 0], modelMatrix[i, 1], modelMatrix[i, 2]);
@@ -35,7 +36,6 @@ namespace SM.Utility
 
                 if (Math.Abs(f) > 0.001f)
                 {
-
                     float t1 = (e + box.Min[i]) / f;
                     float t2 = (e + box.Max[i]) / f;
 
@@ -54,7 +54,7 @@ namespace SM.Utility
                 }
                 else
                 {
-                    if (-e + box.Min[i] > 0.0f || -e + box.Max[i] < 0.0f) 
+                    if (-e + box.Min[i] > 0.0f || -e + box.Max[i] < 0.0f)
                         return false;
                 }
             }

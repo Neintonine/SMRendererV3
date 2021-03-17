@@ -1,14 +1,13 @@
 ﻿#region usings
 
 using OpenTK.Graphics.OpenGL4;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Mesh;
 using SM.OGL.Shaders;
 
 #endregion
 
-namespace SM.Base.Drawing
+namespace SM.Base.Shaders
 {
     /// <summary>
     ///     A general class to work with material shaders properly.
@@ -17,7 +16,8 @@ namespace SM.Base.Drawing
     {
         /// <inheritdoc />
         protected MaterialShader(string combinedData) : base(combinedData)
-        {}
+        {
+        }
 
         /// <inheritdoc />
         protected MaterialShader(string vertex, string fragment) : base(vertex, fragment)
@@ -39,16 +39,20 @@ namespace SM.Base.Drawing
 
             context.Mesh.Activate();
 
-            if (context.Mesh is ILineMesh lineMesh) 
-                GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth)); 
+            if (context.Mesh is ILineMesh lineMesh)
+                GL.LineWidth(context.Material.ShaderArguments.Get("LineWidth", lineMesh.LineWidth));
             else if (context.Material.ShaderArguments.ContainsKey("LineWidth"))
-                GL.LineWidth((float)context.Material.ShaderArguments["LineWidth"]);
+                GL.LineWidth((float) context.Material.ShaderArguments["LineWidth"]);
 
             if (context.Material.Blending)
             {
                 GL.Enable(EnableCap.Blend);
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            } else GL.Disable(EnableCap.Blend);
+            }
+            else
+            {
+                GL.Disable(EnableCap.Blend);
+            }
 
             DrawProcess(context);
 

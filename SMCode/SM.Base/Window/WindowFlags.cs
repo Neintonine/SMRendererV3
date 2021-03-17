@@ -1,4 +1,4 @@
-﻿namespace SM.Base.Windows
+﻿namespace SM.Base.Window
 {
     public enum WindowFlags
     {

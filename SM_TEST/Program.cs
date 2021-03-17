@@ -1,9 +1,7 @@
-﻿using System;
-using OpenTK;
-using OpenTK.Graphics;
+﻿using OpenTK;
 using OpenTK.Input;
 using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.Game.Controls;
 using SM2D;
 using SM2D.Drawing;

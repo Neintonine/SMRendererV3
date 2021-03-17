@@ -40,6 +40,10 @@ namespace SM.OGL.Mesh
         /// </summary>
         public int PointerStride;
 
+        /// <summary>
+        /// The VBO gets ignored when true.
+        /// <para>Default: true</para>
+        /// </summary>
         public bool Active = true;
 
         /// <summary>

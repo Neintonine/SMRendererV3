@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL;
 
 namespace SM.OGL.Shaders
 {

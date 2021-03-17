@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
-using OpenTK.Graphics.OpenGL4;
-using SM.Base;
-using SM.Base;
-using SM.Base.Drawing;
+﻿using OpenTK.Graphics.OpenGL4;
 using SM.Base.PostEffects;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Framebuffer;
-using SM2D.Scene;
 
 namespace SM_TEST
 {
     public class TestRenderPipeline : RenderPipeline
     {
         private BloomEffect _bloom;
+        private Framebuffer _postBuffer;
 
         public override void Initialization()
         {
-            _bloom = new BloomEffect(hdr: true);
 
-            MainFramebuffer = CreateWindowFramebuffer();
+            MainFramebuffer = CreateWindowFramebuffer(2);
 
+            _postBuffer = CreateWindowFramebuffer();
+            Framebuffers.Add(_postBuffer);
+
+
+            _bloom = new BloomEffect(_postBuffer, hdr: true);
             _bloom.Initilize(this);
             base.Initialization();
         }
@@ -29,11 +29,13 @@ namespace SM_TEST
             MainFramebuffer.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             context.Scene.DrawBackground(context);
             context.Scene.DrawMainObjects(context);
+            context.Scene.DrawHUD(context);
+
+            PostProcessFinals.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
 
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             _bloom.Draw(context);
 
-            context.Scene.DrawHUD(context);
             context.Scene.DrawDebug(context);
         }
     }

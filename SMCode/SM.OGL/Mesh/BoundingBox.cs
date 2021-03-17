@@ -2,7 +2,6 @@
 
 using System;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 #endregion
 

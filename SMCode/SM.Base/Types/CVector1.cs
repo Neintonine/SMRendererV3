@@ -1,39 +1,18 @@
-﻿using System;
-using OpenTK;
+﻿#region usings
+
+using System;
+
+#endregion
 
 namespace SM.Base.Types
 {
     /// <summary>
-    /// A One-dimensional Vector (also known as <see cref="float"/>), in a class.
+    ///     A One-dimensional Vector (also known as <see cref="float" />), in a class.
     /// </summary>
     public class CVector1
     {
         /// <summary>
-        /// X - Component
-        /// </summary>
-        public float X
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The length/magnitute of the vector.
-        /// </summary>
-        public float Length => GetLength();
-        /// <summary>
-        /// Gets the square of the vector length (magnitude).
-        /// </summary>
-        /// <remarks>
-        /// This property avoids the costly square root operation required by the Length property. This makes it more suitable
-        /// for comparisons.
-        /// </remarks>
-        public float LengthSquared => GetLength(true);
-
-        public event Action Changed; 
-
-        /// <summary>
-        /// Creates a class vector
+        ///     Creates a class vector
         /// </summary>
         /// <param name="x">X-Component</param>
         public CVector1(float x)
@@ -41,10 +20,33 @@ namespace SM.Base.Types
             X = x;
         }
 
-        
+        /// <summary>
+        ///     X - Component
+        /// </summary>
+        public float X { get; set; }
 
         /// <summary>
-        /// Get the length of the vector.
+        ///     The length/magnitute of the vector.
+        /// </summary>
+        public float Length => GetLength();
+
+        /// <summary>
+        ///     Gets the square of the vector length (magnitude).
+        /// </summary>
+        /// <remarks>
+        ///     This property avoids the costly square root operation required by the Length property. This makes it more suitable
+        ///     for comparisons.
+        /// </remarks>
+        public float LengthSquared => GetLength(true);
+
+        /// <summary>
+        /// This event triggers when a component changed.
+        /// </summary>
+        public event Action Changed;
+
+
+        /// <summary>
+        ///     Get the length of the vector.
         /// </summary>
         /// <param name="squared">If true, it will return the squared product.</param>
         /// <returns></returns>
@@ -57,7 +59,7 @@ namespace SM.Base.Types
 
 
         /// <summary>
-        /// Normalizes the vector.
+        ///     Normalizes the vector.
         /// </summary>
         public void Normalize()
         {
@@ -66,7 +68,7 @@ namespace SM.Base.Types
         }
 
         /// <summary>
-        /// Sets the X-Component.
+        ///     Sets the X-Component.
         /// </summary>
         /// <param name="x">X-Component</param>
         public virtual void Set(float uniform, bool triggerChanged = true)
@@ -75,6 +77,11 @@ namespace SM.Base.Types
             if (triggerChanged) TriggerChanged();
         }
 
+        /// <summary>
+        /// Adds the value to the components.
+        /// </summary>
+        /// <param name="uniform"></param>
+        /// <param name="triggerChanged"></param>
         public virtual void Add(float uniform, bool triggerChanged = true)
         {
             X += uniform;
@@ -82,20 +89,24 @@ namespace SM.Base.Types
         }
 
         /// <summary>
-        /// Conversion into <see cref="float"/>
+        ///     Conversion into <see cref="float" />
         /// </summary>
-        public static implicit operator float(CVector1 vector1) => vector1.X;
+        public static implicit operator float(CVector1 vector1)
+        {
+            return vector1.X;
+        }
+
         /// <summary>
-        /// Conversion from <see cref="float"/> to One-dimensional Vector.
+        ///     Conversion from <see cref="float" /> to One-dimensional Vector.
         /// </summary>
         /// <param name="f"></param>
         /// <returns></returns>
         //public static implicit operator CVector1(float f) => new CVector1(f);
-
         protected virtual float GetLengthProcess()
         {
             return X * X;
         }
+
         protected virtual void NormalizationProcess(float length)
         {
             X *= length;

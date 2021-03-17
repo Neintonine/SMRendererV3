@@ -1,7 +1,6 @@
 ﻿#region usings
 
 using System;
-using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
 
 #endregion
@@ -17,21 +16,8 @@ namespace SM.OGL.Mesh
 
         public static int LastID { get; internal set; } = -1;
 
-        /// <summary>
-        ///     Generates the AttribDataIndex
-        /// </summary>
-        protected GenericMesh()
-        {
-            Attributes = new MeshAttributeList()
-            {
-                {0, "vertex", Vertex},
-                {1, "uv", UVs},
-                {2, "normal", Normals}
-            };
-        }
-
         /// <inheritdoc />
-        protected override bool AutoCompile { get; } = true;
+        protected override bool AutoCompile { get; set; } = true;
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.VertexArray;
@@ -71,6 +57,19 @@ namespace SM.OGL.Mesh
         ///     Stores indices for a more performance friendly method to draw objects.
         /// </summary>
         public virtual int[] Indices { get; set; }
+
+        /// <summary>
+        ///     Generates the AttribDataIndex
+        /// </summary>
+        protected GenericMesh()
+        {
+            Attributes = new MeshAttributeList()
+            {
+                {0, "vertex", Vertex},
+                {1, "uv", UVs},
+                {2, "normal", Normals}
+            };
+        }
 
         public void UpdateBoundingBox()
         {

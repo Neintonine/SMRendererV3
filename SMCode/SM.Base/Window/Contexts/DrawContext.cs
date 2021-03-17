@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿#region usings
+
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Drawing;
 using SM.Base.Scene;
+using SM.Base.Shaders;
 using SM.OGL.Mesh;
 
-namespace SM.Base.Windows
+#endregion
+
+namespace SM.Base.Window
 {
     public struct DrawContext
     {

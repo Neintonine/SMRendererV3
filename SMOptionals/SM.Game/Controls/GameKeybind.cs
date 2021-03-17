@@ -1,5 +1,4 @@
 ﻿using System;
-using OpenTK.Input;
 
 namespace SM.Game.Controls
 {

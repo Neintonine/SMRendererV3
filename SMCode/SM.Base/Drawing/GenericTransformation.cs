@@ -12,12 +12,18 @@ namespace SM.Base.Drawing
     public abstract class GenericTransformation
     {
         /// <summary>
-        ///     If true, ignores the transformation and sends <see cref="Matrix4.Identity"/>, when requested.
+        ///     If true, ignores the transformation and sends <see cref="Matrix4.Identity" />, when requested.
         /// </summary>
         public bool Ignore = false;
 
+        /// <summary>
+        /// The last matrix that was used to calculate the real world matrix.
+        /// </summary>
         public Matrix4 LastMaster { get; internal set; }
 
+        /// <summary>
+        /// The transformation in world space.
+        /// </summary>
         public Matrix4 InWorldSpace => MergeMatrix(LastMaster);
 
         /// <summary>

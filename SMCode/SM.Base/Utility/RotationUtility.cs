@@ -5,7 +5,7 @@ using OpenTK;
 
 #endregion
 
-namespace SM.Utility
+namespace SM.Base.Utility
 {
     /// <summary>
     ///     Utilitys for rotations

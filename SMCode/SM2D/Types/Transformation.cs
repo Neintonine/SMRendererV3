@@ -1,13 +1,10 @@
 ﻿#region usings
 
-using System;
-using System.Drawing.Drawing2D;
 using OpenTK;
 using SM.Base.Drawing;
-using SM.Base.Scene;
 using SM.Base.Textures;
 using SM.Base.Types;
-using SM.Utility;
+using SM.Base.Utility;
 
 #endregion
 

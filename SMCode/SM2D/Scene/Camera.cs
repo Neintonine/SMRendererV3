@@ -1,12 +1,10 @@
 ﻿#region usings
 
 using System;
-using System.Runtime.Serialization.Formatters;
 using OpenTK;
-using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Types;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 

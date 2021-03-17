@@ -1,10 +1,13 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Objects.Static;
-using SM.OGL.Framebuffer;
+using SM.Base.Utility;
 using SM.OGL.Shaders;
-using SM.Utility;
+
+#endregion
 
 namespace SM.Base.PostProcess
 {
@@ -13,8 +16,12 @@ namespace SM.Base.PostProcess
     /// </summary>
     public class PostProcessShader : GenericShader
     {
-        private static readonly ShaderFile _fragExtensions = new ShaderFile(AssemblyUtility.ReadAssemblyFile("SM.Base.PostProcess.DefaultFiles.extensions.frag"));
-        private static readonly ShaderFile _normalVertex = new ShaderFile(AssemblyUtility.ReadAssemblyFile("SM.Base.PostProcess.DefaultFiles.vertexFile.vert"));
+        private static readonly ShaderFile _fragExtensions =
+            new ShaderFile(AssemblyUtility.ReadAssemblyFile("SM.Base.PostProcess.DefaultFiles.extensions.frag"));
+
+        private static readonly ShaderFile _normalVertex =
+            new ShaderFile(AssemblyUtility.ReadAssemblyFile("SM.Base.PostProcess.DefaultFiles.vertexFile.vert"));
+
         private static readonly string _normalVertexWithExt =
             AssemblyUtility.ReadAssemblyFile("SM.Base.PostProcess.DefaultFiles.vertexWithExt.vert");
 
@@ -22,8 +29,9 @@ namespace SM.Base.PostProcess
         ///     Creates the shader with the default vertex shader and custom fragment.
         /// </summary>
         public PostProcessShader(string fragment) : this(_normalVertex,
-            new ShaderFile(fragment)) 
-        { }
+            new ShaderFile(fragment))
+        {
+        }
 
         /// <summary>
         ///     Creates the shader with an vertex extension and custom fragment.
@@ -32,9 +40,10 @@ namespace SM.Base.PostProcess
         /// <param name="fragment"></param>
         public PostProcessShader(string vertexExt, string fragment) : this(new ShaderFile(_normalVertexWithExt)
         {
-            GLSLExtensions = new List<ShaderFile>() { new ShaderFile(vertexExt) }
-        }, new ShaderFile(fragment)) 
-        { }
+            GLSLExtensions = new List<ShaderFile> {new ShaderFile(vertexExt)}
+        }, new ShaderFile(fragment))
+        {
+        }
 
         private PostProcessShader(ShaderFile vertex, ShaderFile fragment) : base(
             new ShaderFileCollection(vertex, fragment))
@@ -43,7 +52,7 @@ namespace SM.Base.PostProcess
         }
 
         /// <summary>
-        /// Draws the shader with special uniforms.
+        ///     Draws the shader with special uniforms.
         /// </summary>
         /// <param name="color"></param>
         /// <param name="setUniformAction"></param>

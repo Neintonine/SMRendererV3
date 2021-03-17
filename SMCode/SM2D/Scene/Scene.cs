@@ -1,12 +1,10 @@
 ﻿#region usings
 
-using System.Drawing.Drawing2D;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base;
 using SM.Base.Objects.Static;
 using SM.Base.Scene;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM2D.Drawing;
 
 #endregion

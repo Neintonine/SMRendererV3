@@ -1,9 +1,7 @@
 ﻿#region usings
 
 using System;
-using System.Diagnostics.Eventing.Reader;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 
@@ -35,7 +33,7 @@ namespace SM.Base.Time
         /// <summary>
         ///     The target time in seconds.
         /// </summary>
-        public float Target { get; private set; }
+        public float Target { get; }
 
         /// <summary>
         ///     The already elapsed time but normalized to the target.

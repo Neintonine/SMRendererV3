@@ -1,7 +1,6 @@
-﻿namespace SM.Utility
+﻿namespace SM.Base.Utility
 {
     public class ShaderUtility
     {
-        
     }
 }

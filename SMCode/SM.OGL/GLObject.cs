@@ -1,9 +1,8 @@
 ﻿#region usings
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using OpenTK.Audio;
 using OpenTK.Graphics.OpenGL4;
 
 #endregion
@@ -16,6 +15,7 @@ namespace SM.OGL
     public abstract class GLObject
     {
         private static List<GLObject> _disposableObjects = new List<GLObject>();
+        private string _name = "";
 
         protected bool ReportAsNotCompiled;
 
@@ -23,16 +23,28 @@ namespace SM.OGL
         ///     Contains the OpenGL ID
         /// </summary>
         protected int _id = -1;
+
+        protected bool CanCompile = true;
         
         /// <summary>
         ///     If true, the system will call "Compile()", when "ID" is tried to get, but the id is still -1.
         /// </summary>
-        protected virtual bool AutoCompile { get; } = false;
+        protected virtual bool AutoCompile { get; set; } = false;
 
         /// <summary>
         ///     Checks if the object was compiled.
         /// </summary>
         public bool WasCompiled => _id > 0 && !ReportAsNotCompiled;
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                if (GLSystem.Debugging && WasCompiled) GL.ObjectLabel(TypeIdentifier, _id, _name.Length, _name);
+            }
+        }
 
         /// <summary>
         ///     Returns the id for this object.
@@ -55,7 +67,21 @@ namespace SM.OGL
         [DebuggerStepThrough]
         private void PerformCompile()
         {
+            if (!CanCompile) return;
+
             Compile();
+
+            if (GLSystem.Debugging && string.IsNullOrEmpty(_name))
+            {
+                try
+                {
+                    GL.ObjectLabel(TypeIdentifier, _id, _name.Length, _name);
+                }
+                catch
+                {
+                    // ignore
+                }
+            }
         }
 
         /// <summary>
@@ -85,13 +111,9 @@ namespace SM.OGL
             Compile();
         }
 
-        /// <summary>
-        ///     Names the object for debugging.
-        /// </summary>
-        /// <param name="name"></param>
-        public void Name(string name)
+        public override string ToString()
         {
-            if (GLSystem.Debugging) GL.ObjectLabel(TypeIdentifier, _id, name.Length, name);
+            return $"{GetType().Name} {(string.IsNullOrEmpty(_name) ? "" : $"\"{_name}\" ")}[{_id}]";
         }
 
         public static void DisposeMarkedObjects()

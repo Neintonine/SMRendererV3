@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region usings
+
+using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
@@ -9,13 +9,16 @@ using SM.Base.Drawing;
 using SM.Base.Objects.Static;
 using SM.Base.PostProcess;
 using SM.Base.Scene;
-using SM.Base.ShaderExtension;
+using SM.Base.Shaders.Extensions;
 using SM.Base.Time;
+using SM.Base.Utility;
 using SM.OGL;
-using SM.Utility;
 using Keyboard = SM.Base.Controls.Keyboard;
+using Mouse = SM.Base.Controls.Mouse;
 
-namespace SM.Base.Windows
+#endregion
+
+namespace SM.Base.Window
 {
     internal class WindowCode
     {
@@ -69,19 +72,16 @@ namespace SM.Base.Windows
         internal static void Update(IGenericWindow window, float deltatime)
         {
             Deltatime.UpdateDelta = deltatime;
-            SM.Base.Controls.Mouse.SetState();
-            Controls.Keyboard.SetStage();
-            var context = new UpdateContext()
+            Mouse.SetState();
+            Keyboard.SetStage();
+            var context = new UpdateContext
             {
                 Window = window,
 
                 Scene = window.CurrentScene
             };
 
-            if (Keyboard.IsDown(Key.AltLeft) && Keyboard.IsDown(Key.F4))
-            {
-                window.Close();
-            }
+            if (Keyboard.IsDown(Key.AltLeft) && Keyboard.IsDown(Key.F4)) window.Close();
 
             Stopwatch.PerformTicks(context);
             window.CurrentScene?.Update(context);
@@ -97,7 +97,7 @@ namespace SM.Base.Windows
             GLObject.DisposeMarkedObjects();
 
             Deltatime.RenderDelta = deltatime;
-            var drawContext = new DrawContext()
+            var drawContext = new DrawContext
             {
                 Window = window,
                 Scene = window.CurrentScene,
@@ -110,7 +110,7 @@ namespace SM.Base.Windows
                 TextureMatrix = Matrix3.Identity,
                 Instances = new Instance[1]
                 {
-                    new Instance() {ModelMatrix = Matrix4.Identity, TextureMatrix = Matrix3.Identity}
+                    new Instance {ModelMatrix = Matrix4.Identity, TextureMatrix = Matrix3.Identity}
                 }
             };
             drawContext.SetCamera(window.ViewportCamera);

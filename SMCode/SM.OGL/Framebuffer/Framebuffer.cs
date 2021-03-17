@@ -14,7 +14,7 @@ namespace SM.OGL.Framebuffer
     /// </summary>
     public class Framebuffer : GLObject
     {
-        protected override bool AutoCompile { get; } = true;
+        protected override bool AutoCompile { get; set; } = true;
 
         /// <summary>
         /// Represents the screen buffer.
@@ -22,11 +22,9 @@ namespace SM.OGL.Framebuffer
         public static readonly Framebuffer Screen = new Framebuffer
         {
             _id = 0,
-            _canBeCompiled = false
+            CanCompile = false,
         };
-
-        private bool _canBeCompiled = true;
-
+        
         private IFramebufferWindow _window;
         private float _windowScale;
 
@@ -77,8 +75,6 @@ namespace SM.OGL.Framebuffer
         /// <inheritdoc />
         public override void Compile()
         {
-            if (!_canBeCompiled) return;
-
             if (_window != null) Size = new Vector2(_window.Width * _windowScale, _window.Height * _windowScale);
 
             base.Compile();
@@ -181,7 +177,7 @@ namespace SM.OGL.Framebuffer
         {
             Framebuffer buffer = new Framebuffer()
             {
-                _canBeCompiled = false,
+                CanCompile = false,
                 ReportAsNotCompiled = true
             };
             switch (target)

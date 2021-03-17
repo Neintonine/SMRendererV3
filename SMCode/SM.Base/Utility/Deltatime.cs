@@ -1,4 +1,4 @@
-﻿namespace SM.Utility
+﻿namespace SM.Base.Utility
 {
     /// <summary>
     ///     A assistant to control the delta time.

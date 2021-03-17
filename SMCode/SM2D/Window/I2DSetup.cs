@@ -1,5 +1,5 @@
 ﻿using OpenTK;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 namespace SM2D
 {

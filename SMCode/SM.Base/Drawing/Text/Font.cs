@@ -32,8 +32,6 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public float FontSize = 12;
 
-        public float Spacing = 1;
-
         /// <summary>
         ///     The font style.
         ///     <para>Default: <see cref="System.Drawing.FontStyle.Regular" /></para>
@@ -44,6 +42,11 @@ namespace SM.Base.Drawing.Text
         ///     This contains all information for the different font character.
         /// </summary>
         public Dictionary<char, CharParameter> Positions = new Dictionary<char, CharParameter>();
+
+        /// <summary>
+        /// Allows a font wide spacing option.
+        /// </summary>
+        public float Spacing = 1;
 
         /// <summary>
         ///     Generates a font from a font family from the specified path.

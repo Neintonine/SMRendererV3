@@ -1,7 +1,7 @@
-﻿using SM.Base.Drawing;
-using SM.Base.Windows;
+﻿using SM.Base.Shaders;
+using SM.Base.Utility;
+using SM.Base.Window;
 using SM.OGL.Shaders;
-using SM.Utility;
 
 namespace SM2D.Shader
 {

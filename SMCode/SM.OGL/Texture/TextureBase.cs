@@ -12,14 +12,20 @@ namespace SM.OGL.Texture
     public abstract class TextureBase : GLObject
     {
         /// <inheritdoc />
-        protected override bool AutoCompile { get; } = true;
+        protected override bool AutoCompile { get; set; } = true;
         
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Texture;
 
+        /// <summary>
+        /// Contains the specific information of each pixel.
+        /// </summary>
         public PixelInformation PixelInformation;
 
+        /// <summary>
+        /// The target of the texture.
+        /// </summary>
         public TextureTarget Target { get; set; } = TextureTarget.Texture2D;
 
         /// <summary>
@@ -44,6 +50,7 @@ namespace SM.OGL.Texture
         /// </summary>
         public virtual int Height { get; protected set; }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             GL.DeleteTexture(_id);

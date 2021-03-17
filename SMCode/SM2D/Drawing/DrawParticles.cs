@@ -1,8 +1,7 @@
 ﻿using System;
 using OpenTK;
 using SM.Base.Drawing.Particles;
-using SM.Utility;
-using SM2D.Scene;
+using SM.Base.Utility;
 using SM2D.Types;
 
 namespace SM2D.Drawing

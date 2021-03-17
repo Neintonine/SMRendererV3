@@ -1,13 +1,11 @@
 ﻿#region usings
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 #endregion
 
-namespace SM.Utility
+namespace SM.Base.Utility
 {
     /// <summary>
     ///     A global helper class for randomization.
@@ -85,7 +83,7 @@ namespace SM.Utility
         }
 
         /// <summary>
-        /// Gets a random item from the provided list.
+        ///     Gets a random item from the provided list.
         /// </summary>
         public static TSource GetRandomItem<TSource>(this IList<TSource> list)
         {

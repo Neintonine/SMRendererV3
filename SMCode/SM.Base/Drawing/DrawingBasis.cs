@@ -1,12 +1,10 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using OpenTK.Graphics.ES11;
-using SM.Base;
+using OpenTK.Graphics.OpenGL4;
 using SM.Base.Scene;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Mesh;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 #endregion
 
@@ -22,14 +20,26 @@ namespace SM.Base.Drawing
         /// </summary>
         public Material Material = new Material();
 
+        /// <summary>
+        /// Transformation for the textures.
+        /// </summary>
+        public TextureTransformation TextureTransform = new TextureTransformation();
+
+        /// <summary>
+        /// This allows custom shaders to add own arguments.
+        /// </summary>
+        public ShaderArguments ShaderArguments => Material.ShaderArguments;
+
+        /// <summary>
+        /// This can force a shader to render the object with the specified mesh type.
+        /// </summary>
+        public PrimitiveType? ForcedMeshType { get; set; }
+
 
         /// <summary>
         ///     The mesh it should use.
         /// </summary>
         public GenericMesh Mesh { get; set; } = SMRenderer.DefaultMesh;
-
-        public ShaderArguments ShaderArguments => Material.ShaderArguments;
-        public TextureTransformation TextureTransform = new TextureTransformation();
 
         /// <inheritdoc />
         public object Parent { get; set; }
@@ -40,12 +50,11 @@ namespace SM.Base.Drawing
         /// <inheritdoc />
         public ICollection<string> Flags { get; set; }
 
-        public PrimitiveType? ForcedMeshType { get; set; }
-
         /// <summary>
         ///     This value determents if the object should draw something.
         /// </summary>
         public bool Active { get; set; } = true;
+
         public bool RenderActive { get; set; } = true;
 
         /// <inheritdoc />

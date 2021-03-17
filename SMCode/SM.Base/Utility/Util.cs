@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region usings
 
-namespace SM.Utility
+using System;
+
+#endregion
+
+namespace SM.Base.Utility
 {
     public class Util
     {
@@ -11,6 +15,7 @@ namespace SM.Utility
                 obj.Initialization();
                 obj.IsInitialized = true;
             }
+
             obj.Activate();
         }
 

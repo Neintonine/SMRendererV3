@@ -51,6 +51,12 @@ namespace SM.OGL.Shaders
             Fragment = new []{fragment};
         }
 
+        /// <summary>
+        ///     Creates a collection with arrays of shader files.
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <param name="fragment"></param>
+        /// <param name="geometry"></param>
         public ShaderFileCollection(ShaderFile[] vertex, ShaderFile[] fragment, ShaderFile[] geometry = default)
         {
             Vertex = vertex;

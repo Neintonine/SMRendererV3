@@ -7,16 +7,13 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Objects
 {
-    /// <inheritdoc />
+    /// <inheritdoc cref="GenericMesh" />
     public class Mesh : GenericMesh, ILineMesh
     {
-
-        public float LineWidth { get; set; } = 1;
-
         /// <summary>
         ///     While initializing, it will add the <see cref="Color" /> to the data index.
         /// </summary>
-        public Mesh(PrimitiveType type) : base()
+        public Mesh(PrimitiveType type)
         {
             PrimitiveType = type;
             Attributes.Add(3, "color", Color);
@@ -27,5 +24,7 @@ namespace SM.Base.Objects
         /// </summary>
         public virtual VBO Color { get; protected set; }
 
+        /// <inheritdoc />
+        public float LineWidth { get; set; } = 1;
     }
 }

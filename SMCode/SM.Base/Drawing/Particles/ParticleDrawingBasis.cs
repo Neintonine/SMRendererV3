@@ -1,31 +1,42 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Collections.Generic;
 using OpenTK;
-using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Time;
-using SM.Base.Types;
-using SM.Base.Windows;
-using SM.OGL.Shaders;
+using SM.Base.Window;
+
+#endregion
 
 namespace SM.Base.Drawing.Particles
 {
     /// <summary>
-    /// The (drawing) basis for particles
+    ///     The (drawing) basis for particles
     /// </summary>
     public abstract class ParticleDrawingBasis<TTransform, TDirection> : DrawingBasis<TTransform>, IScriptable
         where TTransform : GenericTransformation, new()
         where TDirection : struct
     {
+        /// <summary>
+        ///     The amount of particles
+        /// </summary>
+        public int Amount = 32;
+
+        /// <summary>
+        ///     This contains the different instances for the particles.
+        /// </summary>
+        protected List<Instance> instances;
+
+        /// <summary>
+        ///     The maximum speed of the particles
+        /// </summary>
+        public float MaxSpeed = 1;
 
         /// <summary>
         ///     This contains all important information for each particle.
         /// </summary>
         protected ParticleStruct<TDirection>[] particleStructs;
-        /// <summary>
-        ///     This contains the different instances for the particles.
-        /// </summary>
-        protected List<Instance> instances;
 
         /// <summary>
         ///     The stopwatch of the particles.
@@ -33,13 +44,13 @@ namespace SM.Base.Drawing.Particles
         protected Timer timer;
 
         /// <summary>
-        ///     The amount of particles
+        ///     Sets up the timer.
         /// </summary>
-        public int Amount = 32;
-        /// <summary>
-        ///     The maximum speed of the particles
-        /// </summary>
-        public float MaxSpeed = 1;
+        /// <param name="duration">Duration how long the particles should live</param>
+        protected ParticleDrawingBasis(TimeSpan duration)
+        {
+            timer = new Timer(duration);
+        }
 
         /// <summary>
         ///     Get/Sets the state of pausing.
@@ -55,13 +66,25 @@ namespace SM.Base.Drawing.Particles
         /// </summary>
         public abstract Func<TDirection, ParticleContext, TDirection> MovementCalculation { get; set; }
 
-        /// <summary>
-        ///     Sets up the timer.
-        /// </summary>
-        /// <param name="duration">Duration how long the particles should live</param>
-        protected ParticleDrawingBasis(TimeSpan duration)
+        /// <inheritdoc />
+        public bool UpdateActive { get; set; }
+
+        /// <inheritdoc />
+        public void Update(UpdateContext context)
         {
-            timer = new Timer(duration);
+            if (!timer.Running) return;
+
+            ParticleContext particleContext = new ParticleContext
+            {
+                Timer = timer
+            };
+
+            for (int i = 0; i < Amount; i++)
+            {
+                particleContext.Speed = particleStructs[i].Speed;
+                instances[i].ModelMatrix = CreateMatrix(particleStructs[i],
+                    MovementCalculation(particleStructs[i].Direction, particleContext));
+            }
         }
 
         /// <summary>
@@ -74,30 +97,11 @@ namespace SM.Base.Drawing.Particles
             CreateParticles();
         }
 
-        public bool UpdateActive { get; set; }
-
-        /// <inheritdoc />
-        public void Update(UpdateContext context)
-        {
-            if (!timer.Running) return;
-
-            ParticleContext particleContext = new ParticleContext()
-            {
-                Timer = timer,
-            };
-
-            for (int i = 0; i < Amount; i++)
-            {
-                particleContext.Speed = particleStructs[i].Speed;
-                instances[i].ModelMatrix = CreateMatrix(particleStructs[i], MovementCalculation(particleStructs[i].Direction, particleContext));
-            }
-        }
-
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
             if (!timer.Active) return;
-            
+
             base.DrawContext(ref context);
 
             context.Instances = instances;
@@ -124,7 +128,7 @@ namespace SM.Base.Drawing.Particles
         ///     Creates a particle.
         /// </summary>
         protected abstract ParticleStruct<TDirection> CreateObject(int index);
-        
+
         /// <summary>
         ///     Generates the desired matrix for drawing.
         /// </summary>

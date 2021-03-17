@@ -38,6 +38,9 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public DrawBuffersEnum DrawBuffersEnum => DrawBuffersEnum.ColorAttachment0 + AttachmentID;
 
+        /// <summary>
+        /// Returns true, if multisamples are above 0. 
+        /// </summary>
         public bool IsMultisampled => _multisamples > 0;
 
         /// <summary>
