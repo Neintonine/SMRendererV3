@@ -16,7 +16,10 @@ namespace SM_TEST
 
         public override void Initialization()
         {
-            _bloom = new BloomEffect(hdr: true);
+            _bloom = new BloomEffect(hdr: true)
+            {
+                Threshold = .8f,
+            };
 
             MainFramebuffer = CreateWindowFramebuffer();
 

@@ -13,7 +13,7 @@ namespace SM.Base.PostEffects
 {
     public class BloomEffect : PostProcessEffect
     {
-        private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, new Vector2(0.32f, 1), new Vector2(0.432f, 0), new Vector2(1,0));
+        private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, Vector2.Zero, new Vector2(0.2f, 0f), new Vector2(1,0));
 
         private const float _defaultTextureScale = .75f;
 
@@ -34,7 +34,7 @@ namespace SM.Base.PostEffects
         private BezierCurve _weightCurve ;
         private float[] _weights;
 
-        public int Iterations = 1;
+        public int Iterations = 8;
         public float Threshold = .8f;
         public float Power = 1;
 
