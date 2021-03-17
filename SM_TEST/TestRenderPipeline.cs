@@ -13,11 +13,11 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(2);
+            MainFramebuffer = CreateWindowFramebuffer(0);
 
             _postBuffer = CreateWindowFramebuffer();
             Framebuffers.Add(_postBuffer);
-            _bloom = new BloomEffect(hdr: true)
+            _bloom = new BloomEffect(MainFramebuffer, hdr: true, .5f)
             {
                 Threshold = .8f,
             };
@@ -33,9 +33,7 @@ namespace SM_TEST
             context.Scene.DrawBackground(context);
             context.Scene.DrawMainObjects(context);
             context.Scene.DrawHUD(context);
-
-            PostProcessFinals.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
-
+            
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             _bloom.Draw(context);
 

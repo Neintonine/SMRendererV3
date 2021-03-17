@@ -24,7 +24,7 @@ namespace SM.OGL.Shaders
             }
             catch (KeyNotFoundException)
             {
-                GLCustomActions.AtWarning?.Invoke("Uniform '" + KeyString + key + "' at '" + ParentShader.GetType().Name + "' was not found. Tried to recreate it.");
+                GLCustomActions.AtWarning?.Invoke("Uniform '" + KeyString + key + "' at '" + ParentShader.ToString() + "' was not found. Tried to recreate it.");
                 var u = new Uniform(GL.GetUniformLocation(ParentShader, KeyString + key), this);
                 Add(key, u);
                 return u;

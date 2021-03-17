@@ -1,14 +1,17 @@
 ﻿#region usings
 
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base.Scene;
+using SM.Base.Utility;
 using SM.Base.Window.Contexts;
 using SM.OGL;
-using SM.Utility;
 using Mouse = SM.Base.Controls.Mouse;
 
 #endregion
@@ -54,41 +57,7 @@ namespace SM.Base.Window
 
         public GenericScene CurrentScene { get; private set; }
         public RenderPipeline CurrentRenderPipeline { get; private set; }
-
-        public void Update(UpdateContext context)
-        {
-        }
-
-        public void ApplySetup(ISetup setup)
-        {
-            AppliedSetup = setup;
-            setup.Applied(this);
-        }
-
-        public void SetScene(GenericScene scene)
-        {
-            if (Loading)
-            {
-                Loaded += window => SetScene(scene);
-                return;
-            }
-
-            WindowCode.PrepareScene(this, scene);
-            CurrentScene = scene;
-        }
-
-        public void SetRenderPipeline(RenderPipeline renderPipeline)
-        {
-            if (Loading)
-            {
-                Loaded += window => SetRenderPipeline(renderPipeline);
-                return;
-            }
-
-            WindowCode.PreparePipeline(this, renderPipeline);
-            CurrentRenderPipeline = renderPipeline;
-        }
-
+        
         public void TriggerLoad()
         {
             Load?.Invoke(this);
@@ -155,7 +124,7 @@ namespace SM.Base.Window
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            _fixedUpdateThread.Abort();
+            _fixedUpdateThread?.Abort();
         }
 
         public void Update(UpdateContext context)

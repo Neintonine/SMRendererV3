@@ -12,7 +12,7 @@ namespace SM.Base.PostEffects
     /// <summary>
     /// This class has some utility for render pipelines 
     /// </summary>
-    public static class PostProcessFinals
+    public static class PostProcessUtility
     {
         private static readonly PostProcessShader _hdrExposureShader =
             new PostProcessShader(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".finalize_hdr.glsl"));

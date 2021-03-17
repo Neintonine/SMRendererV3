@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base;
 using SM.Base.Window;
@@ -56,7 +57,7 @@ namespace SM_TEST
             DrawText text = new DrawText(font, "Test Text");
             text.Transform.Position.Set(50, 0);
             text.Transform.Size.Set(2);
-            scene.Objects.Add(text);
+            scene.HUD.Add(text);
 
             //particles.Trigger();
         }

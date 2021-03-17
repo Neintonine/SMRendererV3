@@ -3,7 +3,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SM.Base.Drawing;
-using SM.Base.Windows;
+using SM.Base.Window;
+using SM.Base.Window.Contexts;
 
 #endregion
 
@@ -15,6 +16,7 @@ namespace SM.Base.Scene
     public abstract class GenericItemCollection : List<IShowItem>, IShowItem, IShowCollection, IScriptable, IFixedScriptable
     {
         private List<IScriptable> _scriptableObjects = new List<IScriptable>();
+        private List<IFixedScriptable> _fixedScriptables = new List<IFixedScriptable>();
 
         /// <summary>
         ///     Currently active script objects.

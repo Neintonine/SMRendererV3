@@ -15,44 +15,42 @@ namespace SM.Base.PostEffects
 {
     public class BloomEffect : PostProcessEffect
     {
-        private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, new Vector2(0.32f, 1), new Vector2(0.432f, 0), new Vector2(1,0));
+        private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, Vector2.Zero, new Vector2(0.4f, 0), new Vector2(.5f,0));
+        private static readonly PostProcessShader _mergeShader = new PostProcessShader(
+            AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_merge_vert.glsl"),
+            AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_merge.glsl"));
 
+        private static readonly PostProcessShader _shader =
+            new PostProcessShader(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_blur.glsl"));
         private const float _defaultTextureScale = .75f;
 
-        private static readonly BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, new Vector2(0.32f, 1),
-            new Vector2(0.432f, 0), new Vector2(1, 0));
+        private Framebuffer _source;
 
         private Framebuffer _bloomBuffer1;
         private Framebuffer _bloomBuffer2;
 
         private readonly bool _hdr;
 
-        private readonly PostProcessShader _mergeShader = new PostProcessShader(
-            AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_merge_vert.glsl"),
-            AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_merge.glsl"));
-
-        private readonly PostProcessShader _shader =
-            new PostProcessShader(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom_blur.glsl"));
-
-        private Framebuffer _source;
-
         private readonly float _textureScale = .75f;
 
         private BezierCurve _weightCurve;
         private float[] _weights;
 
-        public int Iterations = 1;
+        private ColorAttachment _xBuffer;
+        private ColorAttachment _yBuffer;
+
+        public TextureBase AmountMap;
+        public TextureTransformation AmountTransform = new TextureTransformation();
+
+        public int Iterations = 8;
         public float Threshold = .8f;
         public float Power = 1;
 
         public bool Enable = true;
 
-        public int Iterations = 1;
         public float MaxAmount = 1;
 
         public float MinAmount = 0;
-        public float Power = 1;
-        public float Threshold = .8f;
 
         public int WeightCurvePickAmount = 4;
 
