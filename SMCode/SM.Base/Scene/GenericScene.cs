@@ -110,6 +110,12 @@ namespace SM.Base.Scene
             _hud?.Update(context);
         }
 
+        public virtual void FixedUpdate(FixedUpdateContext context)
+        {
+            _objectCollection?.FixedUpdate(context);
+            _hud?.FixedUpdate(context);
+        }
+
         /// <summary>
         ///     Draws this scene.
         /// </summary>

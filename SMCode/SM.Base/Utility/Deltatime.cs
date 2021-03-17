@@ -17,6 +17,24 @@
         /// </summary>
         public bool UseRender;
 
+
+        /// <summary>
+        ///     The current update delta time.
+        /// </summary>
+        public static float UpdateDelta { get; internal set; }
+
+        public static float FixedUpdateDelta { get; set; }
+
+        /// <summary>
+        ///     The current render delta time.
+        /// </summary>
+        public static float RenderDelta { get; internal set; }
+
+        /// <summary>
+        ///     The calculated delta time.
+        /// </summary>
+        public float DeltaTime => (UseRender ? RenderDelta : UpdateDelta) * Scale;
+
         /// <summary>
         ///     Creates a delta time assistant.
         /// </summary>
@@ -30,20 +48,5 @@
             UseRender = useRender;
             Scale = scale;
         }
-
-        /// <summary>
-        ///     The current update delta time.
-        /// </summary>
-        public static float UpdateDelta { get; internal set; }
-
-        /// <summary>
-        ///     The current render delta time.
-        /// </summary>
-        public static float RenderDelta { get; internal set; }
-
-        /// <summary>
-        ///     The calculated delta time.
-        /// </summary>
-        public float DeltaTime => (UseRender ? RenderDelta : UpdateDelta) * Scale;
     }
 }

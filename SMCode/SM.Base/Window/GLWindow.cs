@@ -6,7 +6,9 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base.Scene;
+using SM.Base.Window.Contexts;
 using SM.OGL;
+using SM.Utility;
 using Mouse = SM.Base.Controls.Mouse;
 
 #endregion
@@ -16,6 +18,7 @@ namespace SM.Base.Window
     public class GLWindow : GameWindow, IGenericWindow
     {
         private Vector2 _flagWindowSize;
+        private Thread _fixedUpdateThread;
 
         public WindowFlags WindowFlags;
 
@@ -149,6 +152,47 @@ namespace SM.Base.Window
             Mouse.MouseMoveEvent(e, this);
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            _fixedUpdateThread.Abort();
+        }
+
+        public void Update(UpdateContext context)
+        {
+            
+        }
+
+        public void ApplySetup(ISetup setup)
+        {
+            AppliedSetup = setup;
+            setup.Applied(this);
+        }
+
+        public void SetScene(GenericScene scene)
+        {
+            if (Loading)
+            {
+                Loaded += window => SetScene(scene);
+                return;
+            }
+
+            WindowCode.PrepareScene(this, scene);
+            CurrentScene = scene;
+        }
+
+        public void SetRenderPipeline(RenderPipeline renderPipeline)
+        {
+            if (Loading)
+            {
+                Loaded += window => SetRenderPipeline(renderPipeline);
+                return;
+            }
+
+            WindowCode.PreparePipeline(this, renderPipeline);
+            CurrentRenderPipeline = renderPipeline;
+        }
+
         public void ChangeWindowFlag(WindowFlags newFlag)
         {
             WindowFlags = newFlag;
@@ -175,12 +219,29 @@ namespace SM.Base.Window
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newFlag), newFlag, null);
             }
+        }
 
-            if (newFlag == WindowFlags.BorderlessWindow)
+        public void RunFixedUpdate(float updatesPerSecond)
+        {
+            Deltatime.FixedUpdateDelta = 1 / (float)updatesPerSecond;
+
+            _fixedUpdateThread = new Thread(ExecuteFixedUpdate);
+            _fixedUpdateThread.Start();
+        }
+
+        private void ExecuteFixedUpdate()
+        {
+            Stopwatch deltaStop = new Stopwatch();
+            while (Thread.CurrentThread.ThreadState != System.Threading.ThreadState.AbortRequested)
             {
-                WindowBorder = WindowBorder.Hidden;
-                X = Screen.PrimaryScreen.Bounds.X;
-                Y = Screen.PrimaryScreen.Bounds.Y;
+                deltaStop.Restart();
+
+                FixedUpdateContext context = new FixedUpdateContext();
+
+                CurrentScene?.FixedUpdate(context);
+
+                long delta = deltaStop.ElapsedMilliseconds;
+                Thread.Sleep(Math.Max((int)(Deltatime.FixedUpdateDelta * 1000) - (int)delta, 0));
             }
         }
     }

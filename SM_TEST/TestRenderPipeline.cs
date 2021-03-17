@@ -17,9 +17,12 @@ namespace SM_TEST
 
             _postBuffer = CreateWindowFramebuffer();
             Framebuffers.Add(_postBuffer);
+            _bloom = new BloomEffect(hdr: true)
+            {
+                Threshold = .8f,
+            };
 
 
-            _bloom = new BloomEffect(_postBuffer, hdr: true);
             _bloom.Initilize(this);
             base.Initialization();
         }

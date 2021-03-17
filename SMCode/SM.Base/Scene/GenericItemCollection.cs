@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SM.Base.Drawing;
-using SM.Base.Window;
+using SM.Base.Windows;
 
 #endregion
 
@@ -12,9 +12,9 @@ namespace SM.Base.Scene
     /// <summary>
     ///     Contains a list of show items.
     /// </summary>
-    public abstract class GenericItemCollection : List<IShowItem>, IShowItem, IShowCollection, IScriptable
+    public abstract class GenericItemCollection : List<IShowItem>, IShowItem, IShowCollection, IScriptable, IFixedScriptable
     {
-        private readonly List<IScriptable> _scriptableObjects = new List<IScriptable>();
+        private List<IScriptable> _scriptableObjects = new List<IScriptable>();
 
         /// <summary>
         ///     Currently active script objects.
@@ -42,6 +42,16 @@ namespace SM.Base.Scene
 
         /// <inheritdoc />
         public bool RenderActive { get; set; } = true;
+
+        public virtual void FixedUpdate(FixedUpdateContext context)
+        {
+            if (!Active || !UpdateActive) return;
+
+            for (int i = 0; i < _fixedScriptables.Count; i++)
+            {
+                _fixedScriptables[i].FixedUpdate(context);
+            }
+        }
 
         /// <inheritdoc cref="IShowCollection.Draw" />
         public virtual void Draw(DrawContext context)
@@ -88,6 +98,8 @@ namespace SM.Base.Scene
 
                 if (item is IScriptable scriptable)
                     AddScript(scriptable);
+
+                if (item is IFixedScriptable fixedScriptable) _fixedScriptables.Add(fixedScriptable);
             }
         }
 
@@ -109,6 +121,7 @@ namespace SM.Base.Scene
         public void AddScript(IScriptable item)
         {
             _scriptableObjects.Add(item);
+            if (item is IFixedScriptable fs) _fixedScriptables.Add(fs);
         }
 
         public void Remove(params IShowItem[] items)
@@ -119,6 +132,9 @@ namespace SM.Base.Scene
 
                 if (item is IScriptable scriptable)
                     RemoveScript(scriptable);
+
+                if (item is IFixedScriptable fixedScriptable)
+                    _fixedScriptables.Remove(fixedScriptable);
             }
         }
 
@@ -140,6 +156,7 @@ namespace SM.Base.Scene
         public void RemoveScript(IScriptable item)
         {
             _scriptableObjects.Remove(item);
+            if (item is IFixedScriptable fs) _fixedScriptables.Remove(fs);
         }
 
         public ICollection<IShowItem> GetAllItems(bool includeCollections = false)

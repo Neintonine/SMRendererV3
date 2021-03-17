@@ -53,7 +53,7 @@ namespace SM_TEST
             DrawObject2D box = new DrawObject2D();
             scene.Objects.Add(box);
 
-            DrawText text = new DrawText(font, "Text");
+            DrawText text = new DrawText(font, "Test Text");
             text.Transform.Position.Set(50, 0);
             text.Transform.Size.Set(2);
             scene.Objects.Add(text);
