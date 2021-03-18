@@ -21,8 +21,6 @@ namespace SM.Base.Window
         bool DrawWhileUnfocused { get; set; }
         bool UpdateWhileUnfocused { get; set; }
 
-        int Width { get; }
-        int Height { get; }
         Vector2 WindowSize { get; set; }
 
         Rectangle ClientRectangle { get; }

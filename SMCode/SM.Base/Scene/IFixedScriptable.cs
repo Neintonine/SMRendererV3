@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace SM.Base.Scene
 {
+    /// <summary>
+    /// This interface allows for a object to implerment a fixed update.
+    /// </summary>
     public interface IFixedScriptable
     {
+        /// <summary>
+        /// Executes a fixed update.
+        /// </summary>
+        /// <param name="context"></param>
         void FixedUpdate(FixedUpdateContext context);
 
     }

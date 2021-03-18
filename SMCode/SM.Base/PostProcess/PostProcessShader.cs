@@ -54,7 +54,6 @@ namespace SM.Base.PostProcess
         /// <summary>
         ///     Draws the shader with special uniforms.
         /// </summary>
-        /// <param name="color"></param>
         /// <param name="setUniformAction"></param>
         public void Draw(Action<UniformCollection> setUniformAction)
         {

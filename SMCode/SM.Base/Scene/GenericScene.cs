@@ -92,11 +92,12 @@ namespace SM.Base.Scene
         /// </summary>
         public bool IsInitialized { get; set; }
 
-
+        /// <inheritdoc/>
         public virtual void Activate()
         {
         }
 
+        /// <inheritdoc/>
         public virtual void Initialization()
         {
         }
@@ -111,6 +112,9 @@ namespace SM.Base.Scene
             _hud?.Update(context);
         }
 
+        /// <summary>
+        /// Executes a fixed update for this scene.
+        /// </summary>
         public virtual void FixedUpdate(FixedUpdateContext context)
         {
             _objectCollection?.FixedUpdate(context);

@@ -65,7 +65,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Sets each component to the <see cref="Vector3" /> counter-part.
         /// </summary>
-        /// <param name="vector"></param>
         public void Set(Vector3 vector, bool triggerChanged = true)
         {
             Set(vector.X, vector.Y, vector.Z, triggerChanged);

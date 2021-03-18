@@ -53,6 +53,11 @@ namespace SM.Base.Drawing
             return _modelMatrix;
         }
 
+        /// <summary>
+        /// This combines the current matrix with the provided one.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         public Matrix4 MergeMatrix(Matrix4 matrix)
         {
             return GetMatrix() * matrix;

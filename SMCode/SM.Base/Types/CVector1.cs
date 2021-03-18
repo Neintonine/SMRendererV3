@@ -70,7 +70,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Sets the X-Component.
         /// </summary>
-        /// <param name="x">X-Component</param>
         public virtual void Set(float uniform, bool triggerChanged = true)
         {
             X = uniform;
@@ -80,8 +79,6 @@ namespace SM.Base.Types
         /// <summary>
         /// Adds the value to the components.
         /// </summary>
-        /// <param name="uniform"></param>
-        /// <param name="triggerChanged"></param>
         public virtual void Add(float uniform, bool triggerChanged = true)
         {
             X += uniform;

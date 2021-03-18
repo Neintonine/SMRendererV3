@@ -8,17 +8,38 @@ using SM.OGL.Mesh;
 
 namespace SM.Base.Utility
 {
+    /// <summary>
+    /// A utility class to calculate rays.
+    /// </summary>
     public struct Ray
     {
+        /// <summary>
+        /// The position of the ray.
+        /// </summary>
         public Vector3 Position;
+        /// <summary>
+        /// The direction of the ray.
+        /// </summary>
         public Vector3 Direction;
 
+        /// <summary>
+        /// Constructs a ray.
+        /// </summary>
+        /// <param name="position">The position of the ray</param>
+        /// <param name="direction">The direction of the ray.</param>
         public Ray(Vector3 position, Vector3 direction)
         {
             Position = position;
             Direction = direction.Normalized();
         }
 
+        /// <summary>
+        /// Calculates a object intersection with OBB.
+        /// </summary>
+        /// <param name="box">The bounding box of the object</param>
+        /// <param name="modelMatrix">The model matrix of the object</param>
+        /// <param name="distance">Distance to the object.</param>
+        /// <returns>If true, it intersects with the object.</returns>
         public bool ObjectIntersection(BoundingBox box, Matrix4 modelMatrix, out float distance)
         {
             distance = 0.0f;

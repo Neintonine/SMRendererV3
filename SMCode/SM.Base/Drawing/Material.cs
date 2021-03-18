@@ -13,6 +13,9 @@ namespace SM.Base.Drawing
     /// </summary>
     public class Material
     {
+        /// <summary>
+        ///     A setting to enable Blending.
+        /// </summary>
         public bool Blending = false;
 
         /// <summary>

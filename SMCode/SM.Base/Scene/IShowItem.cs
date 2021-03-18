@@ -29,7 +29,13 @@ namespace SM.Base.Scene
         /// </summary>
         ICollection<string> Flags { get; set; }
 
+        /// <summary>
+        /// If true it will ignore the object.
+        /// </summary>
         bool Active { get; set; }
+        /// <summary>
+        /// Íf true it will ignore the object when rendering.
+        /// </summary>
         bool RenderActive { get; set; }
 
         /// <summary>

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SM.Base.Window.Contexts
 {
+    /// <summary>
+    /// A context for the fixed update.
+    /// </summary>
     public struct FixedUpdateContext
     {
 

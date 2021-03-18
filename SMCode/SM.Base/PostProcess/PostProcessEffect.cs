@@ -13,8 +13,14 @@ namespace SM.Base.PostProcess
     /// </summary>
     public abstract class PostProcessEffect
     {
+        /// <summary>
+        /// This contains the transformation matrix for post process effects.
+        /// </summary>
         public static Matrix4 Mvp = Matrix4.Identity;
 
+        /// <summary>
+        /// This contains the pipeline this instance is currently active.
+        /// </summary>
         protected RenderPipeline Pipeline;
 
         /// <summary>

@@ -52,8 +52,8 @@ namespace SM.Base.Window
         public Vector2 WindowSize { get; set; }
 
         public ISetup AppliedSetup { get; private set; }
-        public event Action<IGenericWindow> Resize;
-        public event Action<IGenericWindow> Load;
+        public new event Action<IGenericWindow> Resize;
+        public new event Action<IGenericWindow> Load;
 
         public GenericScene CurrentScene { get; private set; }
         public RenderPipeline CurrentRenderPipeline { get; private set; }

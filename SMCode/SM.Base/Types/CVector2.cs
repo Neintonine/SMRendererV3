@@ -49,7 +49,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Sets each component to the same value
         /// </summary>
-        /// <param name="uniform"></param>
         public override void Set(float uniform, bool triggerChanged = true)
         {
             Y = uniform;

@@ -23,6 +23,9 @@
         /// </summary>
         public static float UpdateDelta { get; internal set; }
 
+        /// <summary>
+        ///     The current fixed update delta time.
+        /// </summary>
         public static float FixedUpdateDelta { get; set; }
 
         /// <summary>

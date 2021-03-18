@@ -32,6 +32,7 @@ namespace SM.Base.Controls
         ///     The event to update the values.
         /// </summary>
         /// <param name="mmea">The event args.</param>
+        /// <param name="window">The window where the mouse is checked</param>
         internal static void MouseMoveEvent(MouseMoveEventArgs mmea, IGenericWindow window)
         {
             InScreen = new Vector2(mmea.X, mmea.Y);

@@ -13,6 +13,9 @@ using SM.OGL.Texture;
 
 namespace SM.Base.PostEffects
 {
+    /// <summary>
+    /// A bloom post process effect.
+    /// </summary>
     public class BloomEffect : PostProcessEffect
     {
         private static BezierCurve _defaultCurve = new BezierCurve(Vector2.UnitY, Vector2.Zero, new Vector2(0.4f, 0), new Vector2(.5f,0));
@@ -39,31 +42,50 @@ namespace SM.Base.PostEffects
         private ColorAttachment _xBuffer;
         private ColorAttachment _yBuffer;
 
+        /// <summary>
+        /// A texture where you can define the amount of the bloom effect at each pixel.
+        /// </summary>
         public TextureBase AmountMap;
+        /// <summary>
+        /// The transformation for the amount map.
+        /// </summary>
         public TextureTransformation AmountTransform = new TextureTransformation();
-
+        /// <summary>
+        /// The maximal amount the amount map is clamped to.
+        /// <para>Default: 1</para>
+        /// </summary>
+        public float MaxAmount = 1;
+        /// <summary>
+        /// The minimal amount the amount map is clamped to.
+        /// <para>Default: 0</para>
+        /// </summary>
+        public float MinAmount = 0;
+        
+        /// <summary>
+        /// The defines how often the x-y-flipflop happens.
+        /// <para>Default: 8</para>
+        /// </summary>
         public int Iterations = 8;
+        /// <summary>
+        /// The Threshold for the bloom effect.
+        /// <para>Default: .8f</para>
+        /// </summary>
         public float Threshold = .8f;
+        /// <summary>
+        /// Increases the brightness of the resulting effect.
+        /// <para>Default: 1</para>
+        /// </summary>
         public float Power = 1;
 
+        /// <summary>
+        /// This can disable the bloom calculation.
+        /// <para>Default: true</para>
+        /// </summary>
         public bool Enable = true;
 
-        public float MaxAmount = 1;
-
-        public float MinAmount = 0;
-
-        public int WeightCurvePickAmount = 4;
-
-
-        public BloomEffect(Framebuffer source = null, bool hdr = false, float? textureScale = null)
-        {
-            _source = source;
-            _hdr = hdr;
-            _textureScale = textureScale.GetValueOrDefault(_defaultTextureScale);
-
-            WeightCurve = _defaultCurve;
-        }
-
+        /// <summary>
+        /// This defines the weight curve.
+        /// </summary>
         public BezierCurve WeightCurve
         {
             get => _weightCurve;
@@ -72,6 +94,25 @@ namespace SM.Base.PostEffects
                 _weightCurve = value;
                 UpdateWeights();
             }
+        }
+        /// <summary>
+        /// This defines how many picks the effect should pick from the weight curve.
+        /// </summary>
+        public int WeightCurvePickAmount = 4;
+
+        /// <summary>
+        /// This creates a bloom effect.
+        /// </summary>
+        /// <param name="source">This can specify a own source framebuffer. If not set, it will take the Pipeline MainFramebuffer.</param>
+        /// <param name="hdr">This allows to enable hdr returns.</param>
+        /// <param name="textureScale">This allows for a increase in performance, by lowering the calculating texture scale.</param>
+        public BloomEffect(Framebuffer source = null, bool hdr = false, float? textureScale = null)
+        {
+            _source = source;
+            _hdr = hdr;
+            _textureScale = textureScale.GetValueOrDefault(_defaultTextureScale);
+
+            WeightCurve = _defaultCurve;
         }
 
 
@@ -83,7 +124,7 @@ namespace SM.Base.PostEffects
                 _weights[i] = _weightCurve.CalculatePoint((float) (i + 1) / (WeightCurvePickAmount + 1)).Y;
         }
 
-
+        /// <inheritdoc/>
         protected override void InitProcess()
         {
             _source = Pipeline.MainFramebuffer;
@@ -107,6 +148,7 @@ namespace SM.Base.PostEffects
             Pipeline.Framebuffers.Add(_bloomBuffer2);
         }
 
+        /// <inheritdoc/>
         public override void Draw(DrawContext context)
         {
             if (Enable)

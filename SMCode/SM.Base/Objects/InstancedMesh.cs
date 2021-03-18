@@ -12,6 +12,13 @@ namespace SM.Base.Objects
     /// </summary>
     public class InstancedMesh : Mesh
     {
+        /// <summary>
+        /// Generates a mesh, with a primitive and attributes, that are required.
+        /// </summary>
+        /// <param name="type">The mesh type</param>
+        /// <param name="enabledAttibute">A list of (additional) attributes.
+        ///     <para> Possible values: uv, normals and color </para>
+        /// </param>
         public InstancedMesh(PrimitiveType type, string[] enabledAttibute) : base(type)
         {
             Attributes["vertex"] = Vertex = new VBO();
