@@ -113,7 +113,6 @@ namespace SM.Base.PostEffects
                     _shader.Draw(collection =>
                     {
                         collection["renderedTexture"].SetTexture(first ? _source.ColorAttachments["color"] : (hoz ? _yBuffer : _xBuffer));
-                        collection["RenderScale"].SetUniform1(_textureScale);
 
                         collection["First"].SetUniform1(first);
                         collection["Threshold"].SetUniform1(Threshold);

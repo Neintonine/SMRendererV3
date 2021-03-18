@@ -107,7 +107,7 @@ namespace SM.Base.Windows
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            _fixedUpdateThread.Abort();
+            _fixedUpdateThread?.Abort();
         }
 
         public void Update(UpdateContext context)

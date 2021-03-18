@@ -18,7 +18,7 @@ namespace SM_TEST
         {
             _bloom = new BloomEffect(hdr: true)
             {
-                Threshold = .8f,
+                Threshold = .5f,
             };
 
             MainFramebuffer = CreateWindowFramebuffer();
