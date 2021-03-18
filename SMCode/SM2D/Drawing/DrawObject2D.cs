@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base;
 using SM.Base.Drawing;
-using SM.Base.Objects;
+using SM.Base.Shaders;
 using SM.Base.Textures;
-using SM.Base.Windows;
-using SM.OGL.Mesh;
+using SM.Base.Window;
 using SM2D.Object;
-using SM2D.Scene;
 using SM2D.Types;
 
 namespace SM2D.Drawing

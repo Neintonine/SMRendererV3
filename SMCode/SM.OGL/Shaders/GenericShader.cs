@@ -1,7 +1,6 @@
 ﻿#region usings
 
 using System;
-using System.Linq;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
 
@@ -15,7 +14,7 @@ namespace SM.OGL.Shaders
     public abstract class GenericShader : GLObject
     {
         /// <inheritdoc />
-        protected override bool AutoCompile { get; } = true;
+        protected override bool AutoCompile { get; set; } = true;
 
         /// <summary>
         ///     Contains the different files for the shader.
@@ -97,7 +96,6 @@ namespace SM.OGL.Shaders
 
             ShaderFileFiles.Append(this);
             GL.LinkProgram(_id);
-            Name(GetType().Name);
             ShaderFileFiles.Detach(this);
 
             Uniforms = new UniformCollection {ParentShader = this};

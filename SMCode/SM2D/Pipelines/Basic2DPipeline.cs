@@ -1,9 +1,5 @@
-﻿using System;
-using OpenTK.Graphics.OpenGL4;
-using SM.Base;
-using SM.Base.Drawing;
-using SM.Base.Windows;
-using SM.OGL.Framebuffer;
+﻿using SM.Base.Shaders;
+using SM.Base.Window;
 using SM2D.Shader;
 
 namespace SM2D.Pipelines

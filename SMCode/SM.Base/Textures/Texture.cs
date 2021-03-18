@@ -15,8 +15,8 @@ namespace SM.Base.Textures
     /// </summary>
     public class Texture : TextureBase
     {
-        private int? _width;
         private int? _height;
+        private int? _width;
 
         /// <summary>
         ///     Decides if the bitmap will automatically dispose itself.
@@ -27,24 +27,6 @@ namespace SM.Base.Textures
         ///     The texture as bitmap.
         /// </summary>
         public Bitmap Map;
-
-        /// <inheritdoc />
-        public override int Width
-        {
-            get => _width ?? Map.Width;
-            protected set => _width = value;
-        }
-
-        /// <inheritdoc />
-        public override int Height
-        {
-            get => _height ?? Map.Height;
-            protected set => _height = value;
-        }
-        /// <summary>
-        /// Aspect ratio of Width and Height of the texture
-        /// </summary>
-        public float Aspect { get; private set; }
 
         /// <summary>
         ///     Empty constructor
@@ -72,11 +54,30 @@ namespace SM.Base.Textures
         {
             Map = map;
 
-            Aspect = (float)map.Width / map.Height;
+            Aspect = (float) map.Width / map.Height;
 
             Filter = filter;
             WrapMode = wrapMode;
         }
+
+        /// <inheritdoc />
+        public override int Width
+        {
+            get => _width ?? Map.Width;
+            protected set => _width = value;
+        }
+
+        /// <inheritdoc />
+        public override int Height
+        {
+            get => _height ?? Map.Height;
+            protected set => _height = value;
+        }
+
+        /// <summary>
+        ///     Aspect ratio of Width and Height of the texture
+        /// </summary>
+        public float Aspect { get; }
 
 
         /// <inheritdoc />

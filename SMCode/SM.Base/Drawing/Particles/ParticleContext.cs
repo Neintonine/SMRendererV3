@@ -1,4 +1,8 @@
-﻿using SM.Base.Time;
+﻿#region usings
+
+using SM.Base.Time;
+
+#endregion
 
 namespace SM.Base.Drawing.Particles
 {
@@ -8,11 +12,12 @@ namespace SM.Base.Drawing.Particles
     public struct ParticleContext
     {
         /// <summary>
-        /// The Timer of the particles
+        ///     The Timer of the particles
         /// </summary>
         public Timer Timer;
+
         /// <summary>
-        /// The current speed of the particles.
+        ///     The current speed of the particles.
         /// </summary>
         public float Speed;
     }

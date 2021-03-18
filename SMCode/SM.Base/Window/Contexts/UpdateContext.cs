@@ -1,7 +1,10 @@
-﻿using OpenTK.Input;
+﻿#region usings
+
 using SM.Base.Scene;
 
-namespace SM.Base.Windows
+#endregion
+
+namespace SM.Base.Window
 {
     public struct UpdateContext
     {

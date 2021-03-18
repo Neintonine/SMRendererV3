@@ -1,8 +1,7 @@
 ﻿#region usings
 
 using System;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 

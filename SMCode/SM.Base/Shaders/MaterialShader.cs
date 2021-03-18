@@ -1,14 +1,13 @@
 ﻿#region usings
 
 using OpenTK.Graphics.OpenGL4;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Mesh;
 using SM.OGL.Shaders;
 
 #endregion
 
-namespace SM.Base.Drawing
+namespace SM.Base.Shaders
 {
     /// <summary>
     ///     A general class to work with material shaders properly.
@@ -19,7 +18,8 @@ namespace SM.Base.Drawing
 
         /// <inheritdoc />
         protected MaterialShader(string combinedData) : base(combinedData)
-        {}
+        {
+        }
 
         /// <inheritdoc />
         protected MaterialShader(string vertex, string fragment) : base(vertex, fragment)
@@ -60,7 +60,11 @@ namespace SM.Base.Drawing
             {
                 GL.Enable(EnableCap.Blend);
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-            } else GL.Disable(EnableCap.Blend);
+            }
+            else
+            {
+                GL.Disable(EnableCap.Blend);
+            }
 
             DrawProcess(context);
 

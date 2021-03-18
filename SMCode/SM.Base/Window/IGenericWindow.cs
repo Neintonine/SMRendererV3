@@ -1,11 +1,14 @@
-﻿using System;
+﻿#region usings
+
+using System;
 using System.Drawing;
 using OpenTK;
-using SM.Base.Controls;
 using SM.Base.Scene;
 using SM.OGL.Framebuffer;
 
-namespace SM.Base.Windows
+#endregion
+
+namespace SM.Base.Window
 {
     public interface IGenericWindow : IFramebufferWindow
     {
@@ -26,11 +29,11 @@ namespace SM.Base.Windows
 
         ISetup AppliedSetup { get; }
 
-        event Action<IGenericWindow> Resize;
-        event Action<IGenericWindow> Load;
-
         GenericScene CurrentScene { get; }
         RenderPipeline CurrentRenderPipeline { get; }
+
+        event Action<IGenericWindow> Resize;
+        event Action<IGenericWindow> Load;
 
         void Update(UpdateContext context);
 

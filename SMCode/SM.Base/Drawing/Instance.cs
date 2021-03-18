@@ -16,6 +16,9 @@ namespace SM.Base.Drawing
         /// </summary>
         public Matrix4 ModelMatrix = Matrix4.Identity;
 
+        /// <summary>
+        /// The Texture matrix
+        /// </summary>
         public Matrix3 TextureMatrix = Matrix3.Identity;
     }
 }

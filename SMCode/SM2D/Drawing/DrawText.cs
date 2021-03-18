@@ -1,10 +1,8 @@
 ﻿#region usings
 
-using SM.Base;
 using SM.Base.Drawing.Text;
 using SM.Base.Types;
-using SM.Base.Windows;
-using SM2D.Scene;
+using SM.Base.Window;
 using SM2D.Types;
 
 #endregion

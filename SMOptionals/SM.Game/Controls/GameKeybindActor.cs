@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenTK.Input;
+﻿using OpenTK.Input;
 
 namespace SM.Game.Controls
 {

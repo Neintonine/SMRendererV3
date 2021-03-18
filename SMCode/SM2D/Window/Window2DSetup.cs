@@ -1,9 +1,7 @@
-﻿using System.Drawing.Drawing2D;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base;
-using SM.Base.PostProcess;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM2D.Scene;
 using SM2D.Shader;
 

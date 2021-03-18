@@ -1,7 +1,7 @@
 ﻿#region usings
 
-using System.Collections.Generic;
 using OpenTK.Graphics;
+using SM.Base.Shaders;
 using SM.OGL.Texture;
 
 #endregion
@@ -13,6 +13,8 @@ namespace SM.Base.Drawing
     /// </summary>
     public class Material
     {
+        public bool Blending = false;
+
         /// <summary>
         ///     A custom shader, that is used to draw this material.
         /// </summary>
@@ -28,8 +30,9 @@ namespace SM.Base.Drawing
         /// </summary>
         public Color4 Tint = Color4.White;
 
+        /// <summary>
+        /// This allows custom shaders to use own shader arguments.
+        /// </summary>
         public ShaderArguments ShaderArguments { get; internal set; } = new ShaderArguments();
-
-        public bool Blending = false;
     }
 }

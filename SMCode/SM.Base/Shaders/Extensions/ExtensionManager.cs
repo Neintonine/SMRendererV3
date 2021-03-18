@@ -4,7 +4,7 @@ using SM.OGL.Shaders;
 
 #endregion
 
-namespace SM.Base.ShaderExtension
+namespace SM.Base.Shaders.Extensions
 {
     internal class ExtensionManager
     {

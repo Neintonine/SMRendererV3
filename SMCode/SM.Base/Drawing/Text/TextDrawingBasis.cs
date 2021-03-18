@@ -3,8 +3,7 @@
 using System;
 using OpenTK;
 using OpenTK.Graphics;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 
@@ -28,32 +27,33 @@ namespace SM.Base.Drawing.Text
         protected string _text;
 
         /// <summary>
+        /// The width of the text object.
+        /// </summary>
+        public float Width;
+
+        /// <summary>
+        /// The height of the text object.
+        /// </summary>
+        public float Height;
+
+        /// <summary>
         ///     The spacing between numbers.
         ///     <para>Default: 1</para>
         /// </summary>
         public float Spacing = 1;
 
-        public float ActualSpacing => Spacing * Font.Spacing;
-
-        public float Width;
-        public float Height;
 
         /// <summary>
-        ///     Creates a text object with a font.
+        /// Calculates the actual spacing for the object.
         /// </summary>
-        /// <param name="font">The font.</param>
-        protected TextDrawingBasis(Font font)
-        {
-            Material.Texture = font;
-            Material.Blending = true;
-        }
+        public float ActualSpacing => Spacing * Font.Spacing;
 
         /// <summary>
         ///     The font.
         /// </summary>
         public Font Font
         {
-            get => (Font) Material.Texture;
+            get => (Font)Material.Texture;
             set
             {
                 Material.Texture = value;
@@ -81,6 +81,16 @@ namespace SM.Base.Drawing.Text
         {
             get => Material.Tint;
             set => Material.Tint = value;
+        }
+
+        /// <summary>
+        ///     Creates a text object with a font.
+        /// </summary>
+        /// <param name="font">The font.</param>
+        protected TextDrawingBasis(Font font)
+        {
+            Material.Texture = font;
+            Material.Blending = true;
         }
 
 
@@ -137,7 +147,8 @@ namespace SM.Base.Drawing.Text
                 _instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
-                    TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(parameter.NormalizedX, 0), new Vector2(parameter.NormalizedWidth, 1), 0),
+                    TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(parameter.NormalizedX, 0),
+                        new Vector2(parameter.NormalizedWidth, 1), 0)
                 };
 
                 x += parameter.Width * ActualSpacing;

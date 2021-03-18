@@ -80,6 +80,7 @@ namespace SM.OGL.Shaders
             for (var i = 0; i < GLSLExtensions.Count; i++) GLSLExtensions[i].Compile(shader, type);
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             GL.DeleteShader(this);

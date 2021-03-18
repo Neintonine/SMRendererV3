@@ -1,9 +1,8 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using SM.Base;
 using SM.Base.Drawing;
-using SM.Base.Windows;
+using SM.Base.Window;
 using SM.OGL.Mesh;
 
 #endregion
@@ -50,7 +49,7 @@ namespace SM.Base.Scene
         void OnRemoved(object sender);
     }
 
-    public interface ITransformItem<TTransform> 
+    public interface ITransformItem<TTransform>
         where TTransform : GenericTransformation
     {
         TTransform Transform { get; set; }
@@ -58,7 +57,8 @@ namespace SM.Base.Scene
 
     public interface IShowTransformItem<TTransform> : IShowItem, ITransformItem<TTransform>
         where TTransform : GenericTransformation
-    {}
+    {
+    }
 
     public interface IModelItem
     {

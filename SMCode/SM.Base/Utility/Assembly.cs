@@ -6,7 +6,7 @@ using System.Reflection;
 
 #endregion
 
-namespace SM.Utility
+namespace SM.Base.Utility
 {
     /// <summary>
     ///     Contains utility functions for handling with assemblies.

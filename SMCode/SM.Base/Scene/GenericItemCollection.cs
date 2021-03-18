@@ -2,11 +2,9 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using OpenTK;
-using SM.Base;
 using SM.Base.Drawing;
+using SM.Base.Window;
 using SM.Base.Window.Contexts;
-using SM.Base.Windows;
 
 #endregion
 
@@ -23,7 +21,12 @@ namespace SM.Base.Scene
         /// <summary>
         ///     Currently active script objects.
         /// </summary>
-        public ReadOnlyCollection<IScriptable> ScriptableObjects => new ReadOnlyCollection<IScriptable>(_scriptableObjects);
+        public ReadOnlyCollection<IScriptable> ScriptableObjects =>
+            new ReadOnlyCollection<IScriptable>(_scriptableObjects);
+
+        /// <inheritdoc />
+        public bool UpdateActive { get; set; } = true;
+
         /// <inheritdoc />
         public List<IShowItem> Objects => this;
 
@@ -34,23 +37,13 @@ namespace SM.Base.Scene
         public string Name { get; set; } = "Unnamed Item Collection";
 
         /// <inheritdoc />
-        public ICollection<string> Flags { get; set; } = new List<string>() {"collection"};
+        public ICollection<string> Flags { get; set; } = new List<string> {"collection"};
 
+        /// <inheritdoc cref="IShowItem" />
         public bool Active { get; set; } = true;
-        public bool UpdateActive { get; set; } = true;
-        public bool RenderActive { get; set; } = true;
-        
-        /// <inheritdoc />
-        public virtual void Update(UpdateContext context)
-        {
-            if (!Active || !UpdateActive) return;
 
-            for (var i = 0; i < _scriptableObjects.Count; i++)
-            {
-                if (!_scriptableObjects[i].Active || !_scriptableObjects[i].UpdateActive) continue;
-                _scriptableObjects[i].Update(context);
-            }
-        }
+        /// <inheritdoc />
+        public bool RenderActive { get; set; } = true;
 
         public virtual void FixedUpdate(FixedUpdateContext context)
         {
@@ -75,6 +68,18 @@ namespace SM.Base.Scene
         }
 
         /// <inheritdoc />
+        public virtual void Update(UpdateContext context)
+        {
+            if (!Active || !UpdateActive) return;
+
+            for (var i = 0; i < _scriptableObjects.Count; i++)
+            {
+                if (!_scriptableObjects[i].Active || !_scriptableObjects[i].UpdateActive) continue;
+                _scriptableObjects[i].Update(context);
+            }
+        }
+
+        /// <inheritdoc />
         public virtual void OnAdded(object sender)
         {
         }
@@ -87,7 +92,7 @@ namespace SM.Base.Scene
         /// <summary>
         ///     Adds a item to the draw and the script collection, when applicable.
         /// </summary>
-        public new void Add(params IShowItem[] items)
+        public void Add(params IShowItem[] items)
         {
             foreach (var item in items)
             {
@@ -101,7 +106,7 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        /// Adds the object to the collection.
+        ///     Adds the object to the collection.
         /// </summary>
         /// <param name="item"></param>
         public void AddObject(IShowItem item)
@@ -110,8 +115,9 @@ namespace SM.Base.Scene
             item.Parent = this;
             item.OnAdded(this);
         }
+
         /// <summary>
-        /// Adds the script to the collection.
+        ///     Adds the script to the collection.
         /// </summary>
         /// <param name="item"></param>
         public void AddScript(IScriptable item)
@@ -120,7 +126,7 @@ namespace SM.Base.Scene
             if (item is IFixedScriptable fs) _fixedScriptables.Add(fs);
         }
 
-        public new void Remove(params IShowItem[] items)
+        public void Remove(params IShowItem[] items)
         {
             foreach (var item in items)
             {
@@ -135,7 +141,7 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        /// Remove the object from the draw collection.
+        ///     Remove the object from the draw collection.
         /// </summary>
         /// <param name="item"></param>
         public void RemoveObject(IShowItem item)
@@ -146,7 +152,7 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        /// Remove the object from the script collection.
+        ///     Remove the object from the script collection.
         /// </summary>
         /// <param name="item"></param>
         public void RemoveScript(IScriptable item)
@@ -158,7 +164,7 @@ namespace SM.Base.Scene
         public ICollection<IShowItem> GetAllItems(bool includeCollections = false)
         {
             List<IShowItem> items = new List<IShowItem>();
-            for (var i = 0; i < this.Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 if (!includeCollections && this[i] is IShowCollection) continue;
                 items.Add(this[i]);
@@ -220,7 +226,8 @@ namespace SM.Base.Scene
     /// </summary>
     /// <typeparam name="TItem">The type of show items.</typeparam>
     /// <typeparam name="TTransformation">The type of transformation.</typeparam>
-    public abstract class GenericItemCollection<TTransformation> : GenericItemCollection, IShowTransformItem<TTransformation>
+    public abstract class GenericItemCollection<TTransformation> : GenericItemCollection,
+        IShowTransformItem<TTransformation>
         where TTransformation : GenericTransformation, new()
     {
         /// <summary>

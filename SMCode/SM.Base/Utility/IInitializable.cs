@@ -1,5 +1,8 @@
-﻿namespace SM.Utility
+﻿namespace SM.Base.Utility
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IInitializable
     {
         bool IsInitialized { get; set; }

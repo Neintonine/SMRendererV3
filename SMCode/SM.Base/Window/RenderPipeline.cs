@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿#region usings
+
+using System.Collections.Generic;
 using System.Threading;
 using SM.Base.Drawing;
+using SM.Base.Shaders;
+using SM.Base.Utility;
 using SM.OGL.Framebuffer;
 using SM.OGL.Texture;
-using SM.Utility;
 
-namespace SM.Base.Windows
+#endregion
+
+namespace SM.Base.Window
 {
     public abstract class RenderPipeline : IInitializable
     {
@@ -20,25 +25,8 @@ namespace SM.Base.Windows
 
         public bool IsInitialized { get; set; }
 
-        internal void Render(ref DrawContext context) => RenderProcess(ref context);
-
-        protected abstract void RenderProcess(ref DrawContext context);
-
-        public virtual void Resize()
-        {
-            if (Framebuffers == null) return;
-            foreach(var framebuffer in Framebuffers) 
-                framebuffer.Dispose();
-
-            Thread.Sleep(50);
-
-            foreach(var framebuffer in Framebuffers) 
-                framebuffer.Compile();
-        }
-
         public virtual void Activate()
         {
-            
         }
 
         public virtual void Initialization()
@@ -47,13 +35,34 @@ namespace SM.Base.Windows
             DefaultShader ??= SMRenderer.DefaultMaterialShader;
         }
 
+        internal void Render(ref DrawContext context)
+        {
+            RenderProcess(ref context);
+        }
+
+        protected abstract void RenderProcess(ref DrawContext context);
+
+        public virtual void Resize()
+        {
+            if (Framebuffers == null) return;
+            foreach (var framebuffer in Framebuffers)
+                framebuffer.Dispose();
+
+            Thread.Sleep(50);
+
+            foreach (var framebuffer in Framebuffers)
+                framebuffer.Compile();
+        }
+
         public Framebuffer CreateWindowFramebuffer(int multisamples = 0)
         {
-            Framebuffer framebuffer = new Framebuffer(window: ConnectedWindow);
+            Framebuffer framebuffer = new Framebuffer(ConnectedWindow);
             framebuffer.Append("color", new ColorAttachment(0, PixelInformation.RGBA_LDR, multisamples));
+            
             RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
             depthAttach.Multisample = multisamples;
             framebuffer.AppendRenderbuffer(depthAttach);
+
             return framebuffer;
         }
     }

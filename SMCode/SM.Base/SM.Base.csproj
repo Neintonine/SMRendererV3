@@ -41,7 +41,6 @@
       <HintPath>..\..\packages\OpenTK.3.3.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
     </Reference>
@@ -65,7 +64,7 @@
     <Compile Include="Drawing\Instance.cs" />
     <Compile Include="Drawing\ShaderArguments.cs" />
     <Compile Include="Drawing\TextureTransformation.cs" />
-    <Compile Include="PostEffects\PostProcessFinals.cs" />
+    <Compile Include="PostEffects\PostProcessUtility.cs" />
     <Compile Include="Scene\IFixedScriptable.cs" />
     <Compile Include="Shaders\MaterialShader.cs" />
     <Compile Include="Drawing\Particles\ParticleContext.cs" />

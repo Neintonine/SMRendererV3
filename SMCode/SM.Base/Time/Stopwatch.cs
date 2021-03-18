@@ -2,8 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using SM.Base;
-using SM.Base.Windows;
+using SM.Base.Window;
 
 #endregion
 
@@ -14,17 +13,17 @@ namespace SM.Base.Time
     /// </summary>
     public class Stopwatch
     {
-        private static List<Stopwatch> _activeStopwatches = new List<Stopwatch>();
-        private bool _paused = false;
+        private static readonly List<Stopwatch> _activeStopwatches = new List<Stopwatch>();
+        private bool _paused;
 
         /// <summary>
-        /// If true, the stopwatch was started.
-        /// <para>This doesn't changed when paused.</para>
+        ///     If true, the stopwatch was started.
+        ///     <para>This doesn't changed when paused.</para>
         /// </summary>
-        public bool Active { get; private set; } = false;
+        public bool Active { get; private set; }
 
         /// <summary>
-        /// Gets/Sets if the stopwatch is paused.
+        ///     Gets/Sets if the stopwatch is paused.
         /// </summary>
         public bool Paused
         {
@@ -39,7 +38,7 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// If true, the stopwatch is active and not paused... (who would have guessed...)
+        ///     If true, the stopwatch is active and not paused... (who would have guessed...)
         /// </summary>
         public bool Running => Active && !Paused;
 
@@ -53,6 +52,9 @@ namespace SM.Base.Time
         /// </summary>
         public TimeSpan ElapsedSpan { get; protected set; }
 
+        /// <summary>
+        /// This event gets triggered every tick.
+        /// </summary>
         public event Action<Stopwatch, UpdateContext> Tick;
 
         /// <summary>
@@ -66,7 +68,6 @@ namespace SM.Base.Time
             Active = true;
         }
 
-        
 
         /// <summary>
         ///     Performs a tick.
@@ -81,15 +82,15 @@ namespace SM.Base.Time
         }
 
         /// <summary>
-        /// Resumes the timer.
+        ///     Resumes the timer.
         /// </summary>
         protected virtual void Resume()
         {
             _paused = false;
         }
-        
+
         /// <summary>
-        /// Pauses the timer.
+        ///     Pauses the timer.
         /// </summary>
         protected virtual void Pause()
         {

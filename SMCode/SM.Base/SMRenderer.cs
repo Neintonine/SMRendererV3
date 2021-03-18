@@ -1,13 +1,11 @@
 ﻿#region usings
 
-using SM.Base.Drawing;
 using SM.Base.Drawing.Text;
 using SM.Base.Objects.Static;
-using SM.Base.Scene;
-using SM.Base.Windows;
+using SM.Base.Shaders;
+using SM.Base.Utility;
+using SM.Base.Window;
 using SM.OGL.Mesh;
-using SM.OGL.Shaders;
-using SM.Utility;
 
 #endregion
 

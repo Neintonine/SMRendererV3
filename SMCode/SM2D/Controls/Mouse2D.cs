@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Controls;
 using OpenTK;
 using SM.Base.Controls;
-using SM.Base.Drawing;
 using SM.Base.Scene;
-using SM.Utility;
 using SM2D.Scene;
 using SM2D.Types;
 
