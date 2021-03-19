@@ -82,7 +82,7 @@ namespace SM.Base.Controls
                 throw new ArgumentException("The startIndex is greater than the endIndex.", nameof(startIndex));
 
             int length = endIndex - startIndex;
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length + 1; i++)
             {
                 int actualIndex = i + startIndex;
                 Key key = (Key) actualIndex;
@@ -136,7 +136,7 @@ namespace SM.Base.Controls
 
             bool success = false;
             List<Key> keys = new List<Key>();
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length + 1; i++)
             {
                 int actualIndex = i + startIndex;
                 Key key = (Key) actualIndex;

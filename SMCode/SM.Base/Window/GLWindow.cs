@@ -121,12 +121,6 @@ namespace SM.Base.Window
             Mouse.MouseMoveEvent(e, this);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            _fixedUpdateThread?.Abort();
-        }
-
         public void Update(UpdateContext context)
         {
             
@@ -201,7 +195,7 @@ namespace SM.Base.Window
         private void ExecuteFixedUpdate()
         {
             Stopwatch deltaStop = new Stopwatch();
-            while (Thread.CurrentThread.ThreadState != System.Threading.ThreadState.AbortRequested)
+            while (!IsExiting)
             {
                 deltaStop.Restart();
 
@@ -210,7 +204,8 @@ namespace SM.Base.Window
                 CurrentScene?.FixedUpdate(context);
 
                 long delta = deltaStop.ElapsedMilliseconds;
-                Thread.Sleep(Math.Max((int)(Deltatime.FixedUpdateDelta * 1000) - (int)delta, 0));
+                int waitTime = Math.Max((int)(Deltatime.FixedUpdateDelta * 1000) - (int)delta, 0);
+                Thread.Sleep(waitTime);
             }
         }
     }

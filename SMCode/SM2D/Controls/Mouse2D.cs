@@ -2,6 +2,7 @@
 using OpenTK;
 using SM.Base.Controls;
 using SM.Base.Scene;
+using SM.OGL.Mesh;
 using SM2D.Scene;
 using SM2D.Types;
 
@@ -48,12 +49,11 @@ namespace SM2D.Controls
 
             foreach (TObject item in checkingObjects)
             {
-                Matrix4 worldPos = item.Transform.InWorldSpace;
-                item.Mesh.BoundingBox.GetBounds(worldPos, out Vector3 min, out Vector3 max);
-
-                if (mousePos.X > min.X && mousePos.X < max.X &&
-                    mousePos.Y > min.Y && mousePos.Y < max.Y)
+                
+                if (MouseOver(mousePos, item.Mesh.BoundingBox, item.Transform))
                 {
+                    Matrix4 worldPos = item.Transform.InWorldSpace;
+
                     // if z is greater than distance
                     if (worldPos[3, 2] > distance)
                     {
@@ -63,9 +63,24 @@ namespace SM2D.Controls
 
                     success = true;
                 }
+
             }
+            
 
             return success;
+        }
+
+        public static bool MouseOver(Vector2 mousePos, BoundingBox boundingBox, Transformation transform)
+        {
+            Matrix4 worldPos = transform.InWorldSpace;
+            boundingBox.GetBounds(worldPos, out Vector3 min, out Vector3 max);
+
+            if (mousePos.X > min.X && mousePos.X < max.X &&
+                mousePos.Y > min.Y && mousePos.Y < max.Y)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

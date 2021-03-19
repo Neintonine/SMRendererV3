@@ -13,7 +13,7 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(0);
+            MainFramebuffer = CreateWindowFramebuffer(16);
 
             _postBuffer = CreateWindowFramebuffer();
             Framebuffers.Add(_postBuffer);

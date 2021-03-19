@@ -30,6 +30,7 @@ namespace SM_TEST
             window.ApplySetup(new Window2DSetup() {WorldScale = new Vector2(0,1000)});
             window.SetRenderPipeline(new TestRenderPipeline());
             window.SetScene(scene = new Scene());
+            window.RunFixedUpdate(60);
             window.Load += WindowOnLoad;
             window.RenderFrame += WindowOnUpdateFrame;
             window.Run();

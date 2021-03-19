@@ -36,7 +36,7 @@ namespace SM.Base.Window
         /// This contains the default shader.
         /// <para>Default: <see cref="SMRenderer.DefaultMaterialShader"/></para>
         /// </summary>
-        public virtual MaterialShader DefaultShader { get; protected set; } = SMRenderer.DefaultMaterialShader;
+        public virtual MaterialShader DefaultShader { get; protected set; }
         /// <summary>
         /// Here you can set a default material.
         /// </summary>
@@ -53,6 +53,8 @@ namespace SM.Base.Window
         /// <inheritdoc/>
         public virtual void Initialization()
         {
+            MainFramebuffer.Name = GetType().Name + ".MainFramebuffer";
+
             if (MainFramebuffer != null) Framebuffers.Add(MainFramebuffer);
             DefaultShader ??= SMRenderer.DefaultMaterialShader;
         }

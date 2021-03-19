@@ -19,7 +19,7 @@ namespace SM.Base.Drawing
         /// <summary>
         /// The last matrix that was used to calculate the real world matrix.
         /// </summary>
-        public Matrix4 LastMaster { get; internal set; }
+        public Matrix4 LastMaster { get; set; }
 
         /// <summary>
         /// The transformation in world space.
