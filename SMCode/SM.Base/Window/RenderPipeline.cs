@@ -53,9 +53,10 @@ namespace SM.Base.Window
         /// <inheritdoc/>
         public virtual void Initialization()
         {
-            MainFramebuffer.Name = GetType().Name + ".MainFramebuffer";
-
-            if (MainFramebuffer != null) Framebuffers.Add(MainFramebuffer);
+            if (MainFramebuffer != null) { 
+                Framebuffers.Add(MainFramebuffer);
+                MainFramebuffer.Name = GetType().Name + ".MainFramebuffer";
+            }
             DefaultShader ??= SMRenderer.DefaultMaterialShader;
         }
 
