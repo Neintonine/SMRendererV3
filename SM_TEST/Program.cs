@@ -21,13 +21,13 @@ namespace SM_TEST
         {
             font = new Font(@"C:\Windows\Fonts\Arial.ttf")
             {
-                FontSize = 32
+                FontSize = 16
             };
 
-            Log.SetLogFile(compressionFolder:"logs");
+            //Log.SetLogFile(compressionFolder:"logs");
 
             window = new GLWindow {VSync = VSyncMode.Off};
-            window.ApplySetup(new Window2DSetup() {WorldScale = new Vector2(0,1000)});
+            window.ApplySetup(new Window2DSetup());
             window.SetRenderPipeline(new TestRenderPipeline());
             window.SetScene(scene = new Scene());
             window.RunFixedUpdate(60);
@@ -36,15 +36,8 @@ namespace SM_TEST
             window.Run();
         }
 
-        private static DrawParticles particles;
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            if (Keyboard.GetState()[Key.R])
-                particles.Trigger();
-            //particles.Paused = Keyboard.GetState()[Key.P];
-
-            GameControllerState s1 = new GameController(0).GetState();
-            GameControllerState s2 = new GameController(1).GetState();
         }
 
         private static void WindowOnLoad(IGenericWindow window)

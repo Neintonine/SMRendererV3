@@ -8,14 +8,34 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SM.OGL.Shaders
 {
+    /// <summary>
+    /// Collects and provied the uniforms of a shader.
+    /// </summary>
     public class UniformCollection : Dictionary<string, IUniform>
     {
-        public int NextTexture = 0;
         internal string KeyString = "";
+        /// <summary>
+        /// The next uniform-position for textures.
+        /// </summary>
+        public int NextTexture = 0;
+        /// <summary>
+        /// The shader this collections is connected to.
+        /// </summary>
         public GenericShader ParentShader { get; internal set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
         public new Uniform this[string key] => Get(key);
 
+        /// <summary>
+        /// Equivalent to <see cref="this"/>
+        /// <para>Gets the uniform with the provied key.</para>
+        /// <para>If it can't find it, it will create a warning and a uniform with the location of -1.</para>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public Uniform Get(string key)
         {
             try
@@ -31,18 +51,22 @@ namespace SM.OGL.Shaders
             }
         }
 
+        /// <summary>
+        /// Gets a array.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException">If the key wasn't found, it will throw a exception</exception>
         public UniformArray GetArray(string key)
         {
-            try
-            {
+            if (ContainsKey(key))
                 return (UniformArray) base[key];
-            }
-            catch (KeyNotFoundException)
-            {
-                throw new Exception("UniformArray '"+key+"' wasn't found");
-            }
+            else throw new KeyNotFoundException("UniformArray '"+key+"' wasn't found");
         }
 
+        /// <summary>
+        /// Adds a uniform to the collection.
+        /// </summary>
         public void Add(string key, int location)
         {
             base.Add(key, new Uniform(location, this));
@@ -101,7 +125,7 @@ namespace SM.OGL.Shaders
                     }
 
                     if (keySplits[1] == "0") 
-                        array.uniformNames.Add(keySplits[2].Substring(1));
+                        array.UniformNames.Add(keySplits[2].Substring(1));
                 }
                 else
                 {

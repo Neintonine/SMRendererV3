@@ -15,8 +15,8 @@ namespace SM.Base.Scene
     /// </summary>
     public abstract class GenericItemCollection : List<IShowItem>, IShowItem, IShowCollection, IScriptable, IFixedScriptable
     {
-        private List<IScriptable> _scriptableObjects = new List<IScriptable>();
-        private List<IFixedScriptable> _fixedScriptables = new List<IFixedScriptable>();
+        private readonly List<IScriptable> _scriptableObjects = new List<IScriptable>();
+        private readonly List<IFixedScriptable> _fixedScriptables = new List<IFixedScriptable>();
 
         /// <summary>
         ///     Currently active script objects.
@@ -45,6 +45,7 @@ namespace SM.Base.Scene
         /// <inheritdoc />
         public bool RenderActive { get; set; } = true;
 
+        /// <inheritdoc />
         public virtual void FixedUpdate(FixedUpdateContext context)
         {
             if (!Active || !UpdateActive) return;
@@ -126,6 +127,11 @@ namespace SM.Base.Scene
             if (item is IFixedScriptable fs) _fixedScriptables.Add(fs);
         }
 
+        /// <summary>
+        /// Removes an object from the drawing list.
+        /// <para>If the object is a scriptable object, it will remove the object from that list as well.</para>
+        /// </summary>
+        /// <param name="items"></param>
         public void Remove(params IShowItem[] items)
         {
             foreach (var item in items)
@@ -161,6 +167,12 @@ namespace SM.Base.Scene
             if (item is IFixedScriptable fs) _fixedScriptables.Remove(fs);
         }
 
+        /// <summary>
+        /// Returns all objects in the drawing list.
+        /// <para>Not reclusive.</para>
+        /// </summary>
+        /// <param name="includeCollections">If true, it will add collections as well.</param>
+        /// <returns></returns>
         public ICollection<IShowItem> GetAllItems(bool includeCollections = false)
         {
             List<IShowItem> items = new List<IShowItem>();
@@ -224,7 +236,6 @@ namespace SM.Base.Scene
     /// <summary>
     ///     Contains a list of show items with transformation.
     /// </summary>
-    /// <typeparam name="TItem">The type of show items.</typeparam>
     /// <typeparam name="TTransformation">The type of transformation.</typeparam>
     public abstract class GenericItemCollection<TTransformation> : GenericItemCollection,
         IShowTransformItem<TTransformation>

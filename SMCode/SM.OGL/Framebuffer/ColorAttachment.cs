@@ -14,7 +14,7 @@ namespace SM.OGL.Framebuffer
     /// </summary>
     public class ColorAttachment : TextureBase
     {
-        private int _multisamples;
+        private readonly int _multisamples;
         
         /// <summary>
         /// The ID the attachment was given.
@@ -50,6 +50,12 @@ namespace SM.OGL.Framebuffer
         public ColorAttachment(int attachmentId) : this(attachmentId, PixelInformation.RGBA_LDR)
         { }
 
+        /// <summary>
+        /// Creates a color attachment with a specific id, specific pixel informations and multisamples.
+        /// </summary>
+        /// <param name="attachmentID"></param>
+        /// <param name="pixelInformation"></param>
+        /// <param name="multisamples"></param>
         public ColorAttachment(int attachmentID, PixelInformation pixelInformation, int multisamples = 0)
         {
             AttachmentID = attachmentID;

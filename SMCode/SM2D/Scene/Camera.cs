@@ -10,6 +10,7 @@ using SM.Base.Window;
 
 namespace SM2D.Scene
 {
+    /// <inheritdoc />
     public class Camera : GenericCamera
     {
         internal static int ResizeCounter = 0;
@@ -19,6 +20,14 @@ namespace SM2D.Scene
         private bool _updateWorldScale = false;
         private Vector2? _requestedWorldScale = null;
 
+        /// <summary>
+        /// This vector allows to request a world scale.
+        /// <para>Following cases are possible. ("not set" means 0)</para>
+        /// <para>None is set: It takes the window size.</para>
+        /// <para>X is set: Y get calculated by the aspect ratio of the window.</para>
+        /// <para>Y is set: X get calculated by the aspect ratio of the window.</para>
+        /// <para>Both are set: Now the system try to keep a (invisible) rectangle in view, by increasing the width or height of the view, if needed.</para>
+        /// </summary>
         public Vector2? RequestedWorldScale
         {
             get => _requestedWorldScale;
@@ -29,18 +38,32 @@ namespace SM2D.Scene
             }
         }
 
+        /// <summary>
+        /// The world scale that got calculated.
+        /// </summary>
         public Vector2 WorldScale { get; private set; } = Vector2.Zero;
 
+        /// <summary>
+        /// A event that gets triggered, when the world scale changed.
+        /// <para>Possible causes: Window resizes, <see cref="RequestedWorldScale"/> changed</para>
+        /// </summary>
         public event Action<Camera> WorldScaleChanged;
 
+        /// <summary>
+        /// The position of the camera.
+        /// </summary>
         public CVector2 Position = new CVector2(0);
+
+        /// <inheritdoc />
         public override bool Orthographic { get; } = true;
 
+        /// <inheritdoc />
         protected override Matrix4 ViewCalculation(IGenericWindow window)
         {
             return Matrix4.LookAt(Position.X, Position.Y, Distance, Position.X, Position.Y, 0f, 0, 1, 0);
         }
 
+        /// <inheritdoc />
         protected override bool WorldCalculation(IGenericWindow window, out Matrix4 world)
         {
             world = Matrix4.Identity;
@@ -57,6 +80,11 @@ namespace SM2D.Scene
             return false;
         }
 
+        /// <summary>
+        /// This calculates the world scale.
+        /// <para>Usually gets called, by the camera itself, but if you need the world scale for additional calculations, you can execute it by yourself.</para>
+        /// </summary>
+        /// <param name="window"></param>
         public void CalculateWorldScale(IGenericWindow window)
         {
             if (RequestedWorldScale.HasValue)

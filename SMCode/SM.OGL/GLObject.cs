@@ -14,20 +14,30 @@ namespace SM.OGL
     /// </summary>
     public abstract class GLObject
     {
-        private static List<GLObject> _disposableObjects = new List<GLObject>();
+        private static readonly List<GLObject> _disposableObjects = new List<GLObject>();
         private string _name = "";
 
-        protected bool ReportAsNotCompiled;
 
         /// <summary>
         ///     Contains the OpenGL ID
         /// </summary>
         protected int _id = -1;
 
+        /// <summary>
+        /// This can mark the object to never report as compiled, even when it was.
+        /// <para>You can still figure out, if it was compiled by checking <see cref="_id"/>. If not -1, its compiled.</para>
+        /// <para>Default: false</para>
+        /// </summary>
+        protected bool ReportAsNotCompiled;
+        /// <summary>
+        /// This can prevent the object to compile.
+        /// <para>Default: true</para>
+        /// </summary>
         protected bool CanCompile = true;
         
         /// <summary>
         ///     If true, the system will call "Compile()", when "ID" is tried to get, but the id is still -1.
+        /// <para>Default: false</para>
         /// </summary>
         protected virtual bool AutoCompile { get; set; } = false;
 
@@ -36,6 +46,10 @@ namespace SM.OGL
         /// </summary>
         public bool WasCompiled => _id > 0 && !ReportAsNotCompiled;
 
+        /// <summary>
+        /// Names the object
+        /// <para>If <see cref="GLSystem.Debugging"/> is true, then it will also name the object in the system.</para>
+        /// </summary>
         public string Name
         {
             get => _name;
@@ -111,11 +125,15 @@ namespace SM.OGL
             Compile();
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{GetType().Name} {(string.IsNullOrEmpty(_name) ? "" : $"\"{_name}\" ")}[{_id}]";
         }
 
+        /// <summary>
+        /// This disposes the current objects, that where marked by the garbage collector.
+        /// </summary>
         public static void DisposeMarkedObjects()
         {
             foreach (GLObject o in _disposableObjects)
@@ -134,6 +152,9 @@ namespace SM.OGL
             return glo.ID;
         }
 
+        /// <summary>
+        /// If the garbage collector is trying to remove this object, it will add the object to a list, what get removed when <see cref="DisposeMarkedObjects"/> is called.
+        /// </summary>
         ~GLObject()
         {
             if (WasCompiled) _disposableObjects.Add(this);

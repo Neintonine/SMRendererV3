@@ -49,6 +49,11 @@ namespace SM.OGL.Mesh
             Add(new MeshAttribute(id, name, vbo));
         }
 
+        /// <summary>
+        /// Checks if the attribute list has the attribute name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool Has(string name)
         {
             VBO attribute = this[name];

@@ -13,11 +13,11 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(16);
+            MainFramebuffer = CreateWindowFramebuffer(0);
 
             _postBuffer = CreateWindowFramebuffer();
             Framebuffers.Add(_postBuffer);
-            _bloom = new BloomEffect(MainFramebuffer, hdr: true, .5f)
+            _bloom = new BloomEffect(MainFramebuffer, hdr: true, .75f)
             {
                 Threshold = .5f,
             };

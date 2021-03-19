@@ -11,5 +11,4 @@ layout(location = 0) out vec4 color;
 void main() {
     color = v_Color * Tint;
     if (UseTexture) color *= texture(Texture, v_TexCoords);
-    color *= 1.2;
 }

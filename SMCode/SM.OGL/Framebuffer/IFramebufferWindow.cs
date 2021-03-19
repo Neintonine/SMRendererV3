@@ -5,7 +5,13 @@
     /// </summary>
     public interface IFramebufferWindow
     {
+        /// <summary>
+        /// The width of the window.
+        /// </summary>
         int Width { get; }
+        /// <summary>
+        /// The height of the window.
+        /// </summary>
         int Height { get; }
     }
 }

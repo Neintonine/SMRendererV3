@@ -55,19 +55,36 @@ namespace SM.Base.Scene
         void OnRemoved(object sender);
     }
 
+    /// <summary>
+    /// Interface to implement transformation.
+    /// </summary>
+    /// <typeparam name="TTransform"></typeparam>
     public interface ITransformItem<TTransform>
         where TTransform : GenericTransformation
     {
+        /// <summary>
+        /// Controls the transformation of the object.
+        /// </summary>
         TTransform Transform { get; set; }
     }
 
+    /// <summary>
+    /// Merges <see cref="IShowItem"/> and <see cref="ITransformItem{TTransform}"/>.
+    /// </summary>
+    /// <typeparam name="TTransform"></typeparam>
     public interface IShowTransformItem<TTransform> : IShowItem, ITransformItem<TTransform>
         where TTransform : GenericTransformation
     {
     }
 
+    /// <summary>
+    /// Interface to implement models in the object.
+    /// </summary>
     public interface IModelItem
     {
+        /// <summary>
+        /// The mesh the rendering should use.
+        /// </summary>
         GenericMesh Mesh { get; set; }
     }
 }

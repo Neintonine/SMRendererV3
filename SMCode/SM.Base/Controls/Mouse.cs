@@ -29,6 +29,18 @@ namespace SM.Base.Controls
         public static Vector2 InScreenNormalized { get; private set; }
 
         /// <summary>
+        /// This returns true, if the left mouse button was pressed.
+        /// <para>Its pretty much: IsDown(MouseButton.Left, true)</para>
+        /// </summary>
+        public static bool LeftClick => IsDown(MouseButton.Left, true);
+
+        /// <summary>
+        /// This returns true, if the right mouse button was pressed.
+        /// <para>Its pretty much: IsDown(MouseButton.Right, true)</para>
+        /// </summary>
+        public static bool RightClick => IsDown(MouseButton.Right, true);
+
+        /// <summary>
         ///     The event to update the values.
         /// </summary>
         /// <param name="mmea">The event args.</param>
@@ -53,11 +65,21 @@ namespace SM.Base.Controls
             _mouseState = OpenTK.Input.Mouse.GetState();
         }
 
+        /// <summary>
+        /// Checks if the mouse is pressed.
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="once">If true, it will not get called, when it was pressed in the last update.</param>
         public static bool IsDown(MouseButton button, bool once = false)
         {
             return _mouseState?[button] == true && !(once && _lastButtonsPressed.Contains(button));
         }
 
+        /// <summary>
+        /// Checks if the mouse is not pressed.
+        /// </summary>
+        /// <param name="button"></param>
+        /// <param name="once">If true, it will not get called, when it was not pressed in the last update.</param>
         public static bool IsUp(MouseButton button, bool once = false)
         {
             return _mouseState?[button] == false && !(once && !_lastButtonsPressed.Contains(button));
