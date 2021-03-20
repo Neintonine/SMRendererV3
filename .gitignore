@@ -13,6 +13,7 @@
 # Dev-Added files
 *.nuspec
 */*/nuget.exe
+**/apireference/**
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
