@@ -2,6 +2,7 @@
 using OpenTK.Graphics.OpenGL4;
 using SM.Base;
 using SM.Base.Window;
+using SM2D.Pipelines;
 using SM2D.Scene;
 using SM2D.Shader;
 
@@ -18,6 +19,7 @@ namespace SM2D
             window.ViewportCamera = new Camera();
 
             SMRenderer.DefaultMaterialShader = ShaderCollection.Instanced;
+            SMRenderer.DefaultRenderPipeline = Basic2DPipeline.Pipeline;
         }
 
         /// <inheritdoc />

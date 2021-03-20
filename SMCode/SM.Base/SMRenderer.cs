@@ -44,6 +44,11 @@ namespace SM.Base
         public static MaterialShader DefaultMaterialShader;
 
         /// <summary>
+        ///     The default render pipeline.
+        /// </summary>
+        public static RenderPipeline DefaultRenderPipeline;
+
+        /// <summary>
         ///     Shows more information onto the log system.
         /// </summary>
         public static bool AdvancedDebugging = false;

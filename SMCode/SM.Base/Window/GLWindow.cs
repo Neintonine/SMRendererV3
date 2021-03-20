@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Threading;
 using System.Windows.Forms;
 using OpenTK;
@@ -23,10 +24,14 @@ namespace SM.Base.Window
     /// </summary>
     public class GLWindow : GameWindow, IGenericWindow
     {
+        private Vector2 _flagWindowPos;
         private Vector2 _flagWindowSize;
+
         private Thread _fixedUpdateThread;
         private WindowFlags _windowFlags;
 
+        private DisplayResolution _normalResolution;
+        private DisplayResolution _fullscreenResolution;
 
 
         /// <inheritdoc />
@@ -45,6 +50,7 @@ namespace SM.Base.Window
         public bool DrawWhileUnfocused { get; set; } = true;
         /// <inheritdoc />
         public bool UpdateWhileUnfocused { get; set; } = false;
+
         /// <inheritdoc />
         public Vector2 WindowSize { get; set; }
         /// <inheritdoc />
@@ -70,8 +76,9 @@ namespace SM.Base.Window
             {
                 if (_windowFlags != value)
                 {
+                    WindowFlags oldV = _windowFlags;
                     _windowFlags = value;
-                    ChangeWindowFlag(value);
+                    ChangeWindowFlag(value, oldV);
                 }
             }
         }
@@ -93,14 +100,15 @@ namespace SM.Base.Window
         /// <param name="flags"></param>
         /// <param name="vSync"></param>
         public GLWindow(int width, int height, string title, WindowFlags flags, VSyncMode vSync = VSyncMode.On) :
-            base(width, height, default, title, (GameWindowFlags) flags, DisplayDevice.Default,
+            base(width, height, default, title, GameWindowFlags.Default, DisplayDevice.Default,
                 GLSettings.ForcedVersion.MajorVersion, GLSettings.ForcedVersion.MinorVersion,
                 GraphicsContextFlags.Default)
         {
             VSync = vSync;
-            _flagWindowSize = new Vector2(width, height);
-
             WindowFlags = flags;
+
+            FocusedChanged += GLWindow_FocusedChanged;
+            _normalResolution = _fullscreenResolution = DisplayDevice.Default.SelectResolution(DisplayDevice.Default.Width, DisplayDevice.Default.Height, DisplayDevice.Default.BitsPerPixel, DisplayDevice.Default.RefreshRate);
         }
 
 
@@ -124,8 +132,6 @@ namespace SM.Base.Window
             base.OnResize(e);
 
             WindowCode.Resize(this);
-
-            if (WindowFlags == WindowFlags.Window) _flagWindowSize = WindowSize;
 
             if (Loading)
             {
@@ -217,6 +223,17 @@ namespace SM.Base.Window
             CurrentRenderPipeline = renderPipeline;
         }
 
+        /// <summary>
+        /// Changes the resolution in fullscreen mode.
+        /// <para>Can be executed before changing to fullscreen, but with no effect until changed.</para>
+        /// </summary>
+        /// <param name="resolution">The resolution you get from <see cref="DisplayDevice.AvailableResolutions"/> or <see cref="DisplayDevice.SelectResolution"/></param>
+        public void ChangeFullscreenResolution(DisplayResolution resolution)
+        {
+            _fullscreenResolution = resolution;
+
+            if (_windowFlags == WindowFlags.ExclusiveFullscreen) ApplyFullscreenResolution();
+        }
 
         /// <summary>
         /// Starts the fixed update loop.
@@ -248,17 +265,48 @@ namespace SM.Base.Window
             }
         }
 
-        private void ChangeWindowFlag(WindowFlags newFlag)
+        private void GLWindow_FocusedChanged(object sender, EventArgs e)
         {
+            if (_windowFlags == WindowFlags.ExclusiveFullscreen)
+            {
+                if (!Focused)
+                {
+                    DisplayDevice.Default.ChangeResolution(_normalResolution);
+                    WindowState = WindowState.Minimized;
+                }
+                else
+                {
+                    ApplyFullscreenResolution();
+                }
+            }
+
+        }
+        private void ChangeWindowFlag(WindowFlags newFlag, WindowFlags oldFlag)
+        {
+            if (oldFlag == WindowFlags.Window)
+            {
+                _flagWindowSize = WindowSize;
+                _flagWindowPos = new Vector2(X, Y);
+            }
+
             switch (newFlag)
             {
                 case WindowFlags.Window:
+                    DisplayDevice.Default.ChangeResolution(_normalResolution);
+                    WindowState = WindowState.Normal;
                     Width = (int)_flagWindowSize.X;
                     Height = (int)_flagWindowSize.Y;
 
+                    X = (int) _flagWindowPos.X;
+                    Y = (int) _flagWindowPos.Y;
+
                     WindowBorder = WindowBorder.Resizable;
+
+
                     break;
                 case WindowFlags.BorderlessWindow:
+                    DisplayDevice.Default.ChangeResolution(_normalResolution);
+                    WindowState = WindowState.Maximized;
                     WindowBorder = WindowBorder.Hidden;
 
                     X = Screen.PrimaryScreen.Bounds.Left;
@@ -268,10 +316,24 @@ namespace SM.Base.Window
 
                     break;
                 case WindowFlags.ExclusiveFullscreen:
+
+
+                    WindowState = WindowState.Fullscreen;
+                    ApplyFullscreenResolution();
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newFlag), newFlag, null);
             }
+
+            
+        }
+
+        private void ApplyFullscreenResolution()
+        {
+            DisplayDevice.Default.ChangeResolution(_fullscreenResolution);
+            Width = _fullscreenResolution.Width;
+            Height = _fullscreenResolution.Height;
         }
     }
 }

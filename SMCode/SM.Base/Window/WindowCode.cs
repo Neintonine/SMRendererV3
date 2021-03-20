@@ -91,6 +91,7 @@ namespace SM.Base.Window
         internal static void Render(IGenericWindow window, float deltatime)
         {
             if (window.CurrentScene == null) return;
+            if (window.CurrentRenderPipeline == null) window.SetRenderPipeline(SMRenderer.DefaultRenderPipeline);
 
             SMRenderer.CurrentFrame++;
 
