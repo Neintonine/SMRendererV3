@@ -2,6 +2,7 @@
 using SM.Base.PostEffects;
 using SM.Base.Window;
 using SM.OGL.Framebuffer;
+using SM.OGL.Texture;
 
 namespace SM_TEST
 {
@@ -13,9 +14,9 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(16);
+            MainFramebuffer = CreateWindowFramebuffer(0, true, PixelInformation.RGBA_HDR);
 
-            _postBuffer = CreateWindowFramebuffer();
+            _postBuffer = CreateWindowFramebuffer(0, false, PixelInformation.RGBA_HDR);
             Framebuffers.Add(_postBuffer);
             _bloom = new BloomEffect(MainFramebuffer, hdr: true, .5f)
             {
@@ -33,8 +34,10 @@ namespace SM_TEST
             context.Scene.DrawBackground(context);
             context.Scene.DrawMainObjects(context);
             context.Scene.DrawHUD(context);
+
             
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
             _bloom.Draw(context);
 
             context.Scene.DrawDebug(context);
