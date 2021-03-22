@@ -13,9 +13,7 @@ namespace SM.OGL.Mesh
     public abstract class GenericMesh : GLObject
     {
         private bool _boundingBoxUpdated = false;
-
-        public static int LastID { get; internal set; } = -1;
-
+        
         /// <inheritdoc />
         protected override bool AutoCompile { get; set; } = true;
 
@@ -71,12 +69,18 @@ namespace SM.OGL.Mesh
             };
         }
 
+        /// <summary>
+        /// Updates the object bounding box.
+        /// </summary>
         public void UpdateBoundingBox()
         {
             BoundingBox.Update(this);
             _boundingBoxUpdated = true;
         }
 
+        /// <summary>
+        /// Activates the object to be rendered.
+        /// </summary>
         public void Activate()
         {
             GL.BindVertexArray(ID);
@@ -99,6 +103,7 @@ namespace SM.OGL.Mesh
             GL.BindVertexArray(0);
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             GL.DeleteVertexArray(_id);

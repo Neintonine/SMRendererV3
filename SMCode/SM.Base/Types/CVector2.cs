@@ -46,6 +46,12 @@ namespace SM.Base.Types
             Y *= length;
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "{"+X+"; "+Y+"}";
+        }
+
         /// <summary>
         ///     Sets each component to the same value
         /// </summary>
@@ -58,7 +64,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Sets each component to the <see cref="Vector2" /> counter-part.
         /// </summary>
-        /// <param name="vector"></param>
         public void Set(Vector2 vector, bool triggerChanged = true)
         {
             Set(vector.X, vector.Y, triggerChanged);
@@ -67,8 +72,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Sets the a own value to each component.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
         public void Set(float x, float y, bool triggerChanged = true)
         {
             Y = y;

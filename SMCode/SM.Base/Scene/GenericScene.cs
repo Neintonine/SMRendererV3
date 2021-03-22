@@ -213,18 +213,24 @@ namespace SM.Base.Scene
     ///     A generic scene that imports different functions.
     /// </summary>
     /// <typeparam name="TCamera">The type of cameras.</typeparam>
-    /// <typeparam name="TItem">The type of show items.</typeparam>
     /// <typeparam name="TCollection">The type for collections</typeparam>
     public abstract class GenericScene<TCamera, TCollection> : GenericScene
         where TCamera : GenericCamera, new()
         where TCollection : GenericItemCollection, new()
     {
+        /// <summary>
+        ///     Objects inside the scene, but as the collection type.
+        /// </summary>
         public new TCollection Objects
         {
             get => (TCollection) base.Objects;
             set => base.Objects = value;
         }
 
+
+        /// <summary>
+        ///     HUD-Objects inside the scene, but as the collection type.
+        /// </summary>
         public new TCollection HUD
         {
             get
@@ -235,18 +241,28 @@ namespace SM.Base.Scene
             set => base.HUD = value;
         }
 
+        /// <summary>
+        ///     The active camera, that is used if the context doesn't force the viewport camera.
+        ///     <para>If none set, it automaticly uses the viewport camera.</para>
+        /// </summary>
         public new TCamera Camera
         {
             get => (TCamera) base.Camera;
             set => base.Camera = value;
         }
 
+        /// <summary>
+        ///     A camera to control the HUD.
+        /// </summary>
         public new TCamera HUDCamera
         {
             get => (TCamera) base.HUDCamera;
             set => base.HUDCamera = value;
         }
 
+        /// <summary>
+        ///     A camera to control the background.
+        /// </summary>
         public new TCamera BackgroundCamera
         {
             get => (TCamera) base.BackgroundCamera;

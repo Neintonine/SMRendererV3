@@ -70,6 +70,11 @@ namespace SM.OGL.Shaders
             ShaderFileFiles = new ShaderFileCollection(vertex,fragment, geometry);
         }
 
+        /// <summary>
+        /// Creates a shader out of a vertex and an fragment shader.
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <param name="fragment"></param>
         protected GenericShader(string vertex, string fragment) : this(new ShaderFileCollection(vertex, fragment)){}
 
         /// <inheritdoc />
@@ -81,6 +86,10 @@ namespace SM.OGL.Shaders
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Program;
 
+        /// <summary>
+        /// Updates the shader files and recompiles the shader.
+        /// </summary>
+        /// <param name="newShaderFiles"></param>
         public void Update(ShaderFileCollection newShaderFiles)
         {
             ShaderFileFiles = newShaderFiles;
@@ -104,6 +113,9 @@ namespace SM.OGL.Shaders
             GLDebugging.CheckGLErrors($"A error occured at shader creation for '{GetType()}': %code%");
         }
 
+        /// <summary>
+        /// Activates the shader
+        /// </summary>
         public void Activate()
         {
             GL.UseProgram(ID);
@@ -115,6 +127,7 @@ namespace SM.OGL.Shaders
             Load();
         }
 
+        /// <inheritdoc />
         public override void Dispose()
         {
             GL.DeleteProgram(this);
@@ -136,14 +149,15 @@ namespace SM.OGL.Shaders
         /// <summary>
         ///     Draws the mesh while forcing a primitive type instead of using the mesh type.
         /// </summary>
+        /// <param name="modelType">The type, as what the object should be rendered.</param>
         /// <param name="mesh">The mesh.</param>
         /// <param name="amount">The amounts for instancing.</param>
-        public static void DrawObject(PrimitiveType forcedType, GenericMesh mesh, int amount = 1)
+        public static void DrawObject(PrimitiveType modelType, GenericMesh mesh, int amount = 1)
         {
             if (mesh.Indices != null)
-                GL.DrawElementsInstanced(forcedType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
+                GL.DrawElementsInstanced(modelType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
             else
-                GL.DrawArraysInstanced(forcedType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
+                GL.DrawArraysInstanced(modelType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
         }
 
         /// <summary>

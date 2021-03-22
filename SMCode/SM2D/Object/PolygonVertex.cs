@@ -7,17 +7,36 @@ using OpenTK.Graphics;
 
 namespace SM2D.Object
 {
+    /// <summary>
+    /// Allows storing more information inside a vertex.
+    /// </summary>
     public struct PolygonVertex
     {
-        public Vector2 Vertex;
+        /// <summary>
+        /// The position in the polygon.
+        /// </summary>
+        public Vector2 Position;
+        /// <summary>
+        /// The color of the vertex.
+        /// </summary>
         public Color4 Color;
 
-        public PolygonVertex(Vector2 vertex = default, Color4 color = default)
+        /// <summary>
+        /// Creates a polygon vertex.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="color"></param>
+        public PolygonVertex(Vector2 position = default, Color4 color = default)
         {
-            Vertex = vertex;
+            Position = position;
             Color = color;
         }
 
+        /// <summary>
+        /// Automaticly translates Vector2s to PolygonVertex
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <returns></returns>
         public static implicit operator PolygonVertex(Vector2 vec) => new PolygonVertex(vec, Color4.White);
     }
 }

@@ -8,8 +8,14 @@ using SM2D.Types;
 
 namespace SM2D.Controls
 {
+    /// <summary>
+    /// Contains special methods for the mouse.
+    /// </summary>
     public class Mouse2D
     {
+        /// <summary>
+        /// Returns the current position of the mouse inside the world.
+        /// </summary>
         public static Vector2 InWorld(Vector2 worldScale)
         {
             var res = worldScale;
@@ -17,28 +23,63 @@ namespace SM2D.Controls
             return Mouse.InScreenNormalized * res - res / 2;
         }
 
+        /// <summary>
+        /// Returns the current position of the mouse inside the world.
+        /// </summary>
         public static Vector2 InWorld(Camera cam)
         {
             return InWorld(cam.WorldScale) + cam.Position;
         }
 
+        /// <summary>
+        /// Returns the current position of the mouse inside the world.
+        /// </summary>
         public static Vector2 InWorld(Vector2 worldScale, Vector2 position)
         {
             return InWorld(worldScale) + position;
         }
 
+        /// <summary>
+        /// Checks if the mouse is over an object.
+        /// </summary>
+        /// <param name="mousePos">The position in the world. See <see cref="InWorld(Camera)"/></param>
+        /// <param name="checkingObjects"></param>
+        /// <typeparam name="TObject"></typeparam>
         public static bool MouseOver<TObject>(Vector2 mousePos, params TObject[] checkingObjects)
             where TObject : IModelItem, ITransformItem<Transformation>
             => MouseOver(mousePos, out _, checkingObjects);
 
+        /// <summary>
+        /// Checks if the mouse is over an object.
+        /// </summary>
+        /// <param name="mousePos">The position in the world. See <see cref="InWorld(Camera)"/></param>
+        /// <param name="checkingObjects"></param>
+        /// <typeparam name="TObject"></typeparam>
+        /// <returns></returns>
         public static bool MouseOver<TObject>(Vector2 mousePos, ICollection<TObject> checkingObjects)
             where TObject : IModelItem, ITransformItem<Transformation>
             => MouseOver<TObject>(mousePos, out _, checkingObjects);
 
+        /// <summary>
+        /// Checks if the mouse is over an object and returns the object that was clicked on.
+        /// </summary>
+        /// <param name="mousePos">The position in the world. See <see cref="InWorld(Camera)"/></param>
+        /// <param name="clicked"></param>
+        /// <param name="checkingObjects"></param>
+        /// <typeparam name="TObject"></typeparam>
+        /// <returns></returns>
         public static bool MouseOver<TObject>(Vector2 mousePos, out TObject clicked, params TObject[] checkingObjects) 
             where TObject : IModelItem, ITransformItem<Transformation>
             => MouseOver<TObject>(mousePos, out clicked, (ICollection<TObject>)checkingObjects);
 
+        /// <summary>
+        /// Checks if the mouse is over an object and returns the object that was clicked on.
+        /// </summary>
+        /// <param name="mousePos">The position in the world. See <see cref="InWorld(Camera)"/></param>
+        /// <param name="clickedObj"></param>
+        /// <param name="checkingObjects"></param>
+        /// <typeparam name="TObject"></typeparam>
+        /// <returns></returns>
         public static bool MouseOver<TObject>(Vector2 mousePos, out TObject clickedObj, ICollection<TObject> checkingObjects)
             where TObject : IModelItem, ITransformItem<Transformation>
         {
@@ -70,6 +111,13 @@ namespace SM2D.Controls
             return success;
         }
 
+        /// <summary>
+        /// Checks if the mouse is over an object and returns the object that was clicked on.
+        /// </summary>
+        /// <param name="mousePos">The position in the world. See <see cref="InWorld(Camera)"/></param>
+        /// <param name="boundingBox"></param>
+        /// <param name="transform"></param>
+        /// <returns></returns>
         public static bool MouseOver(Vector2 mousePos, BoundingBox boundingBox, Transformation transform)
         {
             Matrix4 worldPos = transform.InWorldSpace;

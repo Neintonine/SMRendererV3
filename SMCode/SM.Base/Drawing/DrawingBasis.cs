@@ -55,6 +55,7 @@ namespace SM.Base.Drawing
         /// </summary>
         public bool Active { get; set; } = true;
 
+        /// <inheritdoc />
         public bool RenderActive { get; set; } = true;
 
         /// <inheritdoc />

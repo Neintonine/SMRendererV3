@@ -18,7 +18,7 @@ namespace SM_TEST
 
             _postBuffer = CreateWindowFramebuffer(0, false, PixelInformation.RGBA_HDR);
             Framebuffers.Add(_postBuffer);
-            _bloom = new BloomEffect(MainFramebuffer, hdr: true, .5f)
+            _bloom = new BloomEffect(MainFramebuffer, hdr: true, .75f)
             {
                 Threshold = .5f,
             };

@@ -14,14 +14,23 @@ using SM2D.Scene;
 
 namespace SM2D.Drawing
 {
+    /// <summary>
+    /// Allows easy access to draw something on the background.
+    /// </summary>
     public class DrawBackground : DrawingBasis, IBackgroundItem
     {
+        /// <summary>
+        /// Sets the color or tint (in case a texture is set).
+        /// </summary>
         public Color4 Color
         {
             get => Material.Tint;
             set => Material.Tint = value;
         }
 
+        /// <summary>
+        /// Sets the texture of the background.
+        /// </summary>
         public TextureBase Texture
         {
             get => Material.Texture;
@@ -32,18 +41,34 @@ namespace SM2D.Drawing
             }
         }
 
+        /// <summary>
+        /// Creates a black background.
+        /// </summary>
         public DrawBackground() : this(Color4.Black) {}
 
+        /// <summary>
+        /// Creates a background with a color.
+        /// </summary>
+        /// <param name="color"></param>
         public DrawBackground(Color4 color)
         {
             Color = color;
         }
 
+        /// <summary>
+        /// Creates a background with a texture.
+        /// </summary>
+        /// <param name="texture"></param>
         public DrawBackground(Bitmap texture)
         {
             Texture = (Texture) texture;
         }
 
+        /// <summary>
+        /// Creates a background with a texture and a tint.
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="tint"></param>
         public DrawBackground(Bitmap texture, Color4 tint)
         {
             Color = tint;
@@ -51,6 +76,7 @@ namespace SM2D.Drawing
         }
 
 
+        /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
             base.DrawContext(ref context);

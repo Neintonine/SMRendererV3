@@ -96,7 +96,6 @@ namespace SM.Base.Types
         /// <summary>
         ///     Conversion from <see cref="float" /> to One-dimensional Vector.
         /// </summary>
-        /// <param name="f"></param>
         /// <returns></returns>
         //public static implicit operator CVector1(float f) => new CVector1(f);
         protected virtual float GetLengthProcess()
@@ -104,14 +103,27 @@ namespace SM.Base.Types
             return X * X;
         }
 
+        /// <summary>
+        /// Normalizes the vector.
+        /// </summary>
+        /// <param name="length"></param>
         protected virtual void NormalizationProcess(float length)
         {
             X *= length;
         }
 
+        /// <summary>
+        /// This triggers the <see cref="Changed"/> event.
+        /// </summary>
         protected void TriggerChanged()
         {
             Changed?.Invoke();
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return X.ToString();
         }
     }
 }

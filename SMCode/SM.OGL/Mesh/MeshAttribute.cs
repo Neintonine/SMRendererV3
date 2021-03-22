@@ -18,6 +18,12 @@
         /// </summary>
         public VBO ConnectedVBO;
 
+        /// <summary>
+        /// Creates a attribute for a mesh.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="name"></param>
+        /// <param name="buffer"></param>
         public MeshAttribute(int index, string name, VBO buffer)
         {
             Index = index;

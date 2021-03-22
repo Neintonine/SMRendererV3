@@ -139,6 +139,10 @@ namespace SM.OGL.Mesh
             Add(vector.X, vector.Y, z, w);
         }
 
+        /// <summary>
+        /// Adds a array of vector2s.
+        /// </summary>
+        /// <param name="vectors"></param>
         public void Add(params Vector2[] vectors)
         {
             foreach (Vector2 vector in vectors)
@@ -163,6 +167,10 @@ namespace SM.OGL.Mesh
             Add(vector.X, vector.Y, vector.Z, w);
         }
 
+        /// <summary>
+        ///     Adds a array of Vector3s.
+        /// </summary>
+        /// <param name="vectors"></param>
         public void Add(params Vector3[] vectors)
         {
             foreach (Vector3 vector in vectors)

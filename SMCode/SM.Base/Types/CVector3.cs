@@ -47,6 +47,12 @@ namespace SM.Base.Types
         }
 
         /// <inheritdoc />
+        public override string ToString()
+        {
+            return "{" + X + "; " + Y + "}";
+        }
+
+        /// <inheritdoc />
         public override void Set(float uniform, bool triggerChanged = true)
         {
             Z = uniform;

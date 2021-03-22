@@ -15,6 +15,7 @@ namespace SM.OGL.Framebuffer
     /// </summary>
     public class Framebuffer : GLObject
     {
+        /// <inheritdoc />
         protected override bool AutoCompile { get; set; } = true;
 
         public static IFramebufferWindow ScreenWindow;
@@ -30,8 +31,8 @@ namespace SM.OGL.Framebuffer
             _windowScale = 1,
         };
         
-        private IFramebufferWindow _window;
-        private float _windowScale;
+        private readonly IFramebufferWindow _window;
+        private readonly float _windowScale;
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
@@ -46,7 +47,9 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } =
             new Dictionary<string, ColorAttachment>();
-
+        /// <summary>
+        /// Contains the current renderbuffer attachments of the framebuffer.
+        /// </summary>
         public Dictionary<RenderbufferAttachment, int> RenderbufferAttachments { get; } = new Dictionary<RenderbufferAttachment, int>();
 
         /// <summary>
@@ -143,6 +146,10 @@ namespace SM.OGL.Framebuffer
             ColorAttachments.Add(key, value);
         }
 
+        /// <summary>
+        /// Appends a renderbuffer attachment to the framebuffer.
+        /// </summary>
+        /// <param name="attachment"></param>
         public void AppendRenderbuffer(RenderbufferAttachment attachment)
         {
             RenderbufferAttachments.Add(attachment, -1);
@@ -185,6 +192,11 @@ namespace SM.OGL.Framebuffer
             GL.Clear(clear);
         }
 
+        /// <summary>
+        /// Returns a <see cref="Framebuffer"/> handle of the current framebuffer.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static Framebuffer GetCurrentlyActive(FramebufferTarget target = FramebufferTarget.Framebuffer)
         {
             Framebuffer buffer = new Framebuffer()

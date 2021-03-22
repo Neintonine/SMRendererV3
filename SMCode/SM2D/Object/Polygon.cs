@@ -11,8 +11,27 @@ using SM.OGL.Mesh;
 
 namespace SM2D.Object
 {
+    /// <summary>
+    /// Creates a polygon.
+    /// </summary>
     public class Polygon : Mesh
     {
+        /// <inheritdoc />
+        public override VBO Vertex { get; protected set; } = new VBO();
+
+        /// <inheritdoc />
+        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2);
+
+        /// <inheritdoc />
+        public override VBO Color { get; protected set; } = new VBO(pointerSize: 4);
+
+        /// <inheritdoc />
+        public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.TriangleFan;
+
+        /// <summary>
+        /// Creates a polygon with <see cref="Vector2"/>s.
+        /// </summary>
+        /// <param name="vertices"></param>
         public Polygon(ICollection<Vector2> vertices) : base(PrimitiveType.TriangleFan)
         {
             Color.Active = false;
@@ -27,24 +46,22 @@ namespace SM2D.Object
             if (UVs.Active) foreach (var vertex in vertices) AddUV(vertex);
         }
 
+        /// <summary>
+        /// Creates a polygon with <see cref="PolygonVertex"/>, what allows colors hard coded.
+        /// </summary>
+        /// <param name="vertices"></param>
         public Polygon(ICollection<PolygonVertex> vertices) : base(PrimitiveType.TriangleFan)
         {
             foreach (var polygonVertex in vertices)
             {
                 Color.Add(polygonVertex.Color);
-                Vertex.Add(polygonVertex.Vertex, 0);
+                Vertex.Add(polygonVertex.Position, 0);
             }
 
             UpdateBoundingBox();
 
-            if (UVs.Active) foreach (var vertex in vertices) AddUV(vertex.Vertex);
+            if (UVs.Active) foreach (var vertex in vertices) AddUV(vertex.Position);
         }
-
-        public override VBO Vertex { get; protected set; } = new VBO();
-        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2);
-        public override VBO Color { get; protected set; } = new VBO(pointerSize: 4);
-
-        public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.TriangleFan;
 
         private void AddUV(Vector2 vertex)
         {
@@ -53,6 +70,11 @@ namespace SM2D.Object
             UVs.Add(uv);
         }
 
+        /// <summary>
+        /// Creates a circle.
+        /// </summary>
+        /// <param name="secments"></param>
+        /// <returns></returns>
         public static Polygon GenerateCircle(int secments = 32)
         {
             var vertices = new List<Vector2> {Vector2.Zero};
