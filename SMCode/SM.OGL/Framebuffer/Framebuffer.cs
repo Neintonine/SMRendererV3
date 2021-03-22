@@ -31,8 +31,8 @@ namespace SM.OGL.Framebuffer
             _windowScale = 1,
         };
         
-        private readonly IFramebufferWindow _window;
-        private readonly float _windowScale;
+        private IFramebufferWindow _window;
+        private float _windowScale;
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;

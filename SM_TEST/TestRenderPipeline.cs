@@ -14,9 +14,9 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(0, true, PixelInformation.RGBA_HDR);
+            MainFramebuffer = CreateWindowFramebuffer(0);
 
-            _postBuffer = CreateWindowFramebuffer(0, false, PixelInformation.RGBA_HDR);
+            _postBuffer = CreateWindowFramebuffer(0);
             Framebuffers.Add(_postBuffer);
             _bloom = new BloomEffect(MainFramebuffer, hdr: true, .75f)
             {
