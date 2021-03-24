@@ -79,7 +79,7 @@ namespace SM.Base.Window
             foreach (var framebuffer in Framebuffers)
                 framebuffer.Dispose();
 
-            Thread.Sleep(50);
+            Thread.Sleep(100);
 
             foreach (var framebuffer in Framebuffers)
                 framebuffer.Compile();
@@ -90,14 +90,17 @@ namespace SM.Base.Window
         /// </summary>
         /// <param name="multisamples"></param>
         /// <returns></returns>
-        public Framebuffer CreateWindowFramebuffer(int multisamples = 0)
+        public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
         {
             Framebuffer framebuffer = new Framebuffer(ConnectedWindow);
-            framebuffer.Append("color", new ColorAttachment(0, PixelInformation.RGBA_LDR, multisamples));
-            
-            RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
-            depthAttach.Multisample = multisamples;
-            framebuffer.AppendRenderbuffer(depthAttach);
+            framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples));
+
+            if (depth)
+            {
+                RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
+                depthAttach.Multisample = multisamples;
+                framebuffer.AppendRenderbuffer(depthAttach);
+            }
 
             return framebuffer;
         }

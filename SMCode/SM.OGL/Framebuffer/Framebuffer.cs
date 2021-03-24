@@ -18,6 +18,9 @@ namespace SM.OGL.Framebuffer
         /// <inheritdoc />
         protected override bool AutoCompile { get; set; } = true;
 
+        /// <summary>
+        /// The window for the screen
+        /// </summary>
         public static IFramebufferWindow ScreenWindow;
 
         /// <summary>
