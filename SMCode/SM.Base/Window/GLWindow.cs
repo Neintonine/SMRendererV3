@@ -309,10 +309,10 @@ namespace SM.Base.Window
                     WindowState = WindowState.Maximized;
                     WindowBorder = WindowBorder.Hidden;
 
-                    X = Screen.PrimaryScreen.Bounds.Left;
-                    Y = Screen.PrimaryScreen.Bounds.Top;
-                    Width = Screen.PrimaryScreen.Bounds.Width;
-                    Height = Screen.PrimaryScreen.Bounds.Height;
+                    X = 0;
+                    Y = 0;
+                    Width = DisplayDevice.Default.Width;
+                    Height = DisplayDevice.Default.Height;
 
                     break;
                 case WindowFlags.ExclusiveFullscreen:
