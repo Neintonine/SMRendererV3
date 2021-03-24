@@ -27,6 +27,14 @@ namespace SM_TEST
 
             window.SetScene(scene = new Scene());
             scene.Objects.Add(new DrawObject2D());
+            scene.Objects.Add(new DrawObject2D()
+            {
+                Transform =
+                {
+                    Position = new SM.Base.Types.CVector2(20,20),
+                    ZIndex = new SM.Base.Types.CVector1(1)
+                }
+            });
             
             window.UpdateFrame += WindowOnUpdateFrame;
             window.Run();

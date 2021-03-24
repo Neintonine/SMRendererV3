@@ -55,6 +55,8 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Dictionary<RenderbufferAttachment, int> RenderbufferAttachments { get; } = new Dictionary<RenderbufferAttachment, int>();
 
+        public ColorAttachment this[string colorName] => ColorAttachments[colorName];
+
         /// <summary>
         /// Creates a buffer without any options.
         /// </summary>

@@ -133,7 +133,7 @@ namespace SM.Base.PostEffects
         /// <inheritdoc/>
         protected override void InitProcess()
         {
-            _source = Pipeline.MainFramebuffer;
+            _source ??= Pipeline.MainFramebuffer;
 
             _source.ColorAttachments["color"].PixelInformation = PixelInformation.RGBA_HDR;
 
