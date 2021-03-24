@@ -75,14 +75,39 @@ namespace SM.Base.Window
         /// </summary>
         public virtual void Resize()
         {
-            if (Framebuffers == null) return;
-            foreach (var framebuffer in Framebuffers)
-                framebuffer.Dispose();
+            Recompile();
+        }
 
-            Thread.Sleep(50);
 
+        /// <summary>
+        /// Compiles the framebuffers.
+        /// </summary>
+        public void Compile()
+        {
             foreach (var framebuffer in Framebuffers)
                 framebuffer.Compile();
+        }
+
+        /// <summary>
+        /// Recompiles the pipeline.
+        /// </summary>
+        public void Recompile()
+        {
+            if (Framebuffers == null) return;
+            Dispose();
+
+            Thread.Sleep(100);
+
+            Compile();
+        }
+
+        /// <summary>
+        /// Disposes unmanaged resources like Framebuffers.
+        /// </summary>
+        public void Dispose()
+        {
+            foreach (var framebuffer in Framebuffers)
+                framebuffer.Dispose();
         }
 
         /// <summary>
@@ -90,14 +115,17 @@ namespace SM.Base.Window
         /// </summary>
         /// <param name="multisamples"></param>
         /// <returns></returns>
-        public Framebuffer CreateWindowFramebuffer(int multisamples = 0)
+        public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
         {
             Framebuffer framebuffer = new Framebuffer(ConnectedWindow);
-            framebuffer.Append("color", new ColorAttachment(0, PixelInformation.RGBA_LDR, multisamples));
-            
-            RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
-            depthAttach.Multisample = multisamples;
-            framebuffer.AppendRenderbuffer(depthAttach);
+            framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples));
+
+            if (depth)
+            {
+                RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
+                depthAttach.Multisample = multisamples;
+                framebuffer.AppendRenderbuffer(depthAttach);
+            }
 
             return framebuffer;
         }

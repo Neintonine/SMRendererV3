@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
@@ -18,16 +19,23 @@ namespace SM.OGL.Framebuffer
         protected override bool AutoCompile { get; set; } = true;
 
         /// <summary>
+        /// The window for the screen
+        /// </summary>
+        public static IFramebufferWindow ScreenWindow;
+
+        /// <summary>
         /// Represents the screen buffer.
         /// </summary>
         public static readonly Framebuffer Screen = new Framebuffer
         {
             _id = 0,
             CanCompile = false,
+            _window = ScreenWindow,
+            _windowScale = 1,
         };
         
-        private readonly IFramebufferWindow _window;
-        private readonly float _windowScale;
+        private IFramebufferWindow _window;
+        private float _windowScale;
 
         /// <inheritdoc />
         public override ObjectLabelIdentifier TypeIdentifier { get; } = ObjectLabelIdentifier.Framebuffer;
@@ -42,11 +50,12 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Dictionary<string, ColorAttachment> ColorAttachments { get; private set; } =
             new Dictionary<string, ColorAttachment>();
-
         /// <summary>
         /// Contains the current renderbuffer attachments of the framebuffer.
         /// </summary>
-        public List<RenderbufferAttachment> RenderbufferAttachments { get; } = new List<RenderbufferAttachment>();
+        public Dictionary<RenderbufferAttachment, int> RenderbufferAttachments { get; } = new Dictionary<RenderbufferAttachment, int>();
+
+        public ColorAttachment this[string colorName] => ColorAttachments[colorName];
 
         /// <summary>
         /// Creates a buffer without any options.
@@ -79,6 +88,7 @@ namespace SM.OGL.Framebuffer
         /// <inheritdoc />
         public override void Compile()
         {
+            if (_id == 0) _window = ScreenWindow;
             if (_window != null) Size = new Vector2(_window.Width * _windowScale, _window.Height * _windowScale);
 
             base.Compile();
@@ -99,10 +109,11 @@ namespace SM.OGL.Framebuffer
                 GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.Target, pair.Value.ID,
                     0);
 
-            foreach (RenderbufferAttachment attachment in RenderbufferAttachments)
+            foreach (RenderbufferAttachment attachment in RenderbufferAttachments.Keys.ToArray())
             {
                 int att = attachment.Generate(this);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment.FramebufferAttachment, RenderbufferTarget.Renderbuffer, att);
+                RenderbufferAttachments[attachment] = att;
             }
 
             var err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
@@ -118,6 +129,11 @@ namespace SM.OGL.Framebuffer
         {
             
             foreach (var attachment in ColorAttachments.Values) attachment.Dispose();
+            foreach (KeyValuePair<RenderbufferAttachment, int> pair in RenderbufferAttachments.ToArray())
+            {
+                GL.DeleteRenderbuffer(pair.Value);
+                RenderbufferAttachments[pair.Key] = -1;
+            }
             GL.DeleteFramebuffer(this);
             base.Dispose();
 
@@ -141,7 +157,7 @@ namespace SM.OGL.Framebuffer
         /// <param name="attachment"></param>
         public void AppendRenderbuffer(RenderbufferAttachment attachment)
         {
-            RenderbufferAttachments.Add(attachment);
+            RenderbufferAttachments.Add(attachment, -1);
         }
 
         /// <summary>

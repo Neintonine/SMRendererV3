@@ -54,6 +54,14 @@
     <Compile Include="Window\Window2DSetup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="OpenTK">
+      <Version>3.3.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Shader\ShaderFiles\basic.glsl" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SM.Base\SM.Base.csproj">
       <Project>{8e733844-4204-43e7-b3dc-3913cddabb0d}</Project>
       <Name>SM.Base</Name>
@@ -63,14 +71,5 @@
       <Name>SM.OGL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="OpenTK">
-      <Version>3.3.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Shader\ShaderFiles\basic.glsl" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

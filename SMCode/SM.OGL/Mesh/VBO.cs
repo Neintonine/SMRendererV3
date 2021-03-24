@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
@@ -14,6 +15,11 @@ namespace SM.OGL.Mesh
     /// </summary>
     public class VBO : List<float>
     {
+        /// <summary>
+        /// The ID for the buffer.
+        /// </summary>
+        public int BufferID { get; private set; }
+
         /// <summary>
         ///     Specifies the expected usage pattern of the data store.
         /// </summary>
@@ -50,6 +56,11 @@ namespace SM.OGL.Mesh
         ///     Specifies the data type of each component in the array.
         /// </summary>
         public VertexAttribPointerType PointerType;
+
+        /// <summary>
+        /// If true it can be updated, otherwise it will get ignored, when the mesh gets updated.
+        /// </summary>
+        public bool CanBeUpdated = false;
 
         /// <summary>
         ///     Generates a VBO for inserting mesh data.
@@ -91,12 +102,18 @@ namespace SM.OGL.Mesh
             Normalised = normalised;
         }
 
+        public void Add(float x)
+        {
+            CanBeUpdated = true;
+        }
+
         /// <summary>
         ///     Adds two values to the VBO.
         /// </summary>
         public void Add(float x, float y)
         {
             AddRange(new[] {x, y});
+            CanBeUpdated = true;
         }
 
         /// <summary>
@@ -105,6 +122,7 @@ namespace SM.OGL.Mesh
         public void Add(float x, float y, float z)
         {
             AddRange(new[] {x, y, z});
+            CanBeUpdated = true;
         }
 
         /// <summary>
@@ -113,6 +131,7 @@ namespace SM.OGL.Mesh
         public void Add(float x, float y, float z, float w)
         {
             AddRange(new[] {x, y, z, w});
+            CanBeUpdated = true;
         }
 
         /// <summary>
@@ -205,13 +224,23 @@ namespace SM.OGL.Mesh
 
             var data = ToArray();
 
-            var buffer = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, buffer);
+            BufferID = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, BufferID);
             GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint);
 
             GL.VertexAttribPointer(attribID, PointerSize, PointerType, Normalised, PointerStride, PointerOffset);
             GL.EnableVertexAttribArray(attribID);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            CanBeUpdated = false;
+        }
+
+        internal void Update()
+        {
+            var data = ToArray();
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, BufferID);
+            GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, data.Length * sizeof(float), data);
         }
     }
 }

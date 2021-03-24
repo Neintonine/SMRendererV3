@@ -16,6 +16,11 @@ namespace SM.Base.Drawing
     public abstract class DrawingBasis : IShowItem, IModelItem
     {
         /// <summary>
+        ///     The camera, that was used last time the object was rendered.
+        /// </summary>
+        public GenericCamera LastDrawingCamera;
+
+        /// <summary>
         ///     The material it should use.
         /// </summary>
         public Material Material = new Material();
@@ -86,6 +91,8 @@ namespace SM.Base.Drawing
             context.ForcedType = ForcedMeshType;
             context.TextureMatrix *= TextureTransform.GetMatrix();
             context.LastObject = this;
+
+            LastDrawingCamera = context.UseCamera;
         }
     }
 

@@ -28,6 +28,7 @@ namespace SM.Base.PostEffects
 
         /// <summary>
         /// This resolves a multisampled framebuffer to a non-multisampled renderbuffer.
+        /// <para>This removes the depth buffer.</para>
         /// </summary>
         /// <param name="multisampledBuffers"></param>
         /// <param name="target"></param>
@@ -36,7 +37,7 @@ namespace SM.Base.PostEffects
             multisampledBuffers.Activate(FramebufferTarget.ReadFramebuffer);
             target.Activate(FramebufferTarget.DrawFramebuffer);
             GL.BlitFramebuffer(0, 0, (int) multisampledBuffers.Size.X, (int) multisampledBuffers.Size.Y, 0, 0,
-                (int) target.Size.X, (int) target.Size.Y, ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit,
+                (int) target.Size.X, (int) target.Size.Y, ClearBufferMask.ColorBufferBit,
                 BlitFramebufferFilter.Nearest);
 
             target.Activate();

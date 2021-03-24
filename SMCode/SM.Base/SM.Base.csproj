@@ -121,7 +121,6 @@
       <Name>SM.OGL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="PostProcess\DefaultFiles\vertexWithExt.vert" />
   </ItemGroup>

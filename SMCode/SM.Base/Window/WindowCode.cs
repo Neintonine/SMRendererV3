@@ -13,6 +13,7 @@ using SM.Base.Shaders.Extensions;
 using SM.Base.Time;
 using SM.Base.Utility;
 using SM.OGL;
+using SM.OGL.Framebuffer;
 using Keyboard = SM.Base.Controls.Keyboard;
 using Mouse = SM.Base.Controls.Mouse;
 
@@ -26,6 +27,7 @@ namespace SM.Base.Window
         {
             GLSystem.INIT_SYSTEM();
             GLSettings.ShaderPreProcessing = true;
+            Framebuffer.ScreenWindow = window;
 
             var args = Environment.GetCommandLineArgs();
             if (args.Contains("--advDebugging"))

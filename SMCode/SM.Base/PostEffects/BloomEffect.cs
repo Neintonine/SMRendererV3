@@ -78,6 +78,12 @@ namespace SM.Base.PostEffects
         public float Power = 1;
 
         /// <summary>
+        /// Radius of the effect
+        /// <para>Default: 2</para>
+        /// </summary>
+        public float Radius = 1;
+
+        /// <summary>
         /// This can disable the bloom calculation.
         /// <para>Default: true</para>
         /// </summary>
@@ -127,7 +133,7 @@ namespace SM.Base.PostEffects
         /// <inheritdoc/>
         protected override void InitProcess()
         {
-            _source = Pipeline.MainFramebuffer;
+            _source ??= Pipeline.MainFramebuffer;
 
             _source.ColorAttachments["color"].PixelInformation = PixelInformation.RGBA_HDR;
 
@@ -175,6 +181,8 @@ namespace SM.Base.PostEffects
                         collection["Weights"].SetUniform1(_weights);
                         collection["WeightCount"].SetUniform1(WeightCurvePickAmount);
                         collection["Power"].SetUniform1(Power);
+
+                        collection["Radius"].SetUniform1(_textureScale * Radius);
                     });
 
                     hoz = !hoz;

@@ -103,6 +103,29 @@ namespace SM.OGL.Mesh
             GL.BindVertexArray(0);
         }
 
+        /// <summary>
+        /// This updates the parts of the mesh, that needs updating.
+        /// </summary>
+        public void Update()
+        {
+            if (!WasCompiled) 
+            {
+                Compile();
+                return;
+            }
+
+            GL.BindVertexArray(_id);
+                       
+            UpdateBoundingBox();
+
+            foreach(var attrib in Attributes)
+            {
+                if (attrib.ConnectedVBO == null || !attrib.ConnectedVBO.Active || !attrib.ConnectedVBO.CanBeUpdated) continue;
+                attrib.ConnectedVBO.Update();
+            }
+
+        }
+
         /// <inheritdoc />
         public override void Dispose()
         {
