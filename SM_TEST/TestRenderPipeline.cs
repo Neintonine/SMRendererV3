@@ -20,7 +20,7 @@ namespace SM_TEST
             Framebuffers.Add(_postBuffer);
             _bloom = new BloomEffect(_postBuffer, hdr: true, .5f)
             {
-                Threshold = .8f,
+                Threshold = .5f,
             };
 
 

@@ -4,9 +4,12 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using SM.Base;
+using SM.Base.Time;
 using SM.Base.Window;
 using SM2D;
+using SM2D.Controls;
 using SM2D.Drawing;
+using SM2D.Object;
 using SM2D.Pipelines;
 using SM2D.Scene;
 using Font = SM.Base.Drawing.Text.Font;
@@ -19,6 +22,7 @@ namespace SM_TEST
         static Scene scene;
         private static Font font;
         private static GLWindow window;
+        private static PolyLine line;
         static void Main(string[] args)
         {
             window = new GLWindow();
@@ -26,15 +30,14 @@ namespace SM_TEST
             window.SetRenderPipeline(new TestRenderPipeline());
 
             window.SetScene(scene = new Scene());
-            scene.Objects.Add(new DrawObject2D());
-            scene.Objects.Add(new DrawObject2D()
+
+            line = new PolyLine(new Vector2[] { Vector2.Zero, Vector2.One }, PolyLineType.Connected);
+            var display = new DrawObject2D()
             {
-                Transform =
-                {
-                    Position = new SM.Base.Types.CVector2(20,20),
-                    ZIndex = new SM.Base.Types.CVector1(1)
-                }
-            });
+                Mesh = line
+            };
+            display.Transform.Size.Set(1);
+            scene.Objects.Add(display);
             
             window.UpdateFrame += WindowOnUpdateFrame;
             window.Run();
@@ -44,13 +47,10 @@ namespace SM_TEST
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            if (SM.Base.Controls.Keyboard.IsDown(Key.F, true))
-            {
-                window.WindowFlags = WindowFlags.ExclusiveFullscreen;
-                window.ChangeFullscreenResolution(DisplayDevice.Default.SelectResolution(1280,720, DisplayDevice.Default.BitsPerPixel, DisplayDevice.Default.RefreshRate));
-            }
-            if (SM.Base.Controls.Keyboard.IsDown(Key.W, true)) window.WindowFlags = WindowFlags.Window;
-            if (SM.Base.Controls.Keyboard.IsDown(Key.B, true)) window.WindowFlags = WindowFlags.BorderlessWindow;
+            
+            line.Vertex.RemoveRange(3, 3);
+            line.Vertex.Add(Mouse2D.InWorld(window.ViewportCamera as Camera), 0);
+            line.Update();
 
         }
 
