@@ -23,8 +23,11 @@ namespace SM_TEST
         {
             window = new GLWindow();
             window.ApplySetup(new Window2DSetup());
+            window.SetRenderPipeline(new TestRenderPipeline());
+
             window.SetScene(scene = new Scene());
             scene.Objects.Add(new DrawObject2D());
+            
             window.UpdateFrame += WindowOnUpdateFrame;
             window.Run();
 

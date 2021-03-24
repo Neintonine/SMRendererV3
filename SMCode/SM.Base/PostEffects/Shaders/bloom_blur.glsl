@@ -13,6 +13,8 @@ uniform float[32] Weights;
 uniform int WeightCount;
 uniform float Power;
 
+uniform float Radius;
+
 layout(location = 0) out vec4 color;
 
 vec4 GetRenderColorOffset(vec2 offset);
@@ -37,8 +39,8 @@ void main() {
 	result *= GetWeight(0);
 
 	for(int i = 1; i < WeightCount; i++) {
-		result += max(GetRenderColorOffset(tex_offset * i).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
-		result += max(GetRenderColorOffset(-tex_offset * i).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
+		result += max(GetRenderColorOffset(tex_offset * i * Radius).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
+		result += max(GetRenderColorOffset(-tex_offset * i * Radius).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
 	}
 
 	color = vec4(result, 1);
