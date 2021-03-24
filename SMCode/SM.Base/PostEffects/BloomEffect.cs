@@ -81,7 +81,7 @@ namespace SM.Base.PostEffects
         /// Radius of the effect
         /// <para>Default: 2</para>
         /// </summary>
-        public float Radius = 2;
+        public float Radius = 1;
 
         /// <summary>
         /// This can disable the bloom calculation.

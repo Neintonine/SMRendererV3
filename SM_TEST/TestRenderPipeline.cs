@@ -16,11 +16,11 @@ namespace SM_TEST
 
             MainFramebuffer = CreateWindowFramebuffer(16, PixelInformation.RGBA_HDR);
 
-            _postBuffer = CreateWindowFramebuffer(0, depth: false);
+            _postBuffer = CreateWindowFramebuffer(0, PixelInformation.RGBA_HDR, depth: false);
             Framebuffers.Add(_postBuffer);
             _bloom = new BloomEffect(_postBuffer, hdr: true, .5f)
             {
-                Threshold = .5f
+                Threshold = .8f,
             };
 
 
@@ -40,7 +40,7 @@ namespace SM_TEST
             _bloom.Draw(context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            PostProcessUtility.FinalizeHDR(_postBuffer["color"], 1);
+            PostProcessUtility.FinalizeHDR(_postBuffer["color"], .5f);
 
             context.Scene.DrawDebug(context);
         }

@@ -35,12 +35,13 @@ void main() {
 
 	vec2 tex_offset = 1.0 / textureSize(renderedTexture, 0) * vec2(Horizontal ? 1 : 0, Horizontal ? 0 : 1);
 
-	vec3 result = max(GetRenderColorOffset(vec2(0)).rgb - thres, 0) * (First ? Power : 1);
-	result *= GetWeight(0);
+	vec3 result = max(GetRenderColorOffset(vec2(0)).rgb - thres, 0) * (First ? Power : 1) * GetWeight(0);
+
+	float radi = Radius + (length(result));
 
 	for(int i = 1; i < WeightCount; i++) {
-		result += max(GetRenderColorOffset(tex_offset * i * Radius).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
-		result += max(GetRenderColorOffset(-tex_offset * i * Radius).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
+		result += max(GetRenderColorOffset(tex_offset * i * radi).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
+		result += max(GetRenderColorOffset(-tex_offset * i * radi).rgb - thres, 0) * (First ? Power : 1) * GetWeight(i);
 	}
 
 	color = vec4(result, 1);
