@@ -75,14 +75,39 @@ namespace SM.Base.Window
         /// </summary>
         public virtual void Resize()
         {
-            if (Framebuffers == null) return;
+            Recompile();
+        }
+
+
+        /// <summary>
+        /// Compiles the framebuffers.
+        /// </summary>
+        public void Compile()
+        {
             foreach (var framebuffer in Framebuffers)
-                framebuffer.Dispose();
+                framebuffer.Compile();
+        }
+
+        /// <summary>
+        /// Recompiles the pipeline.
+        /// </summary>
+        public void Recompile()
+        {
+            if (Framebuffers == null) return;
+            Dispose();
 
             Thread.Sleep(100);
 
+            Compile();
+        }
+
+        /// <summary>
+        /// Disposes unmanaged resources like Framebuffers.
+        /// </summary>
+        public void Dispose()
+        {
             foreach (var framebuffer in Framebuffers)
-                framebuffer.Compile();
+                framebuffer.Dispose();
         }
 
         /// <summary>

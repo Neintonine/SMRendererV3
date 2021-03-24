@@ -25,7 +25,7 @@ namespace SM_TEST
         private static PolyLine line;
         static void Main(string[] args)
         {
-            window = new GLWindow();
+            window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
             window.ApplySetup(new Window2DSetup());
             window.SetRenderPipeline(new TestRenderPipeline());
 
@@ -40,9 +40,15 @@ namespace SM_TEST
             scene.Objects.Add(display);
             
             window.UpdateFrame += WindowOnUpdateFrame;
+            window.RenderFrame += Window_RenderFrame;
             window.Run();
 
             Debug.WriteLine("Window Closed");
+        }
+
+        private static void Window_RenderFrame(object sender, FrameEventArgs e)
+        {
+            window.Title = Math.Floor(e.Time * 1000) + "ms";
         }
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
@@ -51,6 +57,7 @@ namespace SM_TEST
             line.Vertex.RemoveRange(3, 3);
             line.Vertex.Add(Mouse2D.InWorld(window.ViewportCamera as Camera), 0);
             line.Update();
+
 
         }
 
