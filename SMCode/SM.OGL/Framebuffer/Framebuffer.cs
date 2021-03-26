@@ -26,7 +26,7 @@ namespace SM.OGL.Framebuffer
         /// <summary>
         /// Represents the screen buffer.
         /// </summary>
-        public static readonly Framebuffer Screen = new Framebuffer
+        public static readonly Framebuffer Screen = new()
         {
             _id = 0,
             CanCompile = false,
@@ -55,6 +55,11 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Dictionary<RenderbufferAttachment, int> RenderbufferAttachments { get; } = new Dictionary<RenderbufferAttachment, int>();
 
+        /// <summary>
+        /// Gets the color attachment with the specified color name.
+        /// </summary>
+        /// <param name="colorName"></param>
+        /// <returns></returns>
         public ColorAttachment this[string colorName] => ColorAttachments[colorName];
 
         /// <summary>
@@ -204,7 +209,7 @@ namespace SM.OGL.Framebuffer
         /// <returns></returns>
         public static Framebuffer GetCurrentlyActive(FramebufferTarget target = FramebufferTarget.Framebuffer)
         {
-            Framebuffer buffer = new Framebuffer()
+            Framebuffer buffer = new()
             {
                 CanCompile = false,
                 ReportAsNotCompiled = true

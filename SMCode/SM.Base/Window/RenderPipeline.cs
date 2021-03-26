@@ -113,11 +113,9 @@ namespace SM.Base.Window
         /// <summary>
         /// This creates a finished setup for a framebuffer.
         /// </summary>
-        /// <param name="multisamples"></param>
-        /// <returns></returns>
         public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
         {
-            Framebuffer framebuffer = new Framebuffer(ConnectedWindow);
+            Framebuffer framebuffer = new(ConnectedWindow);
             framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples));
 
             if (depth)

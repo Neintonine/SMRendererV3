@@ -82,14 +82,14 @@ namespace SM.Base
         /// <summary>
         ///     Presets for the log targets.
         /// </summary>
-        public static Dictionary<LogTarget, string> Preset = new Dictionary<LogTarget, string>
+        public static Dictionary<LogTarget, string> Preset = new()
         {
             {LogTarget.Console, "[%type%] %msg%"},
             {LogTarget.Debugger, "[%type%] %msg%"},
             {LogTarget.File, "<%date%, %time%> [%type%] %msg%"}
         };
 
-        private static readonly Dictionary<LogType, ConsoleColor> Colors = new Dictionary<LogType, ConsoleColor>
+        private static readonly Dictionary<LogType, ConsoleColor> Colors = new()
         {
             {LogType.Info, ConsoleColor.Green},
             {LogType.Warning, ConsoleColor.Yellow},

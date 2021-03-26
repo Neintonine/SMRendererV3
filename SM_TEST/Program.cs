@@ -20,7 +20,6 @@ namespace SM_TEST
     class Program
     {
         static Scene scene;
-        private static Font font;
         private static GLWindow window;
         private static PolyLine line;
         static void Main(string[] args)
@@ -56,14 +55,10 @@ namespace SM_TEST
             if (SM.Base.Controls.Mouse.LeftClick)
                 line.Vertex.Add(Vector3.Zero);
 
-            line.Vertex.RemoveAt(1);
-            line.Vertex.Add(new Vector3(Mouse2D.InWorld(window.ViewportCamera as Camera)));
+            line.Vertex[1] = new Vector3(Mouse2D.InWorld(window.ViewportCamera as Camera));
             line.Update();
             
 
         }
-
-        private static void WindowOnLoad(IGenericWindow window)
-        { }
     }
 }

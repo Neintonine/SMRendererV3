@@ -14,7 +14,7 @@ namespace SM.OGL
     /// </summary>
     public abstract class GLObject
     {
-        private static readonly List<GLObject> _disposableObjects = new List<GLObject>();
+        private static readonly List<GLObject> _disposableObjects = new();
         private string _name = "";
 
 

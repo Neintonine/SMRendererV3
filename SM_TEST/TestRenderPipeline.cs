@@ -37,7 +37,7 @@ namespace SM_TEST
 
             PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
 
-            //_bloom.Draw(context);
+            // _bloom.Draw(context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             PostProcessUtility.FinalizeHDR(_postBuffer["color"], .5f);
