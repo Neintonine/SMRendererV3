@@ -25,21 +25,21 @@ namespace SM.Base.Objects.Static
         }
 
         /// <inheritdoc />
-        public override VBO Vertex { get; protected set; } = new VBO
+        public override VBO<Vector3> Vertex { get; protected set; } = new VBO<Vector3>
         {
-            {-.5f, -.5f, 0},
-            {-.5f, .5f, 0},
-            {.5f, .5f, 0},
-            {.5f, -.5f, 0}
+            new Vector3(-.5f, -.5f, 0),
+            new Vector3(-.5f, .5f, 0),
+            new Vector3(.5f, .5f, 0),
+            new Vector3(.5f, -.5f, 0),
         };
 
         /// <inheritdoc />
-        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2)
+        public override VBO<Vector2> UVs { get; protected set; } = new VBO<Vector2>
         {
-            {0, 1},
-            {0, 0},
-            {1, 0},
-            {1, 1}
+            new Vector2(0, 1),
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(1, 1),
         };
 
         /// <inheritdoc />

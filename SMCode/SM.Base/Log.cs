@@ -163,7 +163,7 @@ namespace SM.Base
         private static void GLDebugAction(DebugSource source, DebugType type, DebugSeverity severity, string msg)
         {
             if (type.HasFlag(DebugType.DebugTypeError)) throw new Exception("[GLError] " + msg);
-            Write(type != DebugType.DontCare ? type.ToString().Substring(9) : "DontCare", ConsoleColor.Gray, msg);
+            Write("GL"+ (type != DebugType.DontCare ? type.ToString().Substring(9) : "DontCare"), ConsoleColor.Gray, msg);
         }
 
         [DebuggerStepThrough]

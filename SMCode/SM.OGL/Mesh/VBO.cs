@@ -1,246 +1,155 @@
-﻿#region usings
-
-using System;
-using System.Collections.Generic;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
-
-#endregion
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SM.OGL.Mesh
 {
-    /// <summary>
-    ///     Represents a Vertex Buffer Object used for meshes.
-    /// </summary>
-    public class VBO : List<float>
+    public abstract class VBO : GLObject
     {
-        /// <summary>
-        /// The ID for the buffer.
-        /// </summary>
-        public int BufferID { get; private set; }
+        private float[] _floatArray;
 
-        /// <summary>
-        ///     Specifies the expected usage pattern of the data store.
-        /// </summary>
-        public BufferUsageHint BufferUsageHint;
+        protected override bool AutoCompile { get => false; set { return; } }
+        public override ObjectLabelIdentifier TypeIdentifier => ObjectLabelIdentifier.Buffer;
 
-        /// <summary>
-        ///     Normalise floats?
-        /// </summary>
-        public bool Normalised;
+        public bool Active { get; set; } = true;
+        public bool CanBeUpdated { get; set; } = true;
 
-        /// <summary>
-        ///     Specifies a offset of the first component of the first generic vertex attribute in the array in the data store of
-        ///     the buffer currently bound to the GL_ARRAY_BUFFER target.
-        /// </summary>
-        public int PointerOffset;
+        public bool Normalized { get; protected set; }
+        public int PointerOffset { get; protected set; }
+        public int PointerStride { get; protected set; }
+        public int PointerSize { get; protected set; }
+        public BufferUsageHint UsageHint { get; protected set; }
+        public VertexAttribPointerType PointerType { get; protected set; }
 
-        /// <summary>
-        ///     Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4.
-        /// </summary>
-        public int PointerSize;
+        public int AttributeID { get; internal set; }
 
-        /// <summary>
-        ///     Specifies the byte offset between consecutive generic vertex attributes.
-        /// </summary>
-        public int PointerStride;
+        public abstract int Count { get; }
 
-        /// <summary>
-        /// The VBO gets ignored when true.
-        /// <para>Default: true</para>
-        /// </summary>
-        public bool Active = true;
-
-        /// <summary>
-        ///     Specifies the data type of each component in the array.
-        /// </summary>
-        public VertexAttribPointerType PointerType;
-
-        /// <summary>
-        /// If true it can be updated, otherwise it will get ignored, when the mesh gets updated.
-        /// </summary>
-        public bool CanBeUpdated = false;
-
-        /// <summary>
-        ///     Generates a VBO for inserting mesh data.
-        /// </summary>
-        /// <param name="bufferUsageHint">
-        ///     Specifies the expected usage pattern of the data store.
-        ///     <para>Default: StaticDraw</para>
-        /// </param>
-        /// <param name="pointerType">
-        ///     Specifies the data type of each component in the array.
-        ///     <para>Default: Float</para>
-        /// </param>
-        /// <param name="pointerSize">
-        ///     Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4.
-        ///     <para>Default: 3</para>
-        /// </param>
-        /// <param name="pointerStride">
-        ///     Specifies the byte offset between consecutive generic vertex attributes.
-        ///     <para>Default: 0</para>
-        /// </param>
-        /// <param name="pointerOffset">
-        ///     Specifies a offset of the first component of the first generic vertex attribute in the
-        ///     array in the data store of the buffer currently bound to the GL_ARRAY_BUFFER target.
-        ///     <para>Default: 0</para>
-        /// </param>
-        /// <param name="normalised">
-        ///     Normalise floats?
-        ///     <para>Default: false</para>
-        /// </param>
         public VBO(BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw,
-            VertexAttribPointerType pointerType = VertexAttribPointerType.Float, int pointerSize = 3,
             int pointerStride = 0, int pointerOffset = 0, bool normalised = false)
         {
-            BufferUsageHint = bufferUsageHint;
-            PointerType = pointerType;
-            PointerSize = pointerSize;
+            UsageHint = bufferUsageHint;
             PointerStride = pointerStride;
             PointerOffset = pointerOffset;
-            Normalised = normalised;
+            Normalized = normalised;
         }
 
-        public void Add(float x)
+        public override void Compile()
         {
-            CanBeUpdated = true;
-        }
+            base.Compile();
 
-        /// <summary>
-        ///     Adds two values to the VBO.
-        /// </summary>
-        public void Add(float x, float y)
-        {
-            AddRange(new[] {x, y});
-            CanBeUpdated = true;
-        }
-
-        /// <summary>
-        ///     Adds three values to the VBO.
-        /// </summary>
-        public void Add(float x, float y, float z)
-        {
-            AddRange(new[] {x, y, z});
-            CanBeUpdated = true;
-        }
-
-        /// <summary>
-        ///     Adds four values to the VBO.
-        /// </summary>
-        public void Add(float x, float y, float z, float w)
-        {
-            AddRange(new[] {x, y, z, w});
-            CanBeUpdated = true;
-        }
-
-        /// <summary>
-        ///     Adds a Vector2.
-        /// </summary>
-        public void Add(Vector2 vector)
-        {
-            Add(vector.X, vector.Y);
-        }
-
-        /// <summary>
-        ///     Adds a Vector2 and a value.
-        /// </summary>
-        public void Add(Vector2 vector, float z)
-        {
-            Add(vector.X, vector.Y, z);
-        }
-
-        /// <summary>
-        ///     Adds a Vector2 and two values.
-        /// </summary>
-        public void Add(Vector2 vector, float z, float w)
-        {
-            Add(vector.X, vector.Y, z, w);
-        }
-
-        /// <summary>
-        /// Adds a array of vector2s.
-        /// </summary>
-        /// <param name="vectors"></param>
-        public void Add(params Vector2[] vectors)
-        {
-            foreach (Vector2 vector in vectors)
-            {
-                Add(vector);
-            }
-        }
-
-        /// <summary>
-        ///     Adds a Vector3.
-        /// </summary>
-        public void Add(Vector3 vector)
-        {
-            Add(vector.X, vector.Y, vector.Z);
-        }
-
-        /// <summary>
-        ///     Adds a Vector3 and a value.
-        /// </summary>
-        public void Add(Vector3 vector, float w)
-        {
-            Add(vector.X, vector.Y, vector.Z, w);
-        }
-
-        /// <summary>
-        ///     Adds a array of Vector3s.
-        /// </summary>
-        /// <param name="vectors"></param>
-        public void Add(params Vector3[] vectors)
-        {
-            foreach (Vector3 vector in vectors)
-            {
-                Add(vector);
-            }
-        }
-        /// <summary>
-        ///     Adds a vector4.
-        /// </summary>
-        /// <param name="vector"></param>
-        public void Add(Vector4 vector)
-        {
-            Add(vector.X, vector.Y, vector.Z, vector.W);
-        }
-
-        /// <summary>
-        ///     Adds a color.
-        /// </summary>
-        public void Add(Color4 color)
-        {
-            Add(color.R, color.G, color.B, color.A);
-        }
-
-        /// <summary>
-        ///     Binds the buffer to the active VAO.
-        /// </summary>
-        /// <param name="attribID">The id for the attribute.</param>
-        internal void BindBuffer(int attribID)
-        {
             if (!Active) return;
 
-            var data = ToArray();
+            float[] data = ToFloat();
 
-            BufferID = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, BufferID);
-            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, BufferUsageHint);
+            _id = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _id);
+            GL.BufferData(BufferTarget.ArrayBuffer, data.Length * sizeof(float), data, UsageHint);
 
-            GL.VertexAttribPointer(attribID, PointerSize, PointerType, Normalised, PointerStride, PointerOffset);
-            GL.EnableVertexAttribArray(attribID);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.VertexAttribPointer(AttributeID, PointerSize, PointerType, Normalized, PointerStride, PointerOffset);
+            GL.EnableVertexAttribArray(AttributeID);
 
             CanBeUpdated = false;
         }
 
-        internal void Update()
+        public void Update()
         {
-            var data = ToArray();
+            float[] data = GetFloats();
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, BufferID);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _id);
             GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, data.Length * sizeof(float), data);
+
+            CanBeUpdated = false;
+        }
+
+        public override void Dispose()
+        {
+            GL.DeleteBuffer(_id);
+            base.Dispose();
+        }
+
+        public float[] GetFloats()
+        {
+            if (_floatArray == null || CanBeUpdated)
+            {
+                _floatArray = ToFloat();
+            }
+
+            return _floatArray;
+        }
+
+        protected abstract float[] ToFloat();
+    }
+
+    public class VBO<TType> : VBO, IEnumerable<TType>
+        where TType : struct
+    {
+        static Dictionary<Type, Tuple<int, VertexAttribPointerType>> _pointerSizes = new Dictionary<Type, Tuple<int, VertexAttribPointerType>>()
+        {
+            { typeof(float), new Tuple<int, VertexAttribPointerType>(1, VertexAttribPointerType.Float) },
+            { typeof(Vector2), new Tuple<int, VertexAttribPointerType>(2, VertexAttribPointerType.Float) },
+            { typeof(Vector3), new Tuple<int, VertexAttribPointerType>(3, VertexAttribPointerType.Float) },
+            { typeof(Vector4), new Tuple<int, VertexAttribPointerType>(4, VertexAttribPointerType.Float) },
+            { typeof(Color4), new Tuple<int, VertexAttribPointerType>(4, VertexAttribPointerType.Float) },
+        };
+        private List<TType> _values = new List<TType>();
+
+        public override int Count => _values.Count;
+
+        public VBO(BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw,
+            int pointerStride = 0, int pointerOffset = 0, bool normalised = false) : base(bufferUsageHint, pointerStride, pointerOffset, normalised)
+        {
+            if (!_pointerSizes.ContainsKey(typeof(TType)))
+                throw new NotSupportedException($"The type '{typeof(TType).FullName}' is not applicable for VBOs.");
+
+            PointerSize = _pointerSizes[typeof(TType)].Item1;
+            PointerType = _pointerSizes[typeof(TType)].Item2;
+        }
+
+        public void Add(TType value)
+        {
+            _values.Add(value);
+            CanBeUpdated = true;
+        }
+
+        public void RemoveAt(int pos)
+        {
+            _values.RemoveAt(pos);
+            CanBeUpdated = true;
+        }
+
+        public IEnumerator<TType> GetEnumerator()
+        {
+            return _values.GetEnumerator();
+        }
+
+        protected override float[] ToFloat()
+        {
+            List<float> floats = new List<float>();
+
+            foreach (TType value in _values)
+            {
+                switch (value)
+                {
+                    case float f: floats.Add(f); break;
+                    case Vector2 v: floats.AddRange(new[] { v.X, v.Y }); break;
+                    case Vector3 v: floats.AddRange(new[] { v.X, v.Y, v.Z }); break;
+                    case Vector4 v: floats.AddRange(new[] { v.X, v.Y, v.Z, v.W }); break;
+                    case Color4 v: floats.AddRange(new[] { v.R, v.G, v.B, v.A }); break;
+                }
+            }
+            return floats.ToArray();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _values.GetEnumerator();
         }
     }
 }

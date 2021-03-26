@@ -144,7 +144,7 @@ namespace SM.OGL.Shaders
             if (mesh.Indices != null)
                 GL.DrawElementsInstanced(mesh.PrimitiveType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
             else
-                GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
+                GL.DrawArraysInstanced(mesh.PrimitiveType, 0, mesh.Vertex.Count, amount);
         }
         /// <summary>
         ///     Draws the mesh while forcing a primitive type instead of using the mesh type.
@@ -157,7 +157,7 @@ namespace SM.OGL.Shaders
             if (mesh.Indices != null)
                 GL.DrawElementsInstanced(modelType, 0, DrawElementsType.UnsignedInt, mesh.Indices, amount);
             else
-                GL.DrawArraysInstanced(modelType, 0, mesh.Vertex.Count / mesh.Vertex.PointerSize, amount);
+                GL.DrawArraysInstanced(modelType, 0, mesh.Vertex.Count, amount);
         }
 
         /// <summary>

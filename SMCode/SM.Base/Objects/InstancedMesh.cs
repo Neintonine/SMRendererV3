@@ -1,5 +1,7 @@
 ﻿#region usings
 
+using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
 
@@ -21,19 +23,19 @@ namespace SM.Base.Objects
         /// </param>
         public InstancedMesh(PrimitiveType type, string[] enabledAttibute) : base(type)
         {
-            Attributes["vertex"] = Vertex = new VBO();
+            Attributes["vertex"] = Vertex = new VBO<Vector3>();
 
             foreach (string attribute in enabledAttibute)
                 switch (attribute)
                 {
                     case "uv":
-                        Attributes["uv"] = UVs = new VBO(pointerSize: 2);
+                        Attributes["uv"] = UVs = new VBO<Vector2>();
                         break;
                     case "normals":
-                        Attributes["normal"] = Normals = new VBO();
+                        Attributes["normal"] = Normals = new VBO<Vector3>();
                         break;
                     case "color":
-                        Attributes["color"] = Color = new VBO(pointerSize: 4);
+                        Attributes["color"] = Color = new VBO<Color4>();
                         break;
                 }
         }

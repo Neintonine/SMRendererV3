@@ -53,11 +53,13 @@ namespace SM_TEST
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            
-            line.Vertex.RemoveRange(3, 3);
-            line.Vertex.Add(Mouse2D.InWorld(window.ViewportCamera as Camera), 0);
-            line.Update();
+            if (SM.Base.Controls.Mouse.LeftClick)
+                line.Vertex.Add(Vector3.Zero);
 
+            line.Vertex.RemoveAt(1);
+            line.Vertex.Add(new Vector3(Mouse2D.InWorld(window.ViewportCamera as Camera)));
+            line.Update();
+            
 
         }
 

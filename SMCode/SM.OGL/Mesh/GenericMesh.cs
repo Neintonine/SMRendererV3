@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 
 #endregion
@@ -29,17 +30,17 @@ namespace SM.OGL.Mesh
         /// <summary>
         ///     Contains the vertices for the mesh.
         /// </summary>
-        public virtual VBO Vertex { get; protected set; }
+        public virtual VBO<Vector3> Vertex { get; protected set; }
 
         /// <summary>
         ///     Contains the texture coords for the mesh.
         /// </summary>
-        public virtual VBO UVs { get; protected set; }
+        public virtual VBO<Vector2> UVs { get; protected set; }
 
         /// <summary>
         ///     Contains the normals for the mesh.
         /// </summary>
-        public virtual VBO Normals { get; protected set; }
+        public virtual VBO<Vector3> Normals { get; protected set; }
 
         /// <summary>
         ///     Represents the bounding box.
@@ -97,8 +98,12 @@ namespace SM.OGL.Mesh
             if (!_boundingBoxUpdated) 
                 UpdateBoundingBox();
 
-            foreach (var kvp in Attributes) 
-                kvp.ConnectedVBO?.BindBuffer(kvp.Index);
+            foreach (var kvp in Attributes)
+            {
+                if (kvp.ConnectedVBO == null) continue;
+                kvp.ConnectedVBO.AttributeID = kvp.Index;
+                kvp.ConnectedVBO.Compile();
+            }
 
             GL.BindVertexArray(0);
         }

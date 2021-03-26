@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
 
@@ -22,7 +23,7 @@ namespace SM.Base.Objects
         /// <summary>
         ///     Contains vertex colors
         /// </summary>
-        public virtual VBO Color { get; protected set; }
+        public virtual VBO<Color4> Color { get; protected set; }
 
         /// <inheritdoc />
         public float LineWidth { get; set; } = 1;

@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Mesh;
@@ -27,18 +28,18 @@ namespace SM.Base.Objects.Static
         }
 
         /// <inheritdoc />
-        public override VBO Vertex { get; protected set; } = new VBO
+        public override VBO<Vector3> Vertex { get; protected set; } = new VBO<Vector3>
         {
-            {0, 0, 0},
-            {.5f, 0, 0},
-            {0, 0, 0},
-            {0, .5f, 0},
-            {0, 0, -.5f},
-            {0, 0, .5f}
+            new Vector3(0, 0, 0),
+            new Vector3(.5f, 0, 0),
+            new Vector3(0, 0, 0),
+            new Vector3(0, .5f, 0),
+            new Vector3(0, 0, -.5f),
+            new Vector3(0, 0, .5f)
         };
 
         /// <inheritdoc />
-        public override VBO Color { get; protected set; } = new VBO(pointerSize: 4)
+        public override VBO<Color4> Color { get; protected set; } = new VBO<Color4>
         {
             Color4.White,
             Color4.Red,

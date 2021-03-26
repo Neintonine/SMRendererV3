@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using SM.Base.Objects;
 using SM.OGL.Mesh;
@@ -17,13 +18,13 @@ namespace SM2D.Object
     public class Polygon : Mesh
     {
         /// <inheritdoc />
-        public override VBO Vertex { get; protected set; } = new VBO();
+        public override VBO<Vector3> Vertex { get; protected set; } = new VBO<Vector3>();
 
         /// <inheritdoc />
-        public override VBO UVs { get; protected set; } = new VBO(pointerSize: 2);
+        public override VBO<Vector2> UVs { get; protected set; } = new VBO<Vector2>();
 
         /// <inheritdoc />
-        public override VBO Color { get; protected set; } = new VBO(pointerSize: 4);
+        public override VBO<Color4> Color { get; protected set; } = new VBO<Color4>();
 
         /// <inheritdoc />
         public override PrimitiveType PrimitiveType { get; protected set; } = PrimitiveType.TriangleFan;
@@ -38,7 +39,7 @@ namespace SM2D.Object
             
             foreach (var vertex in vertices)
             {
-                Vertex.Add(vertex, 0);
+                Vertex.Add(new Vector3(vertex));
             }
 
             UpdateBoundingBox();
@@ -55,7 +56,7 @@ namespace SM2D.Object
             foreach (var polygonVertex in vertices)
             {
                 Color.Add(polygonVertex.Color);
-                Vertex.Add(polygonVertex.Position, 0);
+                Vertex.Add(new Vector3(polygonVertex.Position.X, polygonVertex.Position.Y, 0));
             }
 
             UpdateBoundingBox();

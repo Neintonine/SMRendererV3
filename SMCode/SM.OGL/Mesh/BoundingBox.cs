@@ -124,7 +124,7 @@ namespace SM.OGL.Mesh
         public void Update(GenericMesh mesh)
         {
             int pos = 0;
-            foreach (float f in mesh.Vertex)
+            foreach (float f in mesh.Vertex.GetFloats())
             {
                 Min[pos] = Math.Min(Min[pos], f);
                 Max[pos] = Math.Max(Max[pos], f);
