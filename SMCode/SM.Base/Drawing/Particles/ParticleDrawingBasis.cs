@@ -31,7 +31,7 @@ namespace SM.Base.Drawing.Particles
         /// <summary>
         ///     The maximum speed of the particles
         /// </summary>
-        public float MaxSpeed = 1;
+        public float MaxSpeed = 50;
 
         /// <summary>
         ///     This contains all important information for each particle.
@@ -67,13 +67,14 @@ namespace SM.Base.Drawing.Particles
         public abstract Func<TDirection, ParticleContext, TDirection> MovementCalculation { get; set; }
 
         /// <inheritdoc />
-        public bool UpdateActive { get; set; }
+        public bool UpdateActive { 
+            get => timer.Active; 
+            set { return; } 
+        }
 
         /// <inheritdoc />
         public void Update(UpdateContext context)
         {
-            if (!timer.Running) return;
-
             ParticleContext particleContext = new ParticleContext
             {
                 Timer = timer

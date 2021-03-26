@@ -14,6 +14,11 @@ namespace SM2D.Drawing
         /// <inheritdoc />
         public override Func<Vector2, ParticleContext, Vector2> MovementCalculation { get; set; } = ParticleMovement.Default2D;
 
+        /// <summary>
+        /// The direction the particles should travel.
+        /// </summary>
+        public Vector2? Direction;
+
         /// <inheritdoc />
         public DrawParticles(TimeSpan duration) : base(duration)
         {
@@ -25,7 +30,7 @@ namespace SM2D.Drawing
             return new ParticleStruct<Vector2>()
             {
                 Matrix = Matrix4.CreateScale(1),
-                Direction = new Vector2(Randomize.GetFloat(-1, 1), Randomize.GetFloat(-1, 1)),
+                Direction = Direction.GetValueOrDefault(new Vector2(Randomize.GetFloat(-1, 1), Randomize.GetFloat(-1, 1))),
                 Speed = Randomize.GetFloat(MaxSpeed)
             };
         }

@@ -15,8 +15,8 @@ namespace SM.Base.Controls
     /// </summary>
     public class Mouse
     {
-        internal static MouseState? _mouseState;
-        internal static List<MouseButton> _lastButtonsPressed = new List<MouseButton>();
+        private static MouseState? _mouseState;
+        private static List<MouseButton> _lastButtonsPressed = new List<MouseButton>();
 
         /// <summary>
         ///     The current position of the mouse in the screen.

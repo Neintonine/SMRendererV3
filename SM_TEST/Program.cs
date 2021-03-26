@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Input;
-using SM.Base;
+using SM.Base.Controls;
 using SM.Base.Time;
 using SM.Base.Window;
 using SM2D;
-using SM2D.Controls;
 using SM2D.Drawing;
 using SM2D.Object;
-using SM2D.Pipelines;
 using SM2D.Scene;
-using Font = SM.Base.Drawing.Text.Font;
-using Vector2 = OpenTK.Vector2;
 
 namespace SM_TEST
 {
@@ -22,6 +16,7 @@ namespace SM_TEST
         static Scene scene;
         private static GLWindow window;
         private static PolyLine line;
+        private static DrawParticles particles;
         static void Main(string[] args)
         {
             window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
@@ -30,14 +25,13 @@ namespace SM_TEST
 
             window.SetScene(scene = new Scene());
 
-            line = new PolyLine(new Vector2[] { Vector2.Zero, Vector2.One }, PolyLineType.Connected);
-            var display = new DrawObject2D()
+            particles = new DrawParticles(TimeSpan.FromSeconds(5))
             {
-                Mesh = line
+                MaxSpeed = 50,
             };
-            display.Transform.Size.Set(1);
-            scene.Objects.Add(display);
-            
+            particles.Transform.Size.Set(20);
+            scene.Objects.Add(particles);
+
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;
             window.Run();
@@ -52,13 +46,8 @@ namespace SM_TEST
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            if (SM.Base.Controls.Mouse.LeftClick)
-                line.Vertex.Add(Vector3.Zero);
-
-            line.Vertex[1] = new Vector3(Mouse2D.InWorld(window.ViewportCamera as Camera));
-            line.Update();
-            
-
+            if (Mouse.LeftClick)
+                particles.Trigger();
         }
     }
 }

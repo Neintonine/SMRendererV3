@@ -97,7 +97,7 @@ namespace SM.OGL.Shaders
             foreach (ShaderFile file in Fragment)
                 GL.DetachShader(shader, file);
 
-            GLDebugging.CheckGLErrors($"Error at detaching '{shader.GetType()}'");
+            GLDebugging.CheckGLErrors($"Error at detaching '{shader.GetType()}': %code%");
         }
     }
 }

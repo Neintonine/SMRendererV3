@@ -66,7 +66,7 @@ namespace SM.OGL
         /// <summary>
         ///     Checks for OpenGL errors, while allowing to put stuff before and behind it.
         /// </summary>
-        /// <param name="formating"></param>
+        /// <param name="formating">To decided where to put the error code into, just enter "%code%" to that specific place.</param>
         /// <returns></returns>
         public static bool CheckGLErrors(string formating)
         {

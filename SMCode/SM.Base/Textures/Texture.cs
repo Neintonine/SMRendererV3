@@ -15,6 +15,21 @@ namespace SM.Base.Textures
     /// </summary>
     public class Texture : TextureBase
     {
+        static HintMode _hintMode;
+        /// <summary>
+        /// Defines the texture quailty.
+        /// <para>It won't change already compiled textures!</para>
+        /// </summary>
+        public static HintMode TextureQuality
+        {
+            get => _hintMode;
+            set
+            {
+                _hintMode = value;
+                GL.Hint(HintTarget.TextureCompressionHint, value);
+            }
+        }
+
         private int? _height;
         private int? _width;
 
@@ -116,7 +131,7 @@ namespace SM.Base.Textures
             var transparenz = map.PixelFormat == PixelFormat.Format32bppArgb;
 
             GL.TexImage2D(TextureTarget.Texture2D, 0,
-                transparenz ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb,
+                transparenz ? PixelInternalFormat.CompressedRgba : PixelInternalFormat.CompressedRgb,
                 data.Width, data.Height, 0,
                 transparenz ? OpenTK.Graphics.OpenGL4.PixelFormat.Bgra : OpenTK.Graphics.OpenGL4.PixelFormat.Bgr,
                 PixelType.UnsignedByte, data.Scan0);

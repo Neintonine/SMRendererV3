@@ -13,8 +13,8 @@ namespace SM.Base.Controls
     /// </summary>
     public static class Keyboard
     {
-        internal static KeyboardState? _keyboardState;
-        internal static List<Key> _lastPressedKeys = new List<Key>();
+        private static KeyboardState? _keyboardState;
+        private static List<Key> _lastPressedKeys = new List<Key>();
 
         /// <summary>
         /// True, when ANY key pressed.
