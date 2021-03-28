@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using OpenTK;
+using SM.Base.Animation;
 using SM.Base.Controls;
 using SM.Base.Time;
 using SM.Base.Window;
@@ -17,6 +18,8 @@ namespace SM_TEST
         private static GLWindow window;
         private static PolyLine line;
         private static DrawParticles particles;
+
+        private static InterpolationProcess interpolation;
         static void Main(string[] args)
         {
             window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
@@ -25,12 +28,9 @@ namespace SM_TEST
 
             window.SetScene(scene = new Scene());
 
-            particles = new DrawParticles(TimeSpan.FromSeconds(5))
-            {
-                MaxSpeed = 50,
-            };
-            particles.Transform.Size.Set(20);
-            scene.Objects.Add(particles);
+            DrawObject2D testObj = new DrawObject2D();
+            interpolation = testObj.Transform.Position.Interpolate(TimeSpan.FromSeconds(5), new Vector2(300), new BezierCurve(Vector2.Zero,new Vector2(0.43f, 0), new Vector2(.5f, 1.5f), Vector2.One));
+            scene.Objects.Add(testObj);
 
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;
@@ -47,7 +47,9 @@ namespace SM_TEST
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
             if (Mouse.LeftClick)
-                particles.Trigger();
+                interpolation.Stop();
+            if (Mouse.RightClick)
+                interpolation.Stop(false);
         }
     }
 }

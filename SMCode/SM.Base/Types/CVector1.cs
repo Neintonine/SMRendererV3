@@ -1,6 +1,9 @@
 ﻿#region usings
 
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+using OpenTK;
+using SM.Base.Animation;
 
 #endregion
 
@@ -9,7 +12,7 @@ namespace SM.Base.Types
     /// <summary>
     ///     A One-dimensional Vector (also known as <see cref="float" />), in a class.
     /// </summary>
-    public class CVector1
+    public class CVector1 : CVectorBase
     {
         /// <summary>
         ///     Creates a class vector
@@ -26,45 +29,18 @@ namespace SM.Base.Types
         public float X { get; set; }
 
         /// <summary>
-        ///     The length/magnitute of the vector.
+        /// Interpolates the motion to the target.
         /// </summary>
-        public float Length => GetLength();
-
-        /// <summary>
-        ///     Gets the square of the vector length (magnitude).
-        /// </summary>
-        /// <remarks>
-        ///     This property avoids the costly square root operation required by the Length property. This makes it more suitable
-        ///     for comparisons.
-        /// </remarks>
-        public float LengthSquared => GetLength(true);
-
-        /// <summary>
-        /// This event triggers when a component changed.
-        /// </summary>
-        public event Action Changed;
-
-
-        /// <summary>
-        ///     Get the length of the vector.
-        /// </summary>
-        /// <param name="squared">If true, it will return the squared product.</param>
-        /// <returns></returns>
-        public float GetLength(bool squared = false)
+        /// <param name="duration">How long the interpolation should take.</param>
+        /// <param name="to">The value it should interpolate.</param>
+        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
+        /// <returns>A handle to control the interpolation process.</returns>
+        public InterpolationProcess Interpolate(TimeSpan duration, float to, BezierCurve? interpolationCurve = null)
         {
-            float length = GetLengthProcess();
-            if (squared) return length;
-            return (float) Math.Sqrt(length);
-        }
+            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to, 0, 0, 0), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
+            process.Start();
 
-
-        /// <summary>
-        ///     Normalizes the vector.
-        /// </summary>
-        public void Normalize()
-        {
-            float length = GetLength();
-            NormalizationProcess(length);
+            return process;
         }
 
         /// <summary>
@@ -74,6 +50,12 @@ namespace SM.Base.Types
         {
             X = uniform;
             if (triggerChanged) TriggerChanged();
+        }
+
+        /// <inheritdoc />
+        public override void Set(params float[] parameters)
+        {
+            X = parameters[0];
         }
 
         /// <summary>
@@ -86,19 +68,10 @@ namespace SM.Base.Types
         }
 
         /// <summary>
-        ///     Conversion into <see cref="float" />
-        /// </summary>
-        public static implicit operator float(CVector1 vector1)
-        {
-            return vector1.X;
-        }
-
-        /// <summary>
         ///     Conversion from <see cref="float" /> to One-dimensional Vector.
         /// </summary>
         /// <returns></returns>
-        //public static implicit operator CVector1(float f) => new CVector1(f);
-        protected virtual float GetLengthProcess()
+        protected override float GetLengthProcess()
         {
             return X * X;
         }
@@ -107,23 +80,30 @@ namespace SM.Base.Types
         /// Normalizes the vector.
         /// </summary>
         /// <param name="length"></param>
-        protected virtual void NormalizationProcess(float length)
+        protected override void NormalizationProcess(float length)
         {
             X *= length;
         }
 
-        /// <summary>
-        /// This triggers the <see cref="Changed"/> event.
-        /// </summary>
-        protected void TriggerChanged()
+
+        /// <inheritdoc />
+        protected override Vector4 ConvertToVector4()
         {
-            Changed?.Invoke();
+            return new Vector4(X, 0, 0, 0);
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
             return X.ToString();
+        }
+
+        /// <summary>
+        ///     Conversion into <see cref="float" />
+        /// </summary>
+        public static implicit operator float(CVector1 vector1)
+        {
+            return vector1.X;
         }
     }
 }

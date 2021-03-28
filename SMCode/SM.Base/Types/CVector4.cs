@@ -1,39 +1,29 @@
-﻿#region usings
-
-using System;
+﻿using System;
+using System.Windows.Forms;
 using OpenTK;
 using SM.Base.Animation;
 
-#endregion
-
 namespace SM.Base.Types
 {
-    /// <summary>
-    ///     A three-dimensional vector.
-    /// </summary>
-    public class CVector3 : CVector2
+    /// <inheritdoc />
+    public class CVector4 : CVector3
     {
         /// <summary>
-        ///     Creates a vector, where each component is the same value.
+        /// The W-component.
         /// </summary>
-        /// <param name="uniform">The Value</param>
-        public CVector3(float uniform) : base(uniform)
+        public float W { get; set; }
+
+        /// <inheritdoc />
+        public CVector4(float uniform) : base(uniform)
         {
-            Z = uniform;
+            W = uniform;
         }
 
-        /// <summary>
-        ///     Creates a vector
-        /// </summary>
-        public CVector3(float x, float y, float z) : base(x, y)
+        /// <inheritdoc />
+        public CVector4(float x, float y, float z, float w) : base(x, y, z)
         {
-            Z = z;
+            W = w;
         }
-
-        /// <summary>
-        ///     Z-component
-        /// </summary>
-        public float Z { get; set; }
 
         /// <summary>
         /// Interpolates the motion to the target.
@@ -42,67 +32,60 @@ namespace SM.Base.Types
         /// <param name="to">The value it should interpolate.</param>
         /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
         /// <returns>A handle to control the interpolation process.</returns>
-        public InterpolationProcess Interpolate(TimeSpan duration, Vector3 to, BezierCurve? interpolationCurve = null)
+        public InterpolationProcess Interpolate(TimeSpan duration, Vector4 to, BezierCurve? interpolationCurve = null)
         {
-            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to, 0), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
+            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), to, interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
             process.Start();
 
             return process;
         }
 
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            return "{" + X + "; " + Y + "; "+Z+"}";
-        }
-
         /// <inheritdoc />
         public override void Set(float uniform, bool triggerChanged = true)
         {
-            Z = uniform;
+            W = uniform;
             base.Set(uniform, triggerChanged);
         }
+
 
         /// <summary>
         ///     Sets the a own value to each component.
         /// </summary>
-        public void Set(float x, float y, float z, bool triggerChanged = true)
+        public void Set(float x, float y, float z, float w, bool triggerChanged = true)
         {
-            Z = z;
-            base.Set(x, y, triggerChanged);
+            W = w;
+            base.Set(x, y, z, triggerChanged);
         }
 
         /// <summary>
-        ///     Sets each component to the <see cref="Vector3" /> counter-part.
+        ///     Sets each component to the <see cref="Vector4" /> counter-part.
         /// </summary>
-        public void Set(Vector3 vector, bool triggerChanged = true)
+        public void Set(Vector4 vector, bool triggerChanged = true)
         {
-            Set(vector.X, vector.Y, vector.Z, triggerChanged);
+            Set(vector.X, vector.Y, vector.Z, vector.W, triggerChanged);
         }
 
         /// <inheritdoc />
         public override void Set(params float[] parameters)
         {
             base.Set(parameters);
-            Z = parameters[2];
+            W = parameters[3];
         }
 
         /// <inheritdoc />
         public override void Add(float uniform, bool triggerChanged = true)
         {
-            Z += uniform;
+            W += uniform;
             base.Add(uniform, triggerChanged);
         }
-
         /// <summary>
-        /// Adds a <see cref="Vector3"/> to the CVector.
+        /// Adds a <see cref="Vector4"/> to the CVector.
         /// </summary>
         /// <param name="vector"></param>
         /// <param name="triggerChanged">If false, the event Changed doesn't gets triggered </param>
-        public void Add(Vector3 vector, bool triggerChanged = true)
+        public void Add(Vector4 vector, bool triggerChanged = true)
         {
-            Add(vector.X, vector.Y, vector.Z, triggerChanged);
+            Add(vector.X, vector.Y, vector.Z, vector.W, triggerChanged);
         }
 
         /// <summary>
@@ -111,45 +94,46 @@ namespace SM.Base.Types
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>
+        /// <param name="w"></param>
         /// <param name="triggerChanged">If false, the event Changed doesn't gets triggered </param>
-        public void Add(float x, float y, float z, bool triggerChanged = true)
+        public void Add(float x, float y, float z, float w, bool triggerChanged = true)
         {
-            Z += z;
-            base.Add(x, y, triggerChanged);
+            W = w;
+            base.Add(x, y, z, triggerChanged);
+        }
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "{" + X + "; " + Y + "; " + Z + "; " + W + "}";
         }
 
         /// <inheritdoc />
         protected override float GetLengthProcess()
         {
-            return base.GetLengthProcess() + Z * Z;
+            return base.GetLengthProcess() + W * W;
         }
 
         /// <inheritdoc />
         protected override void NormalizationProcess(float length)
         {
             base.NormalizationProcess(length);
-            Z *= length;
+            W *= length;
         }
+
         /// <inheritdoc />
         protected override Vector4 ConvertToVector4()
         {
-            return new Vector4(X, Y, Z, 0);
+            return new Vector4(X, Y, Z, W);
         }
 
         /// <summary>
-        ///     Converts to <see cref="Vector3" />
+        /// Converts a <see cref="CVector4"/> into a <see cref="Vector4"/>.
         /// </summary>
-        public static implicit operator Vector3(CVector3 vector)
-        {
-            return new Vector3(vector.X, vector.Y, vector.Z);
-        }
-
+        public static implicit operator Vector4(CVector4 vector) => new Vector4(vector.X, vector.Y, vector.Z, vector.W);
         /// <summary>
-        ///     Converts from <see cref="Vector3" /> to <see cref="CVector3" />.
+        /// Converts a <see cref="Vector4"/> into a <see cref="CVector4"/>.
         /// </summary>
-        public static implicit operator CVector3(Vector3 vector)
-        {
-            return new CVector3(vector.X, vector.Y, vector.Z);
-        }
+
+        public static implicit operator CVector4(Vector4 vector) => new CVector4(vector.X, vector.Y, vector.Z, vector.W);
     }
 }

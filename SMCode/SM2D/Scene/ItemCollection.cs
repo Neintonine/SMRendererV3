@@ -19,6 +19,7 @@ namespace SM2D.Scene
             Transform.Size = new CVector2(1);
         }
 
+        /// <inheritdoc />
         public override void Draw(DrawContext context)
         {
             this.Sort(Comparitor);

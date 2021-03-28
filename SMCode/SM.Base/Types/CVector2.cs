@@ -1,6 +1,8 @@
 ﻿#region usings
 
+using System;
 using OpenTK;
+using SM.Base.Animation;
 
 #endregion
 
@@ -33,17 +35,23 @@ namespace SM.Base.Types
         /// </summary>
         public float Y { get; set; }
 
-        /// <inheritdoc />
-        protected override float GetLengthProcess()
+        /// <summary>
+        /// Interpolates the motion to the target.
+        /// </summary>
+        /// <param name="duration">How long the interpolation should take.</param>
+        /// <param name="to">The value it should interpolate.</param>
+        /// <param name="interpolationCurve">The curve how he interpolates.
+            /// <para>When creating a curve, its recommended the Y-component is always between 0 -> 1. But it could make cool effects if not...</para>
+            /// <para>Preset curves can be found under <see cref="AnimationCurves"/>.</para>
+            /// <para>Default: <see cref="AnimationCurves.Linear"/></para>
+        /// </param>
+        /// <returns>A handle to control the interpolation process.</returns>
+        public InterpolationProcess Interpolate(TimeSpan duration, Vector2 to, BezierCurve? interpolationCurve = null)
         {
-            return base.GetLengthProcess() + Y * Y;
-        }
+            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
+            process.Start();
 
-        /// <inheritdoc />
-        protected override void NormalizationProcess(float length)
-        {
-            base.NormalizationProcess(length);
-            Y *= length;
+            return process;
         }
 
         /// <inheritdoc />
@@ -79,6 +87,13 @@ namespace SM.Base.Types
         }
 
         /// <inheritdoc />
+        public override void Set(params float[] parameters)
+        {
+            base.Set(parameters);
+            Y = parameters[1];
+        }
+
+        /// <inheritdoc />
         public override void Add(float uniform, bool triggerChanged = true)
         {
             Y += uniform;
@@ -105,6 +120,25 @@ namespace SM.Base.Types
         {
             Y += y;
             base.Add(x, triggerChanged);
+        }
+
+        /// <inheritdoc />
+        protected override float GetLengthProcess()
+        {
+            return base.GetLengthProcess() + Y * Y;
+        }
+
+        /// <inheritdoc />
+        protected override void NormalizationProcess(float length)
+        {
+            base.NormalizationProcess(length);
+            Y *= length;
+        }
+
+        /// <inheritdoc />
+        protected override Vector4 ConvertToVector4()
+        {
+            return new Vector4(X,Y, 0, 0);
         }
 
         /// <summary>

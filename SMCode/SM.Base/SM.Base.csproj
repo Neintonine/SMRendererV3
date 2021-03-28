@@ -48,6 +48,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\AnimationCurves.cs" />
+    <Compile Include="Animation\InterpolationProcess.cs" />
     <Compile Include="Controls\Keyboard.cs" />
     <Compile Include="Controls\Mouse.cs" />
     <Compile Include="Drawing\DrawingBasis.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="Drawing\Particles\ParticleStruct.cs" />
     <Compile Include="Drawing\Particles\ParticleDrawingBasis.cs" />
     <Compile Include="Shaders\SimpleShader.cs" />
+    <Compile Include="Types\CVector4.cs" />
+    <Compile Include="Types\CVectorBase.cs" />
     <Compile Include="Utility\IInitializable.cs" />
     <Compile Include="Utility\Ray.cs" />
     <Compile Include="Utility\Util.cs" />
@@ -139,5 +143,6 @@
     <EmbeddedResource Include="Shaders\Extensions\fragment\textureGamma.glsl" />
     <EmbeddedResource Include="Shaders\Extensions\fragment\noise.glsl" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
