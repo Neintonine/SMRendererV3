@@ -32,6 +32,8 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public float FontSize = 12;
 
+        public float SpaceWidth { get; private set; }
+
         /// <summary>
         ///     The font style.
         ///     <para>Default: <see cref="System.Drawing.FontStyle.Regular" /></para>
@@ -42,11 +44,6 @@ namespace SM.Base.Drawing.Text
         ///     This contains all information for the different font character.
         /// </summary>
         public Dictionary<char, CharParameter> Positions = new Dictionary<char, CharParameter>();
-
-        /// <summary>
-        /// Allows a font wide spacing option.
-        /// </summary>
-        public float Spacing = 1;
 
         /// <summary>
         ///     Generates a font from a font family from the specified path.
@@ -92,7 +89,7 @@ namespace SM.Base.Drawing.Text
                     foreach (var c in CharSet)
                     {
                         var s = c.ToString();
-                        var size = g.MeasureString(s, f);
+                        var size = g.MeasureString(s, f, 0, StringFormat.GenericTypographic);
                         try
                         {
                             charParams.Add(c, new[] {size.Width, Width});
@@ -105,6 +102,8 @@ namespace SM.Base.Drawing.Text
                         if (Height < size.Height) Height = (int) size.Height;
                         Width += (int) size.Width;
                     }
+
+                    SpaceWidth = g.MeasureString("_", f, 0, StringFormat.GenericTypographic).Width;
                 }
 
                 map = new Bitmap(Width, Height);
@@ -112,7 +111,7 @@ namespace SM.Base.Drawing.Text
                 {
                     foreach (var keyValuePair in charParams)
                     {
-                        var normalizedX = (keyValuePair.Value[1] + 0.00001f) / Width;
+                        var normalizedX = (keyValuePair.Value[1]) / Width;
                         var normalizedWidth = keyValuePair.Value[0] / Width;
 
                         CharParameter parameter;
@@ -124,7 +123,7 @@ namespace SM.Base.Drawing.Text
                             X = (int) keyValuePair.Value[1]
                         });
 
-                        g.DrawString(keyValuePair.Key.ToString(), f, Brushes.White, parameter.X, 0);
+                        g.DrawString(keyValuePair.Key.ToString(), f, Brushes.White, parameter.X, 0, StringFormat.GenericTypographic);
                     }
                 }
             }

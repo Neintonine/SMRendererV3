@@ -42,12 +42,6 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public float Spacing = 1;
 
-
-        /// <summary>
-        /// Calculates the actual spacing for the object.
-        /// </summary>
-        public float ActualSpacing => Spacing * Font.Spacing;
-
         /// <summary>
         ///     The font.
         /// </summary>
@@ -120,7 +114,7 @@ namespace SM.Base.Drawing.Text
             {
                 if (_text[i] == ' ')
                 {
-                    x += Font.FontSize * ActualSpacing;
+                    x += Font.SpaceWidth * Spacing;
                     continue;
                 }
 
@@ -151,7 +145,7 @@ namespace SM.Base.Drawing.Text
                         new Vector2(parameter.NormalizedWidth, 1), 0)
                 };
 
-                x += parameter.Width * ActualSpacing;
+                x += parameter.Width * Spacing;
                 _last = parameter;
             }
 
