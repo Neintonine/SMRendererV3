@@ -167,7 +167,7 @@ namespace SM.Base.PostEffects
                 int iter = Iterations * 2;
                 for (int i = 0; i < iter; i++)
                 {
-                    (hoz ? _bloomBuffer1 : _bloomBuffer2).Activate();
+                    (hoz ? _bloomBuffer1 : _bloomBuffer2).Activate(false);
 
                     _shader.Draw(collection =>
                     {

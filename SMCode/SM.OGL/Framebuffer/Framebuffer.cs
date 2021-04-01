@@ -26,12 +26,13 @@ namespace SM.OGL.Framebuffer
         /// <summary>
         /// Represents the screen buffer.
         /// </summary>
-        public static readonly Framebuffer Screen = new()
+        public static readonly Framebuffer Screen = new Framebuffer()
         {
             _id = 0,
             CanCompile = false,
             _window = ScreenWindow,
             _windowScale = 1,
+            DefaultApplyViewport = false
         };
         
         private IFramebufferWindow _window;
@@ -44,6 +45,8 @@ namespace SM.OGL.Framebuffer
         /// Contains the size of the framebuffer.
         /// </summary>
         public Vector2 Size { get; private set; }
+
+        public bool DefaultApplyViewport { get; set; } = true;
 
         /// <summary>
         /// Contains all color attachments.
@@ -168,27 +171,27 @@ namespace SM.OGL.Framebuffer
         /// <summary>
         /// Activates the framebuffer without clearing the buffer.
         /// </summary>
-        public void Activate()
+        public void Activate(bool? applyViewport = null)
         {
-            Activate(FramebufferTarget.Framebuffer, ClearBufferMask.None);
+            Activate(FramebufferTarget.Framebuffer, ClearBufferMask.None, applyViewport);
         }
 
         /// <summary>
         /// Activates the framebuffer for the specific target framebuffer and without clearing.
         /// </summary>
         /// <param name="target"></param>
-        public void Activate(FramebufferTarget target)
+        public void Activate(FramebufferTarget target, bool? applyViewport = null)
         {
-            Activate(target, ClearBufferMask.None);
+            Activate(target, ClearBufferMask.None, applyViewport);
         }
 
         /// <summary>
         /// Activates the framebuffer while clearing the specified buffer.
         /// </summary>
         /// <param name="clearMask"></param>
-        public void Activate(ClearBufferMask clearMask)
+        public void Activate(ClearBufferMask clearMask, bool? applyViewport = null)
         {
-            Activate(FramebufferTarget.Framebuffer, clearMask);
+            Activate(FramebufferTarget.Framebuffer, clearMask, applyViewport);
         }
 
         /// <summary>
@@ -196,9 +199,10 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         /// <param name="target"></param>
         /// <param name="clear"></param>
-        public void Activate(FramebufferTarget target, ClearBufferMask clear)
+        public void Activate(FramebufferTarget target, ClearBufferMask clear, bool? applyViewport = null)
         {
             GL.BindFramebuffer(target, this);
+            if (applyViewport.GetValueOrDefault(DefaultApplyViewport)) GL.Viewport(0, 0, (int)Size.X, (int)Size.Y);
             GL.Clear(clear);
         }
 
@@ -209,10 +213,11 @@ namespace SM.OGL.Framebuffer
         /// <returns></returns>
         public static Framebuffer GetCurrentlyActive(FramebufferTarget target = FramebufferTarget.Framebuffer)
         {
-            Framebuffer buffer = new()
+            Framebuffer buffer = new Framebuffer()
             {
                 CanCompile = false,
-                ReportAsNotCompiled = true
+                ReportAsNotCompiled = true,
+                DefaultApplyViewport = false
             };
             switch (target)
             {

@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using OpenTK;
 
 #endregion
 
@@ -13,23 +14,18 @@ namespace SM.Base.Drawing.Text
     public struct CharParameter
     {
         /// <summary>
-        ///     The position on the X-axis.
+        ///     The advance on the X-axis.
         /// </summary>
-        public int X;
+        public int Advance;
+
+        public float BearingX;
 
         /// <summary>
         ///     The width of the character.
         /// </summary>
         public float Width;
 
-        /// <summary>
-        ///     The normalized position inside the texture.
-        /// </summary>
-        public float NormalizedX;
 
-        /// <summary>
-        ///     The normalized width inside the texture.
-        /// </summary>
-        public float NormalizedWidth;
+        public Matrix3 TextureMatrix;
     }
 }

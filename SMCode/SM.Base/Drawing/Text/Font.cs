@@ -1,138 +1,92 @@
-﻿#region usings
-
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Text;
-using OpenTK.Graphics.OpenGL4;
+using System.Drawing.Drawing2D;
+using System.Windows.Forms;
+using OpenTK;
+using SharpFont;
 using SM.Base.Textures;
-
-#endregion
 
 namespace SM.Base.Drawing.Text
 {
-    /// <summary>
-    ///     Represents a font.
-    /// </summary>
     public class Font : Texture
     {
-        /// <summary>
-        ///     The char set for the font.
-        ///     <para>Default: <see cref="FontCharStorage.SimpleUTF8" /></para>
-        /// </summary>
-        public ICollection<char> CharSet = FontCharStorage.SimpleUTF8;
+        private static Library _lib;
 
-        /// <summary>
-        ///     The font family, that is used to find the right font.
-        /// </summary>
-        public FontFamily FontFamily;
+        private Face _fontFace;
 
-        /// <summary>
-        ///     The font size.
-        ///     <para>Default: 12</para>
-        /// </summary>
-        public float FontSize = 12;
+        public float SpaceWidth { get; private set; } = 0;
 
-        public float SpaceWidth { get; private set; }
+        public ICollection<char> CharSet { get; set; } = FontCharStorage.SimpleUTF8;
 
-        /// <summary>
-        ///     The font style.
-        ///     <para>Default: <see cref="System.Drawing.FontStyle.Regular" /></para>
-        /// </summary>
-        public FontStyle FontStyle = FontStyle.Regular;
+        public float FontSize { get; set; } = 12;
 
-        /// <summary>
-        ///     This contains all information for the different font character.
-        /// </summary>
         public Dictionary<char, CharParameter> Positions = new Dictionary<char, CharParameter>();
 
-        /// <summary>
-        ///     Generates a font from a font family from the specified path.
-        /// </summary>
-        /// <param name="path">The specified path</param>
+
         public Font(string path)
         {
-            var pfc = new PrivateFontCollection();
-            pfc.AddFontFile(path);
-            FontFamily = pfc.Families[0];
+            _lib ??= new Library();
+
+            _fontFace = new Face(_lib, path);
         }
 
-        /// <summary>
-        ///     Generates a font from a specified font family.
-        /// </summary>
-        /// <param name="font">Font-Family</param>
-        public Font(FontFamily font)
-        {
-            FontFamily = font;
-        }
-
-        /// <inheritdoc />
-        public override TextureWrapMode WrapMode { get; set; } = TextureWrapMode.ClampToEdge;
-
-        /// <summary>
-        ///     Regenerates the texture.
-        /// </summary>
         public void RegenerateTexture()
         {
-            Width = 0;
-            Height = 0;
+            Width = Height = 0;
             Positions = new Dictionary<char, CharParameter>();
 
+            _fontFace.SetCharSize(0, FontSize, 0, 96);
 
-            var map = new Bitmap(1000, 20);
-            var charParams = new Dictionary<char, float[]>();
-            using (var f = new System.Drawing.Font(FontFamily, FontSize, FontStyle))
+            var pos = new Dictionary<char, float[]>();
+            foreach (char c in CharSet)
             {
-                using (var g = Graphics.FromImage(map))
+                _fontFace.LoadChar(c, LoadFlags.Render, LoadTarget.Normal);
+
+                pos.Add(c, new []{(float)_fontFace.Glyph.Bitmap.Width, Width});
+                Width += (int)_fontFace.Glyph.Advance.X + 5;
+                Height = Math.Max(_fontFace.Glyph.Bitmap.Rows, Height);
+            }
+
+            _fontFace.LoadChar('_', LoadFlags.Render, LoadTarget.Normal);
+            SpaceWidth = _fontFace.Glyph.Advance.X.ToSingle();
+
+            float bBoxHeight = (Math.Abs(_fontFace.BBox.Bottom) + _fontFace.BBox.Top);
+            float bBoxTopScale = _fontFace.BBox.Top / bBoxHeight;
+            float baseline = Height * bBoxTopScale;
+
+            Map = new Bitmap(Width, Height);
+            using (Graphics g = Graphics.FromImage(Map))
+            {
+                g.Clear(Color.Transparent);
+                
+
+                foreach (var keyvalue in pos)
                 {
-                    g.Clear(Color.Transparent);
+                    _fontFace.LoadChar(keyvalue.Key, LoadFlags.Render, LoadTarget.Normal);
 
-                    foreach (var c in CharSet)
+                    int y = ((int)baseline - (int)_fontFace.Glyph.Metrics.HorizontalBearingY);
+                    
+                    g.DrawImageUnscaled(_fontFace.Glyph.Bitmap.ToGdipBitmap(Color.White), (int)keyvalue.Value[1], y);
+
+                    Positions.Add(keyvalue.Key, new CharParameter()
                     {
-                        var s = c.ToString();
-                        var size = g.MeasureString(s, f, 0, StringFormat.GenericTypographic);
-                        try
-                        {
-                            charParams.Add(c, new[] {size.Width, Width});
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
+                        Advance = (int)_fontFace.Glyph.LinearHorizontalAdvance,
+                        BearingX = _fontFace.Glyph.BitmapLeft,
 
-                        if (Height < size.Height) Height = (int) size.Height;
-                        Width += (int) size.Width;
-                    }
+                        Width = keyvalue.Value[0],
 
-                    SpaceWidth = g.MeasureString("_", f, 0, StringFormat.GenericTypographic).Width;
-                }
-
-                map = new Bitmap(Width, Height);
-                using (var g = Graphics.FromImage(map))
-                {
-                    foreach (var keyValuePair in charParams)
-                    {
-                        var normalizedX = (keyValuePair.Value[1]) / Width;
-                        var normalizedWidth = keyValuePair.Value[0] / Width;
-
-                        CharParameter parameter;
-                        Positions.Add(keyValuePair.Key, parameter = new CharParameter
-                        {
-                            NormalizedWidth = normalizedWidth,
-                            NormalizedX = normalizedX,
-                            Width = keyValuePair.Value[0],
-                            X = (int) keyValuePair.Value[1]
-                        });
-
-                        g.DrawString(keyValuePair.Key.ToString(), f, Brushes.White, parameter.X, 0, StringFormat.GenericTypographic);
-                    }
+                        TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(keyvalue.Value[1] / Width, 0),
+                            new Vector2(keyvalue.Value[0] / Width, 1), 0),
+                    });
                 }
             }
 
-            Map = map;
-            Recompile();
+            Console.WriteLine();
         }
 
-        /// <inheritdoc />
         public override void Compile()
         {
             RegenerateTexture();

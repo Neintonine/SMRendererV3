@@ -40,7 +40,7 @@ namespace SM.Base.Drawing.Text
         ///     The spacing between numbers.
         ///     <para>Default: 1</para>
         /// </summary>
-        public float Spacing = 1;
+        public float Spacing = 1f;
 
         /// <summary>
         ///     The font.
@@ -112,6 +112,7 @@ namespace SM.Base.Drawing.Text
             var _last = new CharParameter();
             for (var i = 0; i < _text.Length; i++)
             {
+
                 if (_text[i] == ' ')
                 {
                     x += Font.SpaceWidth * Spacing;
@@ -136,16 +137,21 @@ namespace SM.Base.Drawing.Text
                     throw new Exception("Font doesn't contain '" + _text[i] + "'");
                 }
 
+
+                if (i == 0)
+                {
+                    x += parameter.Width / 2;
+                }
+
                 var matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
                              Matrix4.CreateTranslation(x, -y, 0);
                 _instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
-                    TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(parameter.NormalizedX, 0),
-                        new Vector2(parameter.NormalizedWidth, 1), 0)
+                    TextureMatrix = parameter.TextureMatrix
                 };
 
-                x += parameter.Width * Spacing;
+                x += Math.Max(parameter.Advance, 6);
                 _last = parameter;
             }
 
