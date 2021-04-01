@@ -33,6 +33,8 @@ namespace SM.Base.Textures
         private int? _height;
         private int? _width;
 
+        public int UnpackAlignment = 4;
+
         /// <summary>
         ///     Decides if the bitmap will automatically dispose itself.
         /// </summary>
@@ -100,7 +102,7 @@ namespace SM.Base.Textures
         {
             base.Compile();
 
-            _id = GenerateTexture(Map, Filter, WrapMode, AutoDispose);
+            _id = GenerateTexture(Map, Filter, WrapMode, AutoDispose, UnpackAlignment);
         }
 
         /// <inheritdoc />
@@ -120,10 +122,12 @@ namespace SM.Base.Textures
         /// <param name="dispose">Auto dispose of the bitmap? Default: false</param>
         /// <returns></returns>
         public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode,
-            bool dispose = false)
+            bool dispose = false, int unpackAlignment = 4)
         {
             var id = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, id);
+
+            GL.PixelStore(PixelStoreParameter.UnpackAlignment, unpackAlignment);
 
             var data = map.LockBits(new Rectangle(0, 0, map.Width, map.Height), ImageLockMode.ReadOnly,
                 map.PixelFormat);

@@ -31,6 +31,7 @@ namespace SM.Base.Drawing.Text
             _lib ??= new Library();
 
             _fontFace = new Face(_lib, path);
+            UnpackAlignment = 1;
         }
 
         public void RegenerateTexture()
