@@ -56,7 +56,7 @@ namespace SM.Base.Time
         {
             base.Ticking(context);
 
-            ElapsedNormalized = Elapsed / Target;
+            ElapsedNormalized = Math.Min(Elapsed / Target, 1);
             if (ElapsedNormalized >= 1) Stopping(context);
         }
 

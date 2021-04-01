@@ -18,6 +18,7 @@ namespace SM.Base.Drawing.Particles
         where TTransform : GenericTransformation, new()
         where TDirection : struct
     {
+
         /// <summary>
         ///     The amount of particles
         /// </summary>

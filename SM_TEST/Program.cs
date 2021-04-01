@@ -36,8 +36,13 @@ namespace SM_TEST
 
             window.SetScene(scene = new Scene());
 
-            DrawText text = new DrawText(font, "Hi, HI");
-            scene.Objects.Add(text);
+            DrawParticles particles = new DrawParticles(TimeSpan.FromSeconds(5))
+            {
+                Direction = new Vector2(0, 1),
+                DirectionRadius = 10
+            };
+            particles.Trigger();
+            scene.Objects.Add(particles);
 
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;
