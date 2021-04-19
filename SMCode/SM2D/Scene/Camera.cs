@@ -2,6 +2,7 @@
 
 using System;
 using OpenTK;
+using SM.Base;
 using SM.Base.Scene;
 using SM.Base.Types;
 using SM.Base.Window;
@@ -35,6 +36,22 @@ namespace SM2D.Scene
             {
                 _requestedWorldScale = value;
                 _updateWorldScale = true;
+            }
+        }
+
+        /// <summary>
+        /// Will always return a updated version of the world scale.
+        /// </summary>
+        public Vector2 CalculatedWorldScale
+        {
+            get
+            {
+                if (ResizeCounter != _resizeCounter || _updateWorldScale)
+                {
+                    CalculateWorldScale(SMRenderer.CurrentWindow);
+                }
+
+                return WorldScale;
             }
         }
 

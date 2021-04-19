@@ -66,6 +66,7 @@
     <Compile Include="Drawing\TextureTransformation.cs" />
     <Compile Include="Drawing\Text\Font.cs" />
     <Compile Include="PostEffects\PostProcessUtility.cs" />
+    <Compile Include="Scene\ICollectionItem.cs" />
     <Compile Include="Scene\IFixedScriptable.cs" />
     <Compile Include="Shaders\MaterialShader.cs" />
     <Compile Include="Drawing\Particles\ParticleContext.cs" />

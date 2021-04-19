@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using OpenTK;
+using OpenTK.Graphics;
 using SM.Base.Animation;
 using SM.Base.Controls;
 using SM.Base.Drawing.Text;
@@ -32,17 +33,10 @@ namespace SM_TEST
 
             window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
             window.ApplySetup(new Window2DSetup());
-            window.SetRenderPipeline(new TestRenderPipeline());
-
+            
             window.SetScene(scene = new Scene());
 
-            DrawParticles particles = new DrawParticles(TimeSpan.FromSeconds(5))
-            {
-                Direction = new Vector2(0, 1),
-                DirectionRadius = 10
-            };
-            particles.Trigger();
-            scene.Objects.Add(particles);
+            scene.Background.Color = Color4.Blue;
 
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;

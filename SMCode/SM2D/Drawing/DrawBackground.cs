@@ -4,6 +4,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Drawing;
+using SM.Base.Objects.Static;
 using SM.Base.Scene;
 using SM.Base.Textures;
 using SM.Base.Window;
@@ -53,6 +54,7 @@ namespace SM2D.Drawing
         public DrawBackground(Color4 color)
         {
             Color = color;
+            Mesh = Plate.Object;
         }
 
         /// <summary>
@@ -62,6 +64,7 @@ namespace SM2D.Drawing
         public DrawBackground(Bitmap texture)
         {
             Texture = (Texture) texture;
+            Mesh = Plate.Object;
         }
 
         /// <summary>
@@ -73,6 +76,7 @@ namespace SM2D.Drawing
         {
             Color = tint;
             Texture = (Texture) texture;
+            Mesh = Plate.Object;
         }
 
 

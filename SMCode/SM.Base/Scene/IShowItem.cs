@@ -12,7 +12,7 @@ namespace SM.Base.Scene
     /// <summary>
     ///     Adds requirements to object, to be properly used as a update and/or draw item.
     /// </summary>
-    public interface IShowItem
+    public interface IShowItem : ICollectionItem
     {
         /// <summary>
         ///     Parent of the object.

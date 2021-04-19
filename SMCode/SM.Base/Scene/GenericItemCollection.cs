@@ -1,5 +1,6 @@
 ﻿#region usings
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SM.Base.Drawing;
@@ -91,13 +92,14 @@ namespace SM.Base.Scene
         }
 
         /// <summary>
-        ///     Adds a item to the draw and the script collection, when applicable.
+        ///     Adds items to the draw and the script collection, when applicable.
         /// </summary>
-        public void Add(params IShowItem[] items)
+        public void Add(params ICollectionItem[] items)
         {
             foreach (var item in items)
             {
-                AddObject(item);
+                if (item is IShowItem show)
+                    addObject(show);
 
                 if (item is IScriptable scriptable)
                     AddScript(scriptable);
@@ -106,11 +108,33 @@ namespace SM.Base.Scene
             }
         }
 
+
         /// <summary>
         ///     Adds the object to the collection.
         /// </summary>
         /// <param name="item"></param>
+        [Obsolete("Please use Add()")]
         public void AddObject(IShowItem item)
+        {
+            addObject(item);
+        }
+
+        /// <summary>
+        ///     Adds the script to the collection.
+        /// </summary>
+        /// <param name="item"></param>
+        [Obsolete("Please use Add()")]
+        public void AddScript(IScriptable item)
+        {
+            addScript(item);
+        }
+
+
+        /// <summary>
+        ///     Adds the object to the collection.
+        /// </summary>
+        /// <param name="item"></param>
+        private void addObject(IShowItem item)
         {
             base.Add(item);
             item.Parent = this;
@@ -121,7 +145,8 @@ namespace SM.Base.Scene
         ///     Adds the script to the collection.
         /// </summary>
         /// <param name="item"></param>
-        public void AddScript(IScriptable item)
+        [Obsolete("Please use Add()")]
+        public void addScript(IScriptable item)
         {
             _scriptableObjects.Add(item);
             if (item is IFixedScriptable fs) _fixedScriptables.Add(fs);
@@ -132,11 +157,12 @@ namespace SM.Base.Scene
         /// <para>If the object is a scriptable object, it will remove the object from that list as well.</para>
         /// </summary>
         /// <param name="items"></param>
-        public void Remove(params IShowItem[] items)
+        public void Remove(params ICollectionItem[] items)
         {
             foreach (var item in items)
             {
-                RemoveObject(item);
+                if (item is IShowItem show)
+                    RemoveObject(show);
 
                 if (item is IScriptable scriptable)
                     RemoveScript(scriptable);
@@ -150,6 +176,7 @@ namespace SM.Base.Scene
         ///     Remove the object from the draw collection.
         /// </summary>
         /// <param name="item"></param>
+        [Obsolete("Please use Remove()")]
         public void RemoveObject(IShowItem item)
         {
             base.Remove(item);
@@ -161,6 +188,7 @@ namespace SM.Base.Scene
         ///     Remove the object from the script collection.
         /// </summary>
         /// <param name="item"></param>
+        [Obsolete("Please use Remove()")]
         public void RemoveScript(IScriptable item)
         {
             _scriptableObjects.Remove(item);
