@@ -10,7 +10,7 @@ namespace SM.Base.Scene
     /// <summary>
     /// This interface allows for a object to implerment a fixed update.
     /// </summary>
-    public interface IFixedScriptable
+    public interface IFixedScriptable : ICollectionItem
     {
         /// <summary>
         /// Executes a fixed update.

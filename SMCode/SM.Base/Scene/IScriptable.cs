@@ -9,7 +9,7 @@ namespace SM.Base.Scene
     /// <summary>
     ///     Defines a object as script.
     /// </summary>
-    public interface IScriptable
+    public interface IScriptable : ICollectionItem
     {
         /// <summary>
         /// If not active, ItemCollections will ignore them.
