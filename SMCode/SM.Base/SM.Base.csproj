@@ -151,7 +151,9 @@
     <EmbeddedResource Include="Shaders\Extensions\fragment\textureGamma.glsl" />
     <EmbeddedResource Include="Shaders\Extensions\fragment\noise.glsl" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Window\winIcon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

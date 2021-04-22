@@ -66,9 +66,9 @@ namespace SM.Base.Types
         }
 
         /// <inheritdoc />
-        public override void Set(params float[] parameters)
+        public override void SetRaw(params float[] parameters)
         {
-            base.Set(parameters);
+            base.SetRaw(parameters);
             W = parameters[3];
         }
 

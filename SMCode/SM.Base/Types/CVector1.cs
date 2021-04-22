@@ -53,7 +53,7 @@ namespace SM.Base.Types
         }
 
         /// <inheritdoc />
-        public override void Set(params float[] parameters)
+        public override void SetRaw(params float[] parameters)
         {
             X = parameters[0];
         }

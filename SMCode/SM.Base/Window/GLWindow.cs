@@ -3,6 +3,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -138,7 +139,13 @@ namespace SM.Base.Window
                 Loading = false;
                 Loaded?.Invoke(this);
                 AppliedSetup?.Loaded(this);
+                OnLoaded();
             }
+        }
+
+        protected virtual void OnLoaded()
+        {
+            Icon ??= new Icon(AssemblyUtility.GetAssemblyStream("SM.Base.Window.winIcon.ico"));
         }
 
         /// <inheritdoc />

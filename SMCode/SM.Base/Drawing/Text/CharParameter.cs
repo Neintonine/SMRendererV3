@@ -27,5 +27,8 @@ namespace SM.Base.Drawing.Text
 
 
         public Matrix3 TextureMatrix;
+
+        public Vector2 Offset;
+        public Vector2 Scale;
     }
 }

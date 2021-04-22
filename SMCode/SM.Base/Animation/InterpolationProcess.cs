@@ -84,7 +84,7 @@ namespace SM.Base.Animation
 
         private void SetTarget(Vector4 vec)
         {
-            TargetVector.Set(vec.X, vec.Y, vec.Z, vec.W);
+            TargetVector.SetRaw(vec.X, vec.Y, vec.Z, vec.W);
         }
     }
 }

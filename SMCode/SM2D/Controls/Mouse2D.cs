@@ -28,7 +28,7 @@ namespace SM2D.Controls
         /// </summary>
         public static Vector2 InWorld(Camera cam)
         {
-            return InWorld(cam.WorldScale) + cam.Position;
+            return InWorld(cam.CalculatedWorldScale) + cam.Position;
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace SM.Base.Drawing.Text
                 _fontFace.LoadChar(c, LoadFlags.Render, LoadTarget.Normal);
 
                 pos.Add(c, new []{(float)_fontFace.Glyph.Bitmap.Width, Width});
-                Width += (int)_fontFace.Glyph.Advance.X + 5;
+                Width += (int)_fontFace.Glyph.Advance.X + 2;
                 Height = Math.Max(_fontFace.Glyph.Bitmap.Rows, Height);
             }
 
@@ -56,7 +56,7 @@ namespace SM.Base.Drawing.Text
 
             float bBoxHeight = (Math.Abs(_fontFace.BBox.Bottom) + _fontFace.BBox.Top);
             float bBoxTopScale = _fontFace.BBox.Top / bBoxHeight;
-            float baseline = Height * bBoxTopScale;
+            float baseline = Height * bBoxTopScale + 1;
 
             Map = new Bitmap(Width, Height);
             using (Graphics g = Graphics.FromImage(Map))
@@ -72,6 +72,8 @@ namespace SM.Base.Drawing.Text
                     
                     g.DrawImageUnscaled(_fontFace.Glyph.Bitmap.ToGdipBitmap(Color.White), (int)keyvalue.Value[1], y);
 
+                    Vector2 offset = new Vector2(keyvalue.Value[1] / Width, 0);
+                    Vector2 scale = new Vector2(keyvalue.Value[0] / Width, 1);
                     Positions.Add(keyvalue.Key, new CharParameter()
                     {
                         Advance = (int)_fontFace.Glyph.LinearHorizontalAdvance,
@@ -79,8 +81,11 @@ namespace SM.Base.Drawing.Text
 
                         Width = keyvalue.Value[0],
 
-                        TextureMatrix = TextureTransformation.CalculateMatrix(new Vector2(keyvalue.Value[1] / Width, 0),
-                            new Vector2(keyvalue.Value[0] / Width, 1), 0),
+                        TextureMatrix = TextureTransformation.CalculateMatrix(offset,
+                            scale, 0),
+
+                        Offset = offset,
+                        Scale = scale
                     });
                 }
             }

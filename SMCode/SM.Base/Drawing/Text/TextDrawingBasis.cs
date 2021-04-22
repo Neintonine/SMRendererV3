@@ -109,7 +109,6 @@ namespace SM.Base.Drawing.Text
 
             float x = 0;
             float y = 0;
-            var _last = new CharParameter();
             for (var i = 0; i < _text.Length; i++)
             {
 
@@ -144,18 +143,16 @@ namespace SM.Base.Drawing.Text
                 }
 
                 var matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
-                             Matrix4.CreateTranslation(x, -y, 0);
+                             Matrix4.CreateTranslation(x + parameter.Width / 2, -y, 0);
                 _instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
                     TextureMatrix = parameter.TextureMatrix
                 };
 
-                x += Math.Max(parameter.Advance, 6);
-                _last = parameter;
+                Width = Math.Max(Width, x);
+                x += parameter.Advance;
             }
-
-            Width = Math.Max(Width, x);
             Height = y + Font.Height;
         }
     }

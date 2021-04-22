@@ -52,7 +52,7 @@ namespace SM.Base.Types
         /// Sets the values of the vector, by providing the values over an array.
         /// </summary>
         /// <param name="parameters"></param>
-        public abstract void Set(params float[] parameters);
+        public abstract void SetRaw(params float[] parameters);
 
         /// <summary>
         /// This triggers the <see cref="Changed"/> event.
