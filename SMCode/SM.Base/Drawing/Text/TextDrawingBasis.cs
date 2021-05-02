@@ -3,12 +3,20 @@
 using System;
 using OpenTK;
 using OpenTK.Graphics;
+using SM.Base.Objects.Static;
 using SM.Base.Window;
 
 #endregion
 
 namespace SM.Base.Drawing.Text
 {
+    public enum TextOrigin
+    {
+        Left,
+        Center,
+        Right
+    }
+
     /// <summary>
     ///     Defines a basis for text drawing.
     /// </summary>
@@ -35,6 +43,12 @@ namespace SM.Base.Drawing.Text
         /// The height of the text object.
         /// </summary>
         public float Height;
+
+        /// <summary>
+        /// Allow to change the origin of the text.
+        /// <para>Default: <see cref="TextOrigin.Center"/></para>
+        /// </summary>
+        public TextOrigin Origin = TextOrigin.Center;
 
         /// <summary>
         ///     The spacing between numbers.
@@ -85,6 +99,7 @@ namespace SM.Base.Drawing.Text
         {
             Material.Texture = font;
             Material.Blending = true;
+            Mesh = Plate.Object;
         }
 
 
@@ -111,7 +126,6 @@ namespace SM.Base.Drawing.Text
             float y = 0;
             for (var i = 0; i < _text.Length; i++)
             {
-
                 if (_text[i] == ' ')
                 {
                     x += Font.SpaceWidth * Spacing;
@@ -150,10 +164,27 @@ namespace SM.Base.Drawing.Text
                     TextureMatrix = parameter.TextureMatrix
                 };
 
-                Width = Math.Max(Width, x);
                 x += parameter.Advance;
             }
             Height = y + Font.Height;
+            Width = x;
+
+            if (Origin != TextOrigin.Left)
+            {
+                foreach (Instance i in _instances)
+                {
+                    if (i == null) continue;
+                    switch (Origin)
+                    {
+                        case TextOrigin.Center:
+                            i.ModelMatrix *= Matrix4.CreateTranslation(-Width / 2, 0, 0);
+                            break;
+                        case TextOrigin.Right:
+                            i.ModelMatrix *= Matrix4.CreateTranslation(-Width, 0, 0);
+                            break;
+                    }
+                }
+            }
         }
     }
 }

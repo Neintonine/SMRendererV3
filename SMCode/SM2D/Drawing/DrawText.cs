@@ -23,6 +23,14 @@ namespace SM2D.Drawing
             Transform.Size = new CVector2(1);
         }
 
+        public void SetHeight(float desiredHeight)
+        {
+            if (!Font.WasCompiled) Font.Compile();
+            
+            float factor = desiredHeight / Font.Height;
+            Transform.Size.Set(factor);
+        }
+
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {

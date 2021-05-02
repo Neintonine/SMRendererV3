@@ -83,14 +83,9 @@ namespace SM.Base.Drawing.Text
 
                         TextureMatrix = TextureTransformation.CalculateMatrix(offset,
                             scale, 0),
-
-                        Offset = offset,
-                        Scale = scale
                     });
                 }
             }
-
-            Console.WriteLine();
         }
 
         public override void Compile()

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using SM.Base;
 using SM.Base.Animation;
 using SM.Base.Controls;
 using SM.Base.Drawing;
@@ -33,50 +34,37 @@ namespace SM_TEST
             };
             font.RegenerateTexture();
 
+            SMRenderer.DefaultMesh = new Polygon(new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) });
+
             window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
             window.ApplySetup(new Window2DSetup());
             
-            window.SetScene(scene = new Scene());
+            window.SetScene(scene = new Scene()
+            {
+                ShowAxisHelper = true
+            });
             scene.Background.Color = Color4.Blue;
             scene.Camera = new Camera()
             {
-                RequestedWorldScale = new Vector2(0, 10)
+                
             };
-
-            ItemCollection col = new ItemCollection();
-
-            DrawObject2D textTex = new DrawObject2D()
-            {
-                Texture = font,
-                Material = {Blending =  true}
-            };
-            float aspect = font.Height / (float) font.Width;
-            textTex.Transform.Size.Set(font.Width * aspect, font.Height * aspect);
-            textTex.Transform.Position.Set(textTex.Transform.Size.X / 2, 0);
-
-            Vector2 fontSize = new Vector2(font.Width * aspect, font.Height * aspect);
 
             Material uvMaterial = new Material()
             {
                 Tint = new Color4(1f, 0, 0, .5f),
-                Blending = true
+                Blending = true,
+                Texture = font
             };
-
-            col.Transform.Size.Set(1);
-
 
             DrawText test = new DrawText(font, "Level Completed")
             {
                 Material = uvMaterial,
-                Font = font
+                Origin = TextOrigin.Right
             };
-            test.Transform.Size.Set(aspect);
             test.Transform.Position.Set(0, 2);
-
-
-            col.Add(test, textTex);
-
-            scene.Objects.Add(col);
+            test.Transform.Size.Set(.5f);
+            
+            scene.Objects.Add(test);
 
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;

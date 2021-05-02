@@ -102,7 +102,7 @@ namespace SM.Base.Scene
                     addObject(show);
 
                 if (item is IScriptable scriptable)
-                    AddScript(scriptable);
+                    addScript(scriptable);
 
                 if (item is IFixedScriptable fixedScriptable) _fixedScriptables.Add(fixedScriptable);
             }
@@ -145,7 +145,6 @@ namespace SM.Base.Scene
         ///     Adds the script to the collection.
         /// </summary>
         /// <param name="item"></param>
-        [Obsolete("Please use Add()")]
         public void addScript(IScriptable item)
         {
             _scriptableObjects.Add(item);
