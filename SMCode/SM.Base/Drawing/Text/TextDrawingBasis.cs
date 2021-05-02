@@ -46,9 +46,9 @@ namespace SM.Base.Drawing.Text
 
         /// <summary>
         /// Allow to change the origin of the text.
-        /// <para>Default: <see cref="TextOrigin.Center"/></para>
+        /// <para>Default: <see cref="TextOrigin.Left"/></para>
         /// </summary>
-        public TextOrigin Origin = TextOrigin.Center;
+        public TextOrigin Origin = TextOrigin.Left;
 
         /// <summary>
         ///     The spacing between numbers.

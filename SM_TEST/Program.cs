@@ -59,7 +59,6 @@ namespace SM_TEST
             DrawText test = new DrawText(font, "Level Completed")
             {
                 Material = uvMaterial,
-                Origin = TextOrigin.Right
             };
             test.Transform.Position.Set(0, 2);
             test.Transform.Size.Set(.5f);
