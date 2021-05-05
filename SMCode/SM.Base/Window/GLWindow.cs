@@ -143,6 +143,9 @@ namespace SM.Base.Window
             }
         }
 
+        /// <summary>
+        /// This gets called, when the window completed with all initilization steps.
+        /// </summary>
         protected virtual void OnLoaded()
         {
             Icon ??= new Icon(AssemblyUtility.GetAssemblyStream("SM.Base.Window.winIcon.ico"));

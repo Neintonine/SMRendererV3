@@ -10,10 +10,22 @@ using SM.Base.Window;
 
 namespace SM.Base.Drawing.Text
 {
+    /// <summary>
+    /// Represents the options for <see cref="TextDrawingBasis{TTransform}.Origin"/>
+    /// </summary>
     public enum TextOrigin
     {
+        /// <summary>
+        /// The position equals (0,0) in the left side of the text.
+        /// </summary>
         Left,
+        /// <summary>
+        /// The position equals (0,0) in the center of the text.
+        /// </summary>
         Center,
+        /// <summary>
+        /// The position equals (0,0) in the right side of the text.
+        /// </summary>
         Right
     }
 

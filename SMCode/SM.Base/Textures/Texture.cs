@@ -33,6 +33,9 @@ namespace SM.Base.Textures
         private int? _height;
         private int? _width;
 
+        /// <summary>
+        /// The unpack alignment for this texture.
+        /// </summary>
         public int UnpackAlignment = 4;
 
         /// <summary>
@@ -120,6 +123,7 @@ namespace SM.Base.Textures
         /// <param name="filter">The filter</param>
         /// <param name="wrapMode">The wrap mode</param>
         /// <param name="dispose">Auto dispose of the bitmap? Default: false</param>
+        /// <param name="unpackAlignment">The unpack alignment for this texture.</param>
         /// <returns></returns>
         public static int GenerateTexture(Bitmap map, TextureMinFilter filter, TextureWrapMode wrapMode,
             bool dispose = false, int unpackAlignment = 4)

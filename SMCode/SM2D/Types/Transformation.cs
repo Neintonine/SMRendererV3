@@ -54,9 +54,7 @@ namespace SM2D.Types
         {
             float z = 1 / (float) ZIndexPercision * ZIndex;
 
-            return Matrix4.CreateScale(Size.X, Size.Y, 1) *
-                   Matrix4.CreateRotationX(MathHelper.DegreesToRadians(HorizontalFlip ? 180 : 0)) *
-                   Matrix4.CreateRotationY(MathHelper.DegreesToRadians(VerticalFlip ? 180 : 0)) *
+            return Matrix4.CreateScale(Size.X * (VerticalFlip ? -1 : 1), Size.Y * (HorizontalFlip ? -1 : 1), 1) *
                    Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rotation)) *
                    Matrix4.CreateTranslation(Position.X, Position.Y, z);
         }
@@ -99,6 +97,16 @@ namespace SM2D.Types
         public void ApplyTextureSize(Texture texture, float width)
         {
             Size.Set(width, width / texture.Aspect);
+        }
+
+        /// <summary>
+        /// Adjusts <see cref="Size"/> for the texture transform.
+        /// <para>In this way you can make sure, the texture is not stretched.</para>
+        /// </summary>
+        /// <param name="transform"></param>
+        public void AdjustSizeToTextureTransform(TextureTransformation transform)
+        {
+            Size.Set(transform.Scale * Size);
         }
     }
 }

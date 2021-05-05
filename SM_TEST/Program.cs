@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -8,13 +9,13 @@ using SM.Base;
 using SM.Base.Animation;
 using SM.Base.Controls;
 using SM.Base.Drawing;
-using SM.Base.Drawing.Text;
 using SM.Base.Time;
 using SM.Base.Window;
 using SM2D;
 using SM2D.Drawing;
 using SM2D.Object;
 using SM2D.Scene;
+using Font = SM.Base.Drawing.Text.Font;
 
 namespace SM_TEST
 {
@@ -34,8 +35,6 @@ namespace SM_TEST
             };
             font.RegenerateTexture();
 
-            SMRenderer.DefaultMesh = new Polygon(new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) });
-
             window = new GLWindow(1280, 720, "0ms", WindowFlags.Window, VSyncMode.Off);
             window.ApplySetup(new Window2DSetup());
             
@@ -49,19 +48,14 @@ namespace SM_TEST
                 
             };
 
-            Material uvMaterial = new Material()
+            DrawObject2D test = new DrawObject2D()
             {
-                Tint = new Color4(1f, 0, 0, .5f),
-                Blending = true,
-                Texture = font
+                Texture = new Bitmap("test.png")
             };
-
-            DrawText test = new DrawText(font, "Level Completed")
-            {
-                Material = uvMaterial,
-            };
-            test.Transform.Position.Set(0, 2);
-            test.Transform.Size.Set(.5f);
+            test.Material.Blending = true;
+            test.Transform.Size.Set(100);
+            test.TextureTransform.SetRectangleRelative(test.Texture, new Vector2(234, 0), new Vector2(220, 201));
+            test.Transform.AdjustSizeToTextureTransform(test.TextureTransform);
             
             scene.Objects.Add(test);
 

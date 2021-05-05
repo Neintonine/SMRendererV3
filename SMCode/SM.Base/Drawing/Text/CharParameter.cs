@@ -18,6 +18,9 @@ namespace SM.Base.Drawing.Text
         /// </summary>
         public int Advance;
 
+        /// <summary>
+        /// The bearing for this char.
+        /// </summary>
         public float BearingX;
 
         /// <summary>
@@ -26,6 +29,9 @@ namespace SM.Base.Drawing.Text
         public float Width;
 
 
+        /// <summary>
+        /// Matrix for the texture.
+        /// </summary>
         public Matrix3 TextureMatrix;
     }
 }

@@ -1,6 +1,8 @@
 ﻿#region usings
 
 using OpenTK;
+using OpenTK.Graphics.ES10;
+using SM.Base.Textures;
 using SM.Base.Types;
 
 #endregion
@@ -32,6 +34,41 @@ namespace SM.Base.Drawing
         public Matrix3 GetMatrix()
         {
             return CalculateMatrix(Offset, Scale, Rotation);
+        }
+
+        /// <summary>
+        /// Sets the offset relative to the pixels of the texture.
+        /// </summary>
+        /// <param name="texture">The texture it should use.</param>
+        /// <param name="pixelLocation">The offset in pixel.</param>
+        public void SetOffsetRelative(Texture texture, Vector2 pixelLocation)
+        {
+            Vector2 textureSize = new Vector2(texture.Width, texture.Height);
+            Offset.Set( Vector2.Divide(pixelLocation, textureSize) );
+        }
+        /// <summary>
+        /// Sets the scale relative to the pixels of the texture.
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="rectangleSize">The scale in pixel.</param>
+        public void SetScaleRelative(Texture texture, Vector2 rectangleSize)
+        {
+            Vector2 textureSize = new Vector2(texture.Width, texture.Height);
+            Scale.Set( Vector2.Divide(rectangleSize, textureSize) );
+        }
+
+        /// <summary>
+        /// Sets the offset and scale relative to the pixels of the texture.
+        /// </summary>
+        /// <param name="texture">The texture.</param>
+        /// <param name="location">Offset in pixel</param>
+        /// <param name="rectangleSize">Scale in pixel.</param>
+        public void SetRectangleRelative(Texture texture, Vector2 location, Vector2 rectangleSize)
+        {
+            Vector2 textureSize = new Vector2(texture.Width, texture.Height);
+
+            Offset.Set(Vector2.Divide(location, textureSize));
+            Scale.Set(Vector2.Divide(rectangleSize, textureSize));
         }
 
         /// <summary>

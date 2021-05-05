@@ -23,6 +23,10 @@ namespace SM2D.Drawing
             Transform.Size = new CVector2(1);
         }
 
+        /// <summary>
+        /// Sets the height of the text.
+        /// </summary>
+        /// <param name="desiredHeight">The height it should be.</param>
         public void SetHeight(float desiredHeight)
         {
             if (!Font.WasCompiled) Font.Compile();

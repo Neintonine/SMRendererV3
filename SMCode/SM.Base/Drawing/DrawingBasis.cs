@@ -18,17 +18,17 @@ namespace SM.Base.Drawing
         /// <summary>
         ///     The camera, that was used last time the object was rendered.
         /// </summary>
-        public GenericCamera LastDrawingCamera;
+        public GenericCamera LastDrawingCamera { get; private set; }
 
         /// <summary>
         ///     The material it should use.
         /// </summary>
-        public Material Material = new Material();
+        public Material Material { get; set; } = new Material();
 
         /// <summary>
         /// Transformation for the textures.
         /// </summary>
-        public TextureTransformation TextureTransform = new TextureTransformation();
+        public TextureTransformation TextureTransform { get; set; } = new TextureTransformation();
 
         /// <summary>
         /// This allows custom shaders to add own arguments.
@@ -71,7 +71,6 @@ namespace SM.Base.Drawing
 
             DrawContext(ref context);
         }
-
         /// <inheritdoc />
         public virtual void OnAdded(object sender)
         {
