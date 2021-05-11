@@ -62,6 +62,7 @@
     <Compile Include="Drawing\DrawingBasis.cs" />
     <Compile Include="Drawing\GenericTransformation.cs" />
     <Compile Include="Drawing\Instance.cs" />
+    <Compile Include="Drawing\Particles\ParticleInstance.cs" />
     <Compile Include="Drawing\ShaderArguments.cs" />
     <Compile Include="Drawing\TextureTransformation.cs" />
     <Compile Include="Drawing\Text\Font.cs" />
@@ -69,9 +70,7 @@
     <Compile Include="Scene\ICollectionItem.cs" />
     <Compile Include="Scene\IFixedScriptable.cs" />
     <Compile Include="Shaders\MaterialShader.cs" />
-    <Compile Include="Drawing\Particles\ParticleContext.cs" />
     <Compile Include="Drawing\Particles\ParticleMovement.cs" />
-    <Compile Include="Drawing\Particles\ParticleStruct.cs" />
     <Compile Include="Drawing\Particles\ParticleDrawingBasis.cs" />
     <Compile Include="Shaders\SimpleShader.cs" />
     <Compile Include="Types\CVector4.cs" />

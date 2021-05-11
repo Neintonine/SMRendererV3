@@ -18,6 +18,18 @@ namespace SM.Base.Drawing.Particles
         where TTransform : GenericTransformation, new()
         where TDirection : struct
     {
+        private float? _continuesIntervalSeconds = null;
+        private Interval _continuesInterval;
+
+        /// <summary>
+        ///     The stopwatch of the particles.
+        /// </summary>
+        protected Timer timer;
+
+        /// <summary>
+        ///     This contains the different instances for the particles.
+        /// </summary>
+        protected List<ParticleInstance<TDirection>> instances;
 
         /// <summary>
         ///     The amount of particles
@@ -25,24 +37,38 @@ namespace SM.Base.Drawing.Particles
         public int Amount = 32;
 
         /// <summary>
-        ///     This contains the different instances for the particles.
+        /// The base lifetime for particles in seconds.
         /// </summary>
-        protected List<Instance> instances;
+        public float Lifetime;
+        /// <summary>
+        /// Ranomizes the lifetime for particles.
+        /// </summary>
+        public float LifetimeRandomize = 0;
+
+        /// <summary>
+        /// If set to any value (except null), it will create the particles continuously.
+        /// </summary>
+        public float? ContinuousInterval
+        {
+            get => _continuesIntervalSeconds;
+            set
+            {
+                if (value.HasValue)
+                {
+                    _continuesInterval.Target = value.Value;
+                }
+
+                _continuesIntervalSeconds = value;
+            }
+        }
+
+        public bool DetachedParticles;
 
         /// <summary>
         ///     The maximum speed of the particles
+        ///     <para>Default: 25</para>
         /// </summary>
-        public float MaxSpeed = 50;
-
-        /// <summary>
-        ///     This contains all important information for each particle.
-        /// </summary>
-        protected ParticleStruct<TDirection>[] particleStructs;
-
-        /// <summary>
-        ///     The stopwatch of the particles.
-        /// </summary>
-        protected Timer timer;
+        public float MaxSpeed = 25;
 
         /// <summary>
         ///     Sets up the timer.
@@ -51,6 +77,10 @@ namespace SM.Base.Drawing.Particles
         protected ParticleDrawingBasis(TimeSpan duration)
         {
             timer = new Timer(duration);
+            _continuesInterval = new Interval(0);
+            _continuesInterval.End += CreateContinuesParticles;
+
+            Lifetime = (float) duration.TotalSeconds;
         }
 
         /// <summary>
@@ -65,27 +95,29 @@ namespace SM.Base.Drawing.Particles
         /// <summary>
         ///     Controls the movement of each particles.
         /// </summary>
-        public abstract Func<TDirection, ParticleContext, TDirection> MovementCalculation { get; set; }
+        public abstract Func<ParticleInstance<TDirection>, TDirection> MovementCalculation { get; set; }
 
         /// <inheritdoc />
         public bool UpdateActive { 
-            get => timer.Active; 
+            get => timer.Active || _continuesInterval.Active; 
             set { return; } 
         }
 
         /// <inheritdoc />
         public void Update(UpdateContext context)
         {
-            ParticleContext particleContext = new ParticleContext
-            {
-                Timer = timer
-            };
 
-            for (int i = 0; i < Amount; i++)
+            for (int i = 0; i < instances.Count; i++)
             {
-                particleContext.Speed = particleStructs[i].Speed;
-                instances[i].ModelMatrix = CreateMatrix(particleStructs[i],
-                    MovementCalculation(particleStructs[i].Direction, particleContext));
+                instances[i].Lifetime -= context.Deltatime;
+                if (instances[i].Lifetime <= 0)
+                {
+                    instances.Remove(instances[i]);
+                    break;
+                }
+
+                instances[i].ModelMatrix = CreateMatrix(instances[i],
+                    MovementCalculation(instances[i]));
             }
         }
 
@@ -94,19 +126,50 @@ namespace SM.Base.Drawing.Particles
         /// </summary>
         public void Trigger()
         {
+            instances = new List<ParticleInstance<TDirection>>();
+            if (_continuesIntervalSeconds.HasValue)
+            {
+                _continuesInterval.Target = _continuesIntervalSeconds.Value;
+                _continuesInterval.Start();
+
+                return;
+            }
+
             timer.Start();
 
             CreateParticles();
         }
 
+        /// <summary>
+        /// Stops the particles.
+        /// </summary>
+        public void Stop()
+        {
+            if (_continuesInterval.Active)
+            {
+                _continuesInterval.Stop();
+            }
+
+            timer.Stop();
+        }
+
+        public override void OnRemoved(object sender)
+        {
+            base.OnRemoved(sender);
+
+            Stop();
+        }
+
         /// <inheritdoc />
         protected override void DrawContext(ref DrawContext context)
         {
-            if (!timer.Active) return;
+            if (!timer.Active && _continuesInterval != null && !_continuesInterval.Active) return;
 
             base.DrawContext(ref context);
 
-            context.Instances = instances;
+            if (DetachedParticles) context.ModelMatrix = Matrix4.Identity;
+
+            context.Instances = instances.ConvertAll(a => (Instance)a);
 
             context.Shader.Draw(context);
         }
@@ -116,24 +179,27 @@ namespace SM.Base.Drawing.Particles
         /// </summary>
         protected virtual void CreateParticles()
         {
-            particleStructs = new ParticleStruct<TDirection>[Amount];
-            instances = new List<Instance>();
+            
+
             for (int i = 0; i < Amount; i++)
             {
-                particleStructs[i] = CreateObject(i);
-
-                instances.Add(new Instance());
+                instances.Add(CreateObject(i));
             }
+        }
+
+        private void CreateContinuesParticles(Timer arg1, UpdateContext arg2)
+        {
+            instances.Add(CreateObject(instances.Count));
         }
 
         /// <summary>
         ///     Creates a particle.
         /// </summary>
-        protected abstract ParticleStruct<TDirection> CreateObject(int index);
+        protected abstract ParticleInstance<TDirection> CreateObject(int index);
 
         /// <summary>
         ///     Generates the desired matrix for drawing.
         /// </summary>
-        protected abstract Matrix4 CreateMatrix(ParticleStruct<TDirection> Struct, TDirection relativePosition);
+        protected abstract Matrix4 CreateMatrix(ParticleInstance<TDirection> Struct, TDirection relativePosition);
     }
 }

@@ -33,7 +33,7 @@ namespace SM.Base.Time
         /// <summary>
         ///     The target time in seconds.
         /// </summary>
-        public float Target { get; }
+        public float Target { get; set; }
 
         /// <summary>
         ///     The already elapsed time but normalized to the target.

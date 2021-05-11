@@ -12,6 +12,7 @@ using SM.Base.Drawing;
 using SM.Base.Time;
 using SM.Base.Window;
 using SM2D;
+using SM2D.Controls;
 using SM2D.Drawing;
 using SM2D.Object;
 using SM2D.Scene;
@@ -48,16 +49,17 @@ namespace SM_TEST
                 
             };
 
-            DrawObject2D test = new DrawObject2D()
+            particles = new DrawParticles(TimeSpan.FromSeconds(1))
             {
-                Texture = new Bitmap("test.png")
+                Lifetime = 1f,
+                ContinuousInterval = .5f,
+                
+                Direction = -Vector2.UnitY,
+                DetachedParticles = true
             };
-            test.Material.Blending = true;
-            test.Transform.Size.Set(100);
-            test.TextureTransform.SetRectangleRelative(test.Texture, new Vector2(234, 0), new Vector2(220, 201));
-            test.Transform.AdjustSizeToTextureTransform(test.TextureTransform);
+            particles.Transform.Size.Set(50);
             
-            scene.Objects.Add(test);
+            scene.Objects.Add(particles);
 
             window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;
@@ -74,9 +76,11 @@ namespace SM_TEST
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
             if (Mouse.LeftClick)
-                interpolation.Stop();
+                particles.Trigger();
             if (Mouse.RightClick)
-                interpolation.Stop(false);
+                particles.ContinuousInterval = .05f;
+
+            particles.Transform.Position.Set(Mouse2D.InWorld(scene.Camera));
         }
     }
 }

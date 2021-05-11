@@ -12,7 +12,7 @@ namespace SM2D.Drawing
     public class DrawParticles : ParticleDrawingBasis<Transformation, Vector2>
     {
         /// <inheritdoc />
-        public override Func<Vector2, ParticleContext, Vector2> MovementCalculation { get; set; } = ParticleMovement.Default2D;
+        public override Func<ParticleInstance<Vector2>, Vector2> MovementCalculation { get; set; } = ParticleMovement.Default2D;
 
         /// <summary>
         /// The direction the particles should travel.
@@ -30,7 +30,7 @@ namespace SM2D.Drawing
         }
 
         /// <inheritdoc />
-        protected override ParticleStruct<Vector2> CreateObject(int index)
+        protected override ParticleInstance<Vector2> CreateObject(int index)
         {
             Vector2 dir;
             if (Direction.HasValue)
@@ -42,18 +42,27 @@ namespace SM2D.Drawing
             }
             else dir = new Vector2(Randomize.GetFloat(-1, 1), Randomize.GetFloat(-1, 1));
 
-            return new ParticleStruct<Vector2>()
+            var particle = new ParticleInstance<Vector2>()
             {
-                Matrix = Matrix4.CreateScale(1),
+                Matrix = DetachedParticles ? Transform.GetMatrix() : Matrix4.CreateScale(1),
+
                 Direction = dir,
-                Speed = Randomize.GetFloat(MaxSpeed)
+                StartPosition = Transform.Position,
+
+                Speed = Randomize.GetFloat(MaxSpeed),
+                StartLifetime = Lifetime - Randomize.GetFloat(LifetimeRandomize)
             };
+            particle.Lifetime = particle.StartLifetime;
+
+            return particle;
         }
 
         /// <inheritdoc />
-        protected override Matrix4 CreateMatrix(ParticleStruct<Vector2> Struct, Vector2 direction)
+        protected override Matrix4 CreateMatrix(ParticleInstance<Vector2> Struct, Vector2 direction)
         {
-            return Struct.Matrix * Matrix4.CreateTranslation(direction.X, direction.Y, 0);
+            Vector2 pos = direction;
+
+            return Struct.Matrix * Matrix4.CreateTranslation(pos.X, pos.Y, 0);
         }
     }
 }
