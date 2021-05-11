@@ -104,7 +104,8 @@ namespace SM.Base.Scene
                 if (item is IScriptable scriptable)
                     addScript(scriptable);
 
-                if (item is IFixedScriptable fixedScriptable) _fixedScriptables.Add(fixedScriptable);
+                if (item is IFixedScriptable fixedScriptable) 
+                    addScript(fixedScriptable);
             }
         }
 
@@ -130,10 +131,6 @@ namespace SM.Base.Scene
         }
 
 
-        /// <summary>
-        ///     Adds the object to the collection.
-        /// </summary>
-        /// <param name="item"></param>
         private void addObject(IShowItem item)
         {
             base.Add(item);
@@ -141,14 +138,14 @@ namespace SM.Base.Scene
             item.OnAdded(this);
         }
 
-        /// <summary>
-        ///     Adds the script to the collection.
-        /// </summary>
-        /// <param name="item"></param>
-        public void addScript(IScriptable item)
+        private void addScript(IScriptable item)
         {
             _scriptableObjects.Add(item);
-            if (item is IFixedScriptable fs) _fixedScriptables.Add(fs);
+        }
+
+        private void addScript(IFixedScriptable item)
+        {
+            _fixedScriptables.Add(item);
         }
 
         /// <summary>
@@ -161,13 +158,13 @@ namespace SM.Base.Scene
             foreach (var item in items)
             {
                 if (item is IShowItem show)
-                    RemoveObject(show);
+                    removeObject(show);
 
                 if (item is IScriptable scriptable)
-                    RemoveScript(scriptable);
+                    removeScript(scriptable);
 
                 if (item is IFixedScriptable fixedScriptable)
-                    _fixedScriptables.Remove(fixedScriptable);
+                    removeScript(fixedScriptable);
             }
         }
 
@@ -177,6 +174,11 @@ namespace SM.Base.Scene
         /// <param name="item"></param>
         [Obsolete("Please use Remove()")]
         public void RemoveObject(IShowItem item)
+        {
+            removeObject(item);
+        }
+
+        private void removeObject(IShowItem item)
         {
             base.Remove(item);
             item.Parent = null;
@@ -190,10 +192,43 @@ namespace SM.Base.Scene
         [Obsolete("Please use Remove()")]
         public void RemoveScript(IScriptable item)
         {
-            _scriptableObjects.Remove(item);
-            if (item is IFixedScriptable fs) _fixedScriptables.Remove(fs);
+            removeScript(item);
         }
 
+        private void removeScript(IScriptable item)
+        {
+            _scriptableObjects.Remove(item);
+        }
+
+        private void removeScript(IFixedScriptable item)
+        {
+            _fixedScriptables.Remove(item);
+        }
+
+        /// <summary>
+        /// Clears the entire collection of everything.
+        /// </summary>
+        public new void Clear()
+        {
+            foreach (IShowItem item in this.ToArray()) removeObject(item);
+            foreach (IScriptable scriptable in _scriptableObjects.ToArray()) removeScript(scriptable);
+            foreach (IFixedScriptable scriptable in _fixedScriptables.ToArray()) removeScript(scriptable);
+        }
+
+        /// <summary>
+        /// Clears the entire collection of selected systems.
+        /// <para>If f.E. a object is both visual and scriptable and you clear the visuals, the scriptable-entry will stay.</para>
+        /// <param name="visuals">Clears visuals</param>
+        /// <param name="scriptables">Clears scriptables</param>
+        /// <param name="fixedScriptables">Clears fixed scriptables</param>
+        /// </summary>
+        public void Clear(bool visuals = false, bool scriptables = false, bool fixedScriptables = false)
+        {
+            if (visuals) foreach (IShowItem item in this.ToArray()) removeObject(item);
+            if (scriptables) foreach (IScriptable scriptable in _scriptableObjects.ToArray()) removeScript(scriptable);
+            if (fixedScriptables) foreach (IFixedScriptable scriptable in _fixedScriptables.ToArray()) removeScript(scriptable);
+        }
+        
         /// <summary>
         /// Returns all objects in the drawing list.
         /// <para>Not reclusive.</para>
