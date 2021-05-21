@@ -1,4 +1,4 @@
-﻿namespace SM.Optionals.Controls
+﻿namespace SM.Utils.Controls
 {
     public struct GameControllerStateTriggers
     {
@@ -6,6 +6,9 @@
 
         public float Left;
         public float Right;
+
+        public bool AnyInteraction => Left != 0f || Right != 0f;
+
         public override string ToString()
         {
             return $"Left: {Left}; Right: {Right}";

@@ -2,7 +2,7 @@
 using OpenTK;
 using SharpDX.XInput;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public struct GameControllerState
     {
@@ -12,7 +12,7 @@ namespace SM.Optionals.Controls
         public GameControllerStateButtons Buttons;
 
         public bool FromConnected { get; }
-
+        public bool AnyInteraction => Buttons.AnyInteraction || DPad.AnyInteraction || Triggers.AnyInteraction || Thumbs.AnyInteraction;
         internal GameControllerState(bool empty)
         {
             FromConnected = false;

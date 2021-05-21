@@ -1,6 +1,6 @@
 ﻿using OpenTK.Input;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public enum GameKeybindActorType
     {

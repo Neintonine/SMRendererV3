@@ -1,6 +1,6 @@
 ﻿using SharpDX.XInput;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public struct GameControllerStateButtons
     {
@@ -19,7 +19,12 @@ namespace SM.Optionals.Controls
         public bool LeftThumb;
         public bool RightThumb;
 
+        public bool Start;
+        public bool Back;
+
         public bool this[GamepadButtonFlags flags] => _buttonFlags.HasFlag(flags);
+
+        public bool AnyInteraction { get; }
 
         internal GameControllerStateButtons(GamepadButtonFlags flags)
         {
@@ -35,6 +40,11 @@ namespace SM.Optionals.Controls
 
             LeftThumb = flags.HasFlag(GamepadButtonFlags.LeftThumb);
             RightThumb = flags.HasFlag(GamepadButtonFlags.RightThumb);
+
+            Start = flags.HasFlag(GamepadButtonFlags.Start);
+            Back = flags.HasFlag(GamepadButtonFlags.Back);
+
+            AnyInteraction = (int) flags >= 16;
         }
 
         public override string ToString()

@@ -73,9 +73,13 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\optionals\SM.Intergrations\SM.Intergrations.csproj">
+    <ProjectReference Include="..\..\src\optionals\SM.Intergrations\SMRenderer.Intergrations.csproj">
       <Project>{4cb351f4-b3f2-4f77-acc2-02f21dbf5ec2}</Project>
-      <Name>SM.Intergrations</Name>
+      <Name>SMRenderer.Intergrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\optionals\SM.Utils\SMRenderer.Utils.csproj">
+      <Project>{079BAB31-3DC4-40DA-90C7-EFAA8517C647}</Project>
+      <Name>SMRenderer.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\renderer\SM.Base\SM.Base.csproj">
       <Project>{8e733844-4204-43e7-b3dc-3913cddabb0d}</Project>

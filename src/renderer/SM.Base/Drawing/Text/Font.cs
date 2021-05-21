@@ -41,6 +41,12 @@ namespace SM.Base.Drawing.Text
         public float FontSize { get; set; } = 12;
 
         /// <summary>
+        /// Allows to adjust the baseline to fix clipping issues.
+        /// <para>Due to some issues with the calculations, this is a temporary fix.</para>
+        /// </summary>
+        public float BaselineAdjust { get; set; } = 1f;
+
+        /// <summary>
         /// The character positions.
         /// </summary>
         public Dictionary<char, CharParameter> Positions = new Dictionary<char, CharParameter>();
@@ -64,6 +70,8 @@ namespace SM.Base.Drawing.Text
         public void RegenerateTexture()
         {
             Width = Height = 0;
+
+            //Height = Math.Abs(_fontFace.BBox.Bottom) + _fontFace.BBox.Top;
             Positions = new Dictionary<char, CharParameter>();
 
             _fontFace.SetCharSize(0, FontSize, 0, 96);
@@ -83,7 +91,7 @@ namespace SM.Base.Drawing.Text
 
             float bBoxHeight = (Math.Abs(_fontFace.BBox.Bottom) + _fontFace.BBox.Top);
             float bBoxTopScale = _fontFace.BBox.Top / bBoxHeight;
-            float baseline = Height * bBoxTopScale + 1;
+            float baseline = (Height * bBoxTopScale) + BaselineAdjust;
 
             Map = new Bitmap(Width, Height);
             using (Graphics g = Graphics.FromImage(Map))
@@ -95,8 +103,7 @@ namespace SM.Base.Drawing.Text
                 {
                     _fontFace.LoadChar(keyvalue.Key, LoadFlags.Render, LoadTarget.Normal);
 
-                    int y = ((int)baseline - (int)_fontFace.Glyph.Metrics.HorizontalBearingY);
-                    
+                    int y = ((int)baseline - (int) _fontFace.Glyph.Metrics.HorizontalBearingY);
                     g.DrawImageUnscaled(_fontFace.Glyph.Bitmap.ToGdipBitmap(Color.White), (int)keyvalue.Value[1], y);
 
                     Vector2 offset = new Vector2(keyvalue.Value[1] / Width, 0);

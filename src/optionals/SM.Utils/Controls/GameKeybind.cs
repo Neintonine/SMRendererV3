@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public class GameKeybind
     {

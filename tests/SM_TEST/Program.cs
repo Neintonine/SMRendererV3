@@ -14,6 +14,7 @@ using SM.Base.Drawing;
 using SM.Base.Time;
 using SM.Base.Window;
 using SM.Intergrations.ShaderTool;
+using SM.Utils.Controls;
 using SM2D;
 using SM2D.Controls;
 using SM2D.Drawing;
@@ -37,9 +38,13 @@ namespace SM_TEST
         public static STPProject portal;
         static void Main(string[] args)
         {
-            Font font = new Font(@"C:\Windows\Fonts\Arial.ttf")
+            Font font = new Font(@".\GapSansBold.ttf")
             {
-                FontSize = 30,
+                FontSize = 51,
+                CharSet = new char[]
+                {
+                    'I', 'A','M','T','W','O'
+                }
             };
             font.RegenerateTexture();
 
@@ -58,18 +63,10 @@ namespace SM_TEST
             {
                 
             };
-            DrawObject2D obj = new DrawObject2D()
-            {
-                Material = new STMaterial(portal.DrawNodes.First(a => a.Variables.ContainsKey("_MATColor")))
-                {
-                    ShaderArguments = {
-                        { "RingLoc", .33f },
-                         
-                    }
-                },
-                Mesh = Polygon.GenerateCircle()
-            };
-            obj.Transform.Size.Set(200);
+
+            DrawText obj = new DrawText(font, "I AM\n\tTWO")
+            {};
+
             scene.Objects.Add(obj);
 
             window.UpdateFrame += WindowOnUpdateFrame;
@@ -86,12 +83,8 @@ namespace SM_TEST
 
         private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
         {
-            /*
-            if (Mouse.LeftClick)
-                particles.Trigger();
-            if (Mouse.RightClick)
-                particles.ContinuousInterval = .05f;*/
-
+            bool interactions = new GameController(0).GetState().AnyInteraction;
+            Console.WriteLine();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public struct GameControllerStateThumbs
     {
@@ -12,6 +12,8 @@ namespace SM.Optionals.Controls
 
         public bool PressedLeft;
         public bool PressedRight;
+
+        public bool AnyInteraction => Left != Vector2.Zero || Right != Vector2.Zero || PressedLeft || PressedRight;
 
         public override string ToString()
         {

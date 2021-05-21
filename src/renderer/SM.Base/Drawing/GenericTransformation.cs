@@ -39,9 +39,16 @@ namespace SM.Base.Drawing
         /// <summary>
         ///     Returns the current model matrix.
         /// </summary>
+        /// <param name="force">If set to true, it will always (re-)calculate the model matrix.</param>
         /// <returns></returns>
-        public Matrix4 GetMatrix()
+        public Matrix4 GetMatrix(bool force = false)
         {
+            if (force)
+            {
+                _lastFrame = SMRenderer.CurrentFrame;
+                return _modelMatrix = RequestMatrix();
+            }
+
             if (Ignore) return Matrix4.Identity;
 
             if (_lastFrame != SMRenderer.CurrentFrame)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public class GameKeybindHost
     {

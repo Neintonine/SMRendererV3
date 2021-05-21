@@ -1,6 +1,6 @@
 ﻿using SharpDX.XInput;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public struct GameControllerStateDPad
     {
@@ -11,12 +11,16 @@ namespace SM.Optionals.Controls
         public bool Left;
         public bool Right;
 
+        public bool AnyInteraction { get; }
+
         internal GameControllerStateDPad(GamepadButtonFlags flags)
         {
             Up = flags.HasFlag(GamepadButtonFlags.DPadUp);
             Down = flags.HasFlag(GamepadButtonFlags.DPadDown);
             Left = flags.HasFlag(GamepadButtonFlags.DPadLeft);
             Right = flags.HasFlag(GamepadButtonFlags.DPadRight);
+
+            AnyInteraction = (int)flags > 0 && (int) flags < 16;
         }
 
         public override string ToString()

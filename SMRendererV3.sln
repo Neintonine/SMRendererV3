@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM2D", "src\renderer\SM2D\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM_TEST", "tests\SM_TEST\SM_TEST.csproj", "{6D4FB8E6-4D0B-4928-8F9E-EF5C2FBF44E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Utils", "src\optionals\SM.Utils\SM.Utils.csproj", "{079BAB31-3DC4-40DA-90C7-EFAA8517C647}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMRenderer.Utils", "src\optionals\SM.Utils\SMRenderer.Utils.csproj", "{079BAB31-3DC4-40DA-90C7-EFAA8517C647}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SM.Intergrations", "src\optionals\SM.Intergrations\SM.Intergrations.csproj", "{4CB351F4-B3F2-4F77-ACC2-02F21DBF5EC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMRenderer.Intergrations", "src\optionals\SM.Intergrations\SMRenderer.Intergrations.csproj", "{4CB351F4-B3F2-4F77-ACC2-02F21DBF5EC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Renderer", "Renderer", "{62ED6240-4DEC-4535-95EB-AE3D90A3FDF5}"
 EndProject

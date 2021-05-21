@@ -1,6 +1,6 @@
 ﻿using SharpDX.XInput;
 
-namespace SM.Optionals.Controls
+namespace SM.Utils.Controls
 {
     public struct GameController
     {
