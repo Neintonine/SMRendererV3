@@ -28,6 +28,10 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Framebuffer ConnectedFramebuffer { get; private set; }
 
+        /// <summary>
+        /// Can contains the size this attachment want to be.
+        /// <para>If set, it will ignore the size from the framebuffer.</para>
+        /// </summary>
         public Vector2? AttachmentSize = null;
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace SM.OGL.Framebuffer
         /// Creates a attachment with a specific id.
         /// </summary>
         /// <param name="attachmentId"></param>
+        /// <param name="size"></param>
         public ColorAttachment(int attachmentId, Vector2? size = null) : this(attachmentId, PixelInformation.RGBA_LDR, size)
         { }
 
@@ -64,6 +69,7 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         /// <param name="attachmentID"></param>
         /// <param name="pixelInformation"></param>
+        /// <param name="size"></param>
         /// <param name="multisamples"></param>
         public ColorAttachment(int attachmentID, PixelInformation pixelInformation, Vector2? size = null, int multisamples = 0)
         {

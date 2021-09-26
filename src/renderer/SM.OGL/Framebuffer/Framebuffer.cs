@@ -50,8 +50,14 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         public Vector2 Size { get; private set; }
 
+        /// <summary>
+        /// Says what value the dafault for the "applyViewport"-value in <see cref="Framebuffer.Activate(bool?)"/>.
+        /// </summary>
         public bool DefaultApplyViewport { get; set; } = true;
 
+        /// <summary>
+        /// Stores the first color attachment added.
+        /// </summary>
         public ColorAttachment FirstColorAttachment { get; private set; }
 
         /// <summary>
@@ -171,6 +177,12 @@ namespace SM.OGL.Framebuffer
         /// Appends a color attachment.
         /// </summary>
         public void Append(string key, int pos) => Append(key, new ColorAttachment(pos, null));
+        /// <summary>
+        /// Appends a color attachment.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="size"></param>
+        /// <param name="pos"></param>
         public void Append(string key, Vector2 size, int pos) => Append(key, new ColorAttachment(pos, size));
         /// <summary>
         /// Appends a color attachment.
@@ -203,6 +215,7 @@ namespace SM.OGL.Framebuffer
         /// Activates the framebuffer for the specific target framebuffer and without clearing.
         /// </summary>
         /// <param name="target"></param>
+        /// <param name="applyViewport"></param>
         public void Activate(FramebufferTarget target, bool? applyViewport = null)
         {
             Activate(target, ClearBufferMask.None, applyViewport);
@@ -212,6 +225,7 @@ namespace SM.OGL.Framebuffer
         /// Activates the framebuffer while clearing the specified buffer.
         /// </summary>
         /// <param name="clearMask"></param>
+        /// <param name="applyViewport"></param>
         public void Activate(ClearBufferMask clearMask, bool? applyViewport = null)
         {
             Activate(FramebufferTarget.Framebuffer, clearMask, applyViewport);
@@ -222,6 +236,7 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         /// <param name="target"></param>
         /// <param name="clear"></param>
+        /// <param name="applyViewport"></param>
         public void Activate(FramebufferTarget target, ClearBufferMask clear, bool? applyViewport = null)
         {
             switch (target)

@@ -81,5 +81,16 @@ namespace SM.OGL.Framebuffer
 
             return false;
         }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            int hashCode = -1803239493;
+            hashCode = hashCode * -1521134295 + Storage.GetHashCode();
+            hashCode = hashCode * -1521134295 + FramebufferAttachment.GetHashCode();
+            hashCode = hashCode * -1521134295 + Multisample.GetHashCode();
+            hashCode = hashCode * -1521134295 + ID.GetHashCode();
+            return hashCode;
+        }
     }
 }

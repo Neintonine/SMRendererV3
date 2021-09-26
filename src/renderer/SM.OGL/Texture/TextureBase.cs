@@ -53,7 +53,14 @@ namespace SM.OGL.Texture
         /// </summary>
         public virtual int Height { get; protected set; }
 
+        /// <summary>
+        /// Returns the size of the texture.
+        /// </summary>
         public Vector2 Size => new Vector2(Width, Height);
+        /// <summary>
+        /// Returns the texel size of the texture.
+        /// <para>Returns: 1 / Size</para>
+        /// </summary>
         public Vector2 TexelSize => new Vector2(1f / Width, 1f / Height);
 
         /// <inheritdoc />
@@ -63,6 +70,10 @@ namespace SM.OGL.Texture
             base.Dispose();
         }
 
+        /// <summary>
+        /// Generates a basic texture, that applies all settings from the <see cref="TextureBase"/>-class.
+        /// </summary>
+        /// <param name="size"></param>
         protected void GenerateBaseTexture(Vector2 size)
         {
             Width = (int)size.X;
