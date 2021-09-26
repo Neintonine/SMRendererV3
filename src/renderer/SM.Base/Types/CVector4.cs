@@ -23,22 +23,7 @@ namespace SM.Base.Types
         {
             W = w;
         }
-
-        /// <summary>
-        /// Interpolates the motion to the target.
-        /// </summary>
-        /// <param name="duration">How long the interpolation should take.</param>
-        /// <param name="to">The value it should interpolate.</param>
-        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
-        /// <returns>A handle to control the interpolation process.</returns>
-        public InterpolationProcess Interpolate(TimeSpan duration, Vector4 to, BezierCurve? interpolationCurve = null)
-        {
-            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), to, interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
-            process.Start();
-
-            return process;
-        }
-
+        
         /// <inheritdoc />
         public override void Set(float uniform, bool triggerChanged = true)
         {

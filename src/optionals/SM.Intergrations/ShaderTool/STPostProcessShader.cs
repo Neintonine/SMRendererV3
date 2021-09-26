@@ -23,30 +23,30 @@ namespace SM.Intergrations.ShaderTool
 
             STPCompositeNode composeNode = postProcessNode.OGLEffect;
 
-            ShaderFileFiles.Vertex = new[] { new ShaderFile(composeNode.Vertex.ShaderCode) };
-            ShaderFileFiles.Fragment = new[] { new ShaderFile(composeNode.Fragment.ShaderCode) };
+            ShaderFiles.Vertex = new[] { new ShaderFile(composeNode.Vertex.ShaderCode) };
+            ShaderFiles.Fragment = new[] { new ShaderFile(composeNode.Fragment.ShaderCode) };
             if (composeNode.Geometry != null)
-                ShaderFileFiles.Geometry = new[] { new ShaderFile(composeNode.Geometry.ShaderCode) };
+                ShaderFiles.Geometry = new[] { new ShaderFile(composeNode.Geometry.ShaderCode) };
 
             foreach (KeyValuePair<string, STPVariable> pair in postProcessNode.Variables)
             {
                 switch (pair.Value.Type)
                 {
                     case STPBasisType.Bool:
-                        _uniforms += context => Uniforms[pair.Key].SetUniform1(context.Get(pair.Key, false));
+                        _uniforms += context => Uniforms[pair.Key].SetBool(context.Get(pair.Key, false));
                         break;
                     case STPBasisType.Float:
-                        _uniforms += context => Uniforms[pair.Key].SetUniform1(context.Get(pair.Key, 0.0f));
+                        _uniforms += context => Uniforms[pair.Key].SetFloat(context.Get(pair.Key, 0.0f));
                         break;
                     case STPBasisType.Vector2:
-                        _uniforms += context => Uniforms[pair.Key].SetUniform2(context.Get(pair.Key, Vector2.Zero));
+                        _uniforms += context => Uniforms[pair.Key].SetVector2(context.Get(pair.Key, Vector2.Zero));
                         break;
                     case STPBasisType.Vector3:
-                        _uniforms += context => Uniforms[pair.Key].SetUniform3(context.Get(pair.Key, Vector3.Zero));
+                        _uniforms += context => Uniforms[pair.Key].SetVector3(context.Get(pair.Key, Vector3.Zero));
                         break;
                     case STPBasisType.Vector4:
                         _uniforms += context =>
-                            Uniforms[pair.Key].SetUniform4(context.Get(pair.Key, Vector4.Zero));
+                            Uniforms[pair.Key].SetVector4(context.Get(pair.Key, Vector4.Zero));
                         break;
                     case STPBasisType.Matrix:
                         _uniforms += context => Uniforms[pair.Key].SetMatrix4(context.Get(pair.Key, Matrix4.Identity));

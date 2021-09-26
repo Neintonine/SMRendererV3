@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Windows.Forms;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL;
@@ -82,14 +83,14 @@ namespace SM.Base
         /// <summary>
         ///     Presets for the log targets.
         /// </summary>
-        public static Dictionary<LogTarget, string> Preset = new()
+        public static Dictionary<LogTarget, string> Preset = new Dictionary<LogTarget, string>()
         {
             {LogTarget.Console, "[%type%] %msg%"},
             {LogTarget.Debugger, "[%type%] %msg%"},
             {LogTarget.File, "<%date%, %time%> [%type%] %msg%"}
         };
 
-        private static readonly Dictionary<LogType, ConsoleColor> Colors = new()
+        private static readonly Dictionary<LogType, ConsoleColor> Colors = new Dictionary<LogType, ConsoleColor>() 
         {
             {LogType.Info, ConsoleColor.Green},
             {LogType.Warning, ConsoleColor.Yellow},
@@ -145,7 +146,10 @@ namespace SM.Base
         {
             if (_init) return;
 
-            AppDomain.CurrentDomain.UnhandledException += ExceptionHandler;
+            if (!Debugger.IsAttached)
+            {
+                AppDomain.CurrentDomain.UnhandledException += ExceptionHandler;
+            }
             AppDomain.CurrentDomain.DomainUnload += (sender, args) =>
             {
                 _logStream.WriteLine("Unload application");
@@ -172,9 +176,12 @@ namespace SM.Base
             Write(e.IsTerminating ? "Terminating Error" : LogType.Error.ToString(),
                 e.IsTerminating ? ConsoleColor.DarkRed : ConsoleColor.Red, e.ExceptionObject);
 
+            MethodBase info = (e.ExceptionObject as Exception).TargetSite;
+            string name = $"{info.ReflectedType.Namespace}.{info.ReflectedType.Name}.{info.Name}".Replace(".", "::");
+
             if (e.IsTerminating)
             {
-                MessageBox.Show($"Critical error occured.\n\n{e.ExceptionObject}",
+                MessageBox.Show($"Critical error occured at {name}.\n\n{e.ExceptionObject}",
                     $"Terminating Error: {e.ExceptionObject.GetType().Name}");
                 _logStream?.Close();
             }

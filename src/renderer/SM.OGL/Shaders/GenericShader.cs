@@ -19,7 +19,7 @@ namespace SM.OGL.Shaders
         /// <summary>
         ///     Contains the different files for the shader.
         /// </summary>
-        protected ShaderFileCollection ShaderFileFiles;
+        public ShaderFileCollection ShaderFiles;
 
         /// <summary>
         ///     Contains and manage the uniforms from the shader.
@@ -67,7 +67,7 @@ namespace SM.OGL.Shaders
 
             Console.WriteLine();
 
-            ShaderFileFiles = new ShaderFileCollection(vertex,fragment, geometry);
+            ShaderFiles = new ShaderFileCollection(vertex,fragment, geometry);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace SM.OGL.Shaders
         /// <inheritdoc />
         protected GenericShader(ShaderFileCollection shaderFileFiles)
         {
-            ShaderFileFiles = shaderFileFiles;
+            ShaderFiles = shaderFileFiles;
         }
 
         /// <inheritdoc />
@@ -92,7 +92,7 @@ namespace SM.OGL.Shaders
         /// <param name="newShaderFiles"></param>
         public void Update(ShaderFileCollection newShaderFiles)
         {
-            ShaderFileFiles = newShaderFiles;
+            ShaderFiles = newShaderFiles;
             Recompile();
         }
 
@@ -103,9 +103,9 @@ namespace SM.OGL.Shaders
         {
             _id = GL.CreateProgram();
 
-            ShaderFileFiles.Append(this);
+            ShaderFiles.Append(this);
             GL.LinkProgram(_id);
-            ShaderFileFiles.Detach(this);
+            ShaderFiles.Detach(this);
 
             Uniforms = new UniformCollection {ParentShader = this};
             Uniforms.Import(this);

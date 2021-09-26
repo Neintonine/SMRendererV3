@@ -4,9 +4,14 @@ namespace SM.Utils.Controls
 {
     public struct GameControllerStateButtons
     {
-        public static GameControllerStateButtons Default = new GameControllerStateButtons(GamepadButtonFlags.None);
+        public static GameControllerStateButtons Default = new GameControllerStateButtons()
+        {
+            _buttonFlags = GamepadButtonFlags.None,
+            _lastButtonFlags = GamepadButtonFlags.None
+        };
 
         private GamepadButtonFlags _buttonFlags;
+        private GamepadButtonFlags _lastButtonFlags;
 
         public bool X;
         public bool Y;
@@ -22,13 +27,14 @@ namespace SM.Utils.Controls
         public bool Start;
         public bool Back;
 
-        public bool this[GamepadButtonFlags flags] => _buttonFlags.HasFlag(flags);
+        public bool this[GamepadButtonFlags flags, bool once = false] => _buttonFlags.HasFlag(flags) && !(once && _lastButtonFlags.HasFlag(flags));
 
         public bool AnyInteraction { get; }
 
-        internal GameControllerStateButtons(GamepadButtonFlags flags)
+        internal GameControllerStateButtons(GamepadButtonFlags flags, GameController controller)
         {
             _buttonFlags = flags;
+            _lastButtonFlags = controller._lastPressedButtons;
 
             X = flags.HasFlag(GamepadButtonFlags.X);
             Y = flags.HasFlag(GamepadButtonFlags.Y);

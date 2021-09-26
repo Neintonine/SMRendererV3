@@ -18,10 +18,20 @@ namespace SM.Base.Controls
         private static MouseState? _mouseState;
         private static List<MouseButton> _lastButtonsPressed = new List<MouseButton>();
 
+        private static Vector2 _inScreen;
+
         /// <summary>
-        ///     The current position of the mouse in the screen.
+        ///     Gets or sets the current position of the mouse in the screen.
         /// </summary>
-        public static Vector2 InScreen { get; private set; }
+        public static Vector2 InScreen
+        {
+            get => _inScreen;
+            set
+            {
+                _inScreen = value;
+                UpdateNormalized(SMRenderer.CurrentWindow);
+            }
+        }
 
         /// <summary>
         ///     The current position of the mouse in the screen from 0..1.
@@ -41,14 +51,26 @@ namespace SM.Base.Controls
         public static bool RightClick => IsDown(MouseButton.Right, true);
 
         /// <summary>
+        /// If true, it disables the tracking of the mouse, allowing you to change the <see cref="InScreen"/> value, without the system replacing it again.
+        /// </summary>
+        public static bool StopTracking { get; set; }
+
+        private static void UpdateNormalized(IGenericWindow window)
+        {
+            InScreenNormalized = new Vector2(_inScreen.X / (float)window.Width, _inScreen.Y / (float)window.Height);
+        }
+
+        /// <summary>
         ///     The event to update the values.
         /// </summary>
         /// <param name="mmea">The event args.</param>
         /// <param name="window">The window where the mouse is checked</param>
         internal static void MouseMoveEvent(MouseMoveEventArgs mmea, IGenericWindow window)
         {
+            if (StopTracking) return;
+
             InScreen = new Vector2(mmea.X, mmea.Y);
-            InScreenNormalized = new Vector2(mmea.X / (float) window.Width, mmea.Y / (float) window.Height);
+            UpdateNormalized(window);
         }
 
         internal static void SetState()

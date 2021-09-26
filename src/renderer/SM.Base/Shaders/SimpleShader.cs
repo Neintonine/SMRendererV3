@@ -101,17 +101,19 @@ namespace SM.Base.Shaders
                 .SetMatrix4(context.Instances[0].ModelMatrix * context.ModelMatrix * context.View * context.World);
             uniforms["MasterTextureMatrix"].SetMatrix3(context.Instances[0].TextureMatrix * context.TextureMatrix);
             uniforms["HasVColor"]
-                .SetUniform1(context.Mesh.Attributes.Has("color"));
+                .SetBool(context.Mesh.Attributes.Has("color"));
 
             DrawObject(context.ForcedType.GetValueOrDefault(context.Mesh.PrimitiveType), context.Mesh);
         }
 
         private static void InstancedSetUniforms(UniformCollection uniforms, DrawContext context)
         {
+            if (context.Instances == null || context.Instances.Count < 1) return;
+
             uniforms["MVP"].SetMatrix4(context.ModelMatrix * context.View * context.World);
             uniforms["MasterTextureMatrix"].SetMatrix3(context.TextureMatrix);
             uniforms["HasVColor"]
-                .SetUniform1(context.Mesh.Attributes.Has("color"));
+                .SetBool(context.Mesh.Attributes.Has("color"));
 
             UniformArray instances = uniforms.GetArray("Instances");
 

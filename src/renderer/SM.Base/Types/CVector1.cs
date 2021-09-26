@@ -29,21 +29,6 @@ namespace SM.Base.Types
         public float X { get; set; }
 
         /// <summary>
-        /// Interpolates the motion to the target.
-        /// </summary>
-        /// <param name="duration">How long the interpolation should take.</param>
-        /// <param name="to">The value it should interpolate.</param>
-        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
-        /// <returns>A handle to control the interpolation process.</returns>
-        public InterpolationProcess Interpolate(TimeSpan duration, float to, BezierCurve? interpolationCurve = null)
-        {
-            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to, 0, 0, 0), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
-            process.Start();
-
-            return process;
-        }
-
-        /// <summary>
         ///     Sets the X-Component.
         /// </summary>
         public virtual void Set(float uniform, bool triggerChanged = true)

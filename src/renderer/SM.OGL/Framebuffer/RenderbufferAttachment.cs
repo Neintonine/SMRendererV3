@@ -5,12 +5,12 @@ namespace SM.OGL.Framebuffer
     /// <summary>
     /// Describes a renderbuffer attachment. 
     /// </summary>
-    public struct RenderbufferAttachment
+    public class RenderbufferAttachment
     {
         /// <summary>
         /// Preset for the depthbuffer attachment.
         /// </summary>
-        public static readonly RenderbufferAttachment Depth = new RenderbufferAttachment(RenderbufferStorage.Depth24Stencil8, FramebufferAttachment.DepthStencilAttachment);
+        public static RenderbufferAttachment GenerateDepth() => new RenderbufferAttachment(RenderbufferStorage.Depth24Stencil8, FramebufferAttachment.DepthStencilAttachment);
         
         /// <summary>
         /// Storage describes the internal format for the renderbuffer.
@@ -27,6 +27,11 @@ namespace SM.OGL.Framebuffer
         public int Multisample;
 
         /// <summary>
+        /// The id that was given to the renderbuffer.
+        /// </summary>
+        public int ID;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public RenderbufferAttachment(RenderbufferStorage storage, FramebufferAttachment framebufferAttachment, int multisample = 0)
@@ -34,6 +39,8 @@ namespace SM.OGL.Framebuffer
             Storage = storage;
             FramebufferAttachment = framebufferAttachment;
             Multisample = multisample;
+
+            ID = -1;
         }
 
         /// <summary>
@@ -41,18 +48,38 @@ namespace SM.OGL.Framebuffer
         /// </summary>
         /// <param name="f">The framebuffer</param>
         /// <returns>The ID of the renderbuffer.</returns>
-        public int Generate(Framebuffer f)
+        public void Generate(Framebuffer f)
         {
-            int rb = GL.GenRenderbuffer();
+            ID = GL.GenRenderbuffer();
             
-            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, rb);
+            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, ID);
             if (Multisample != 0)
                 GL.RenderbufferStorageMultisample(RenderbufferTarget.Renderbuffer, Multisample, Storage, (int)f.Size.X, (int)f.Size.Y);
             else
                 GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, Storage, (int)f.Size.X, (int)f.Size.Y);
             GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, 0);
+        }
+        /// <summary>
+        /// Disposes the renderbuffer.
+        /// </summary>
+        public void Dispose()
+        {
 
-            return rb;
+            GL.DeleteRenderbuffer(ID);
+            ID = -1;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (obj is RenderbufferAttachment ra)
+            {
+                if (ra.FramebufferAttachment == FramebufferAttachment) return true;
+
+                return false;
+            }
+
+            return false;
         }
     }
 }

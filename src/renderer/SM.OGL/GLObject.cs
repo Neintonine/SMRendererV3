@@ -136,7 +136,7 @@ namespace SM.OGL
         /// </summary>
         public static void DisposeMarkedObjects()
         {
-            foreach (GLObject o in _disposableObjects)
+            foreach (GLObject o in _disposableObjects.ToArray())
             {
                 o.Dispose();
             }

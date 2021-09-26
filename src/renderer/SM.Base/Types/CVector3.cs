@@ -34,22 +34,7 @@ namespace SM.Base.Types
         ///     Z-component
         /// </summary>
         public float Z { get; set; }
-
-        /// <summary>
-        /// Interpolates the motion to the target.
-        /// </summary>
-        /// <param name="duration">How long the interpolation should take.</param>
-        /// <param name="to">The value it should interpolate.</param>
-        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
-        /// <returns>A handle to control the interpolation process.</returns>
-        public InterpolationProcess Interpolate(TimeSpan duration, Vector3 to, BezierCurve? interpolationCurve = null)
-        {
-            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to, 0), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
-            process.Start();
-
-            return process;
-        }
-
+        
 
         /// <inheritdoc />
         public override string ToString()

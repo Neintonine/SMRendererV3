@@ -15,6 +15,10 @@ namespace SM.OGL.Framebuffer
     /// </summary>
     public class Framebuffer : GLObject
     {
+        static Framebuffer CurrentlyActiveFramebuffer;
+        static Framebuffer CurrentlyActiveDrawFramebuffer;
+        static Framebuffer CurrentlyActiveReadFramebuffer;
+
         /// <inheritdoc />
         protected override bool AutoCompile { get; set; } = true;
 
@@ -48,6 +52,8 @@ namespace SM.OGL.Framebuffer
 
         public bool DefaultApplyViewport { get; set; } = true;
 
+        public ColorAttachment FirstColorAttachment { get; private set; }
+
         /// <summary>
         /// Contains all color attachments.
         /// </summary>
@@ -56,7 +62,7 @@ namespace SM.OGL.Framebuffer
         /// <summary>
         /// Contains the current renderbuffer attachments of the framebuffer.
         /// </summary>
-        public Dictionary<RenderbufferAttachment, int> RenderbufferAttachments { get; } = new Dictionary<RenderbufferAttachment, int>();
+        public List<RenderbufferAttachment> RenderbufferAttachments { get; } = new List<RenderbufferAttachment>();
 
         /// <summary>
         /// Gets the color attachment with the specified color name.
@@ -116,15 +122,19 @@ namespace SM.OGL.Framebuffer
             foreach (var pair in ColorAttachments)
                 GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, pair.Value.FramebufferAttachment, pair.Value.Target, pair.Value.ID,
                     0);
+            FramebufferErrorCode err;
 
-            foreach (RenderbufferAttachment attachment in RenderbufferAttachments.Keys.ToArray())
+            err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            if (err != FramebufferErrorCode.FramebufferComplete)
+                throw new Exception("Failed loading framebuffer.\nProblem: " + err);
+
+            foreach (RenderbufferAttachment attachment in RenderbufferAttachments)
             {
-                int att = attachment.Generate(this);
-                GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment.FramebufferAttachment, RenderbufferTarget.Renderbuffer, att);
-                RenderbufferAttachments[attachment] = att;
+                attachment.Generate(this);
+                GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, attachment.FramebufferAttachment, RenderbufferTarget.Renderbuffer, attachment.ID);
             }
 
-            var err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
+            err = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
             if (err != FramebufferErrorCode.FramebufferComplete)
                 throw new Exception("Failed loading framebuffer.\nProblem: " + err);
 
@@ -132,15 +142,25 @@ namespace SM.OGL.Framebuffer
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
+        /// <summary>
+        /// Disposes and clears the attachment
+        /// </summary>
+        public void Reset()
+        {
+            Dispose();
+            ColorAttachments.Clear();
+            RenderbufferAttachments.Clear();
+        }
+
         /// <inheritdoc />
         public override void Dispose()
         {
-            
+
             foreach (var attachment in ColorAttachments.Values) attachment.Dispose();
-            foreach (KeyValuePair<RenderbufferAttachment, int> pair in RenderbufferAttachments.ToArray())
+            FirstColorAttachment = null;
+            foreach (RenderbufferAttachment pair in RenderbufferAttachments.ToArray())
             {
-                GL.DeleteRenderbuffer(pair.Value);
-                RenderbufferAttachments[pair.Key] = -1;
+                GL.DeleteRenderbuffer(pair.ID);
             }
             GL.DeleteFramebuffer(this);
             base.Dispose();
@@ -150,12 +170,14 @@ namespace SM.OGL.Framebuffer
         /// <summary>
         /// Appends a color attachment.
         /// </summary>
-        public void Append(string key, int pos) => Append(key, new ColorAttachment(pos));
+        public void Append(string key, int pos) => Append(key, new ColorAttachment(pos, null));
+        public void Append(string key, Vector2 size, int pos) => Append(key, new ColorAttachment(pos, size));
         /// <summary>
         /// Appends a color attachment.
         /// </summary>
         public void Append(string key, ColorAttachment value)
         {
+            if (ColorAttachments.Count == 0) FirstColorAttachment = value;
             ColorAttachments.Add(key, value);
         }
 
@@ -165,7 +187,8 @@ namespace SM.OGL.Framebuffer
         /// <param name="attachment"></param>
         public void AppendRenderbuffer(RenderbufferAttachment attachment)
         {
-            RenderbufferAttachments.Add(attachment, -1);
+            if (RenderbufferAttachments.Contains(attachment)) return;
+            RenderbufferAttachments.Add(attachment);
         }
 
         /// <summary>
@@ -201,9 +224,34 @@ namespace SM.OGL.Framebuffer
         /// <param name="clear"></param>
         public void Activate(FramebufferTarget target, ClearBufferMask clear, bool? applyViewport = null)
         {
+            switch (target)
+            {
+                case FramebufferTarget.ReadFramebuffer:
+                    CurrentlyActiveReadFramebuffer = this;
+                    break;
+                case FramebufferTarget.DrawFramebuffer:
+                    CurrentlyActiveDrawFramebuffer = this;
+                    break;
+                case FramebufferTarget.Framebuffer:
+                    CurrentlyActiveFramebuffer = this;
+                    break;
+            }
+
             GL.BindFramebuffer(target, this);
-            if (applyViewport.GetValueOrDefault(DefaultApplyViewport)) GL.Viewport(0, 0, (int)Size.X, (int)Size.Y);
+            if (applyViewport.GetValueOrDefault(DefaultApplyViewport)) 
+                GL.Viewport(0, 0, (int)Size.X, (int)Size.Y);
             GL.Clear(clear);
+        }
+
+        /// <summary>
+        /// Copies content to the specified Framebuffer.
+        /// </summary>
+        public void CopyTo(Framebuffer target, ClearBufferMask clear = ClearBufferMask.ColorBufferBit, BlitFramebufferFilter filter = BlitFramebufferFilter.Linear)
+        {
+            Activate(FramebufferTarget.ReadFramebuffer, false);
+            target.Activate(FramebufferTarget.DrawFramebuffer, false);
+
+            GL.BlitFramebuffer(0, 0, (int)Size.X, (int)Size.Y, 0, 0, (int)Size.X, (int)Size.Y, clear, filter);
         }
 
         /// <summary>
@@ -212,6 +260,19 @@ namespace SM.OGL.Framebuffer
         /// <param name="target"></param>
         /// <returns></returns>
         public static Framebuffer GetCurrentlyActive(FramebufferTarget target = FramebufferTarget.Framebuffer)
+        {
+            switch (target)
+            {
+                case FramebufferTarget.ReadFramebuffer:
+                    return CurrentlyActiveReadFramebuffer ??= getCurrentlyActive(target);
+                case FramebufferTarget.DrawFramebuffer:
+                    return CurrentlyActiveDrawFramebuffer ??= getCurrentlyActive(target);
+                case FramebufferTarget.Framebuffer:
+                    return CurrentlyActiveFramebuffer ??= getCurrentlyActive(target);
+            }
+            return null;
+        }
+        static Framebuffer getCurrentlyActive(FramebufferTarget target = FramebufferTarget.Framebuffer)
         {
             Framebuffer buffer = new Framebuffer()
             {
@@ -231,6 +292,8 @@ namespace SM.OGL.Framebuffer
                     GL.GetInteger(GetPName.FramebufferBinding, out buffer._id);
                     break;
             }
+
+
 
             return buffer;
         }

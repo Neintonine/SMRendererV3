@@ -1,38 +1,55 @@
 ﻿using SharpDX.XInput;
+using SM.Base;
 
 namespace SM.Utils.Controls
 {
-    public struct GameController
+    public class GameController
     {
-        public static float GlobalDeadband = 2500;
+        public static float GlobalDeadband = .1F;
         
         private Controller _controller;
+        private ulong _lastFrame;
+
+        internal GamepadButtonFlags _lastPressedButtons;
 
         public float Deadband { get; set; }
         public bool IsConnected => _controller.IsConnected;
 
-        public UserIndex Index { get; private set; }
+        public GameControllerState LastState { get; private set; }
 
+        public UserIndex Index { get; private set; }
+        
         public GameController(int id) : this((UserIndex)id)
         {}
 
         public GameController(UserIndex index = UserIndex.Any)
         {
+            _lastPressedButtons = GamepadButtonFlags.None;
             _controller = new Controller(index);
             Index = index;
             Deadband = GlobalDeadband;
         }
 
-        public GameControllerState GetState()
+        public GameControllerState GetState(bool force = false)
         {
-            if (!IsConnected)
+            if (!force && _lastFrame == SMRenderer.CurrentFrame)
             {
-                return new GameControllerState(true);
+                return LastState;
             }
 
-            Gamepad state = _controller.GetState().Gamepad;
+            GameControllerState st = new GameControllerState(true);
+            if (IsConnected)
+            {
+                Gamepad state = _controller.GetState().Gamepad;
+                st = new GameControllerState(state, this);
+                _lastPressedButtons = state.Buttons;
+            }
             
-            return new GameControllerState(state, ref this);
+            LastState = st;
+
+            _lastFrame = SMRenderer.CurrentFrame;
+
+            return st;
         }
 
     }

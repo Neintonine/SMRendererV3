@@ -52,8 +52,8 @@ namespace SM.Base.PostEffects
         {
             _hdrExposureShader.Draw(u =>
             {
-                u["Gamma"].SetUniform1(Gamma);
-                u["Exposure"].SetUniform1(exposure);
+                u["Gamma"].SetFloat(Gamma);
+                u["Exposure"].SetFloat(exposure);
                 u["Scene"].SetTexture(attachment);
             });
         }
@@ -66,7 +66,7 @@ namespace SM.Base.PostEffects
         {
             _gammaShader.Draw(u =>
             {
-                u["Gamma"].SetUniform1(Gamma);
+                u["Gamma"].SetFloat(Gamma);
                 u["Scene"].SetTexture(attachment);
             });
         }

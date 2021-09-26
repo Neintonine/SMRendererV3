@@ -1,6 +1,7 @@
 ﻿#region usings
 
 using System;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SM.OGL.Texture;
 
@@ -20,6 +21,14 @@ namespace SM.OGL.Framebuffer
         /// The ID the attachment was given.
         /// </summary>
         public int AttachmentID { get; }
+
+        /// <summary>
+        /// Contains the framebuffer its connected.
+        /// <para>Usually the last framebuffer, that called the Compile-method.</para>
+        /// </summary>
+        public Framebuffer ConnectedFramebuffer { get; private set; }
+
+        public Vector2? AttachmentSize = null;
 
         /// <summary>
         /// Returns the <see cref="OpenTK.Graphics.OpenGL4.FramebufferAttachment"/> of this ColorAttachment.
@@ -47,7 +56,7 @@ namespace SM.OGL.Framebuffer
         /// Creates a attachment with a specific id.
         /// </summary>
         /// <param name="attachmentId"></param>
-        public ColorAttachment(int attachmentId) : this(attachmentId, PixelInformation.RGBA_LDR)
+        public ColorAttachment(int attachmentId, Vector2? size = null) : this(attachmentId, PixelInformation.RGBA_LDR, size)
         { }
 
         /// <summary>
@@ -56,12 +65,16 @@ namespace SM.OGL.Framebuffer
         /// <param name="attachmentID"></param>
         /// <param name="pixelInformation"></param>
         /// <param name="multisamples"></param>
-        public ColorAttachment(int attachmentID, PixelInformation pixelInformation, int multisamples = 0)
+        public ColorAttachment(int attachmentID, PixelInformation pixelInformation, Vector2? size = null, int multisamples = 0)
         {
             AttachmentID = attachmentID;
             PixelInformation = pixelInformation;
+            AttachmentSize = size;
+
             _multisamples = multisamples;
             Target = IsMultisampled ? TextureTarget.Texture2DMultisample : TextureTarget.Texture2D;
+
+            WrapMode = TextureWrapMode.ClampToEdge;
         }
         /// <summary>
         /// Generates the attachment.
@@ -70,6 +83,7 @@ namespace SM.OGL.Framebuffer
         public void Generate(Framebuffer f)
         {
             _id = GL.GenTexture();
+            ConnectedFramebuffer = f;
 
             if (IsMultisampled) GenerateMultisampledTexture(f);
             else GenerateTexture(f);
@@ -77,29 +91,33 @@ namespace SM.OGL.Framebuffer
 
         private void GenerateTexture(Framebuffer f)
         {
-            GL.BindTexture(TextureTarget.Texture2D, _id);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInformation.InternalFormat,
-                (int)f.Size.X, (int)f.Size.Y,
-                0, PixelInformation.Format, PixelInformation.DataType, IntPtr.Zero);
+            Vector2 size = AttachmentSize.GetValueOrDefault(f.Size);
 
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-
-                (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
-                (int)TextureParameterName.ClampToEdge);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
-                (int)TextureParameterName.ClampToEdge);
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GenerateBaseTexture(size);
         }
 
         private void GenerateMultisampledTexture(Framebuffer f)
         {
-            GL.BindTexture(TextureTarget.Texture2DMultisample, _id);
-            GL.TexImage2DMultisample(TextureTargetMultisample.Texture2DMultisample, _multisamples, PixelInformation.InternalFormat, (int)f.Size.X, (int)f.Size.Y, true);
-            GL.BindTexture(TextureTarget.Texture2DMultisample, 0);
+            Vector2 size = AttachmentSize.GetValueOrDefault(f.Size);
+
+            Width = (int)size.X;
+            Height = (int)size.Y;
+
+            const TextureTarget target = TextureTarget.Texture2DMultisample;
+
+            GL.BindTexture(target, _id);
+            GL.TexImage2DMultisample((TextureTargetMultisample)target, _multisamples, PixelInformation.InternalFormat,
+                Width, Height, true);
+            /*
+            GL.TexParameter(target, TextureParameterName.TextureMinFilter, (int)Filter);
+            GL.TexParameter(target, TextureParameterName.TextureMagFilter, (int)Filter);
+
+            GL.TexParameter(target, TextureParameterName.TextureWrapS,
+                (int)WrapMode);
+            GL.TexParameter(target, TextureParameterName.TextureWrapT,
+                (int)WrapMode);*/
+
+            GL.BindTexture(target, 0);
         }
     }
 }

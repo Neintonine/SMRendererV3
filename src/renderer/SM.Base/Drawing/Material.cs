@@ -39,6 +39,10 @@ namespace SM.Base.Drawing
         /// </summary>
         public ShaderArguments ShaderArguments { get; internal set; } = new ShaderArguments();
 
+        /// <summary>
+        /// Draws the material with the provided context.
+        /// </summary>
+        /// <param name="context"></param>
         public virtual void Draw(DrawContext context)
         {
             context.Shader.Draw(context);

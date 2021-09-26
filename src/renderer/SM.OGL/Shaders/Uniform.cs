@@ -24,6 +24,7 @@ namespace SM.OGL.Shaders
         /// </summary>
         public UniformCollection Parent { get; }
 
+        #region Constructors
         /// <summary>
         ///     This creates a new uniform manager, that has a null parent.
         /// </summary>
@@ -63,289 +64,372 @@ namespace SM.OGL.Shaders
             Parent = parent;
         }
 
+        #endregion
+
         #region Uniform1
 
-        public void SetUniform1(bool value)
+        /// <summary>
+        /// Set a boolean as value.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetBool(bool value)
         {
             GL.Uniform1(Location, value ? 1 : 0);
         }
 
-        public void SetUniform1(int value)
+        /// <summary>
+        /// Sets a integer.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetInt(int value)
         {
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(params int[] values)
+        /// <summary>
+        /// Sets an array of integers.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetInt(params int[] values)
         {
             GL.Uniform1(Location, values.Length, values);
         }
 
-        public void SetUniform1(int count, ref int values)
-        {
-            GL.Uniform1(Location, count, ref values);
-        }
-
-
-        public void SetUniform1(uint value)
+        /// <summary>
+        /// Set a unsigned integer.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetUInt(uint value)
         {
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(params uint[] values)
+        /// <summary>
+        /// Set an array of unsigned integers.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetUInt(params uint[] values)
         {
             GL.Uniform1(Location, values.Length, values);
         }
 
-        public void SetUniform1(int count, ref uint values)
-        {
-            GL.Uniform1(Location, count, ref values);
-        }
-
-
-        public void SetUniform1(float value)
+        /// <summary>
+        /// Sets a float.
+        /// </summary>
+        /// <param name="value"></param>
+        public void SetFloat(float value)
         {
             GL.Uniform1(Location, value);
         }
 
-        public void SetUniform1(params float[] values)
+        /// <summary>
+        /// Sets an array of floats.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetFloat(params float[] values)
         {
             GL.Uniform1(Location, values.Length, values);
-        }
-
-        public void SetUniform1(int count, ref float value)
-        {
-            GL.Uniform1(Location, count, ref value);
-        }
-
-
-        public void SetUniform1(double value)
-        {
-            GL.Uniform1(Location, value);
-        }
-
-        public void SetUniform1(params double[] values)
-        {
-            GL.Uniform1(Location, values.Length, values);
-        }
-
-        public void SetUniform1(int count, ref double value)
-        {
-            GL.Uniform1(Location, count, ref value);
         }
 
         #endregion
 
         #region Uniform2
 
-        public void SetUniform2(float x, float y)
+        /// <summary>
+        /// Sets a float vector2 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetVector2(float x, float y)
         {
             GL.Uniform2(Location, x, y);
         }
 
-        public void SetUniform2(double x, double y)
+        /// <summary>
+        /// Sets a unsigned integer vector2 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetVector2(uint x, uint y)
         {
             GL.Uniform2(Location, x, y);
         }
 
-        public void SetUniform2(uint x, uint y)
+        /// <summary>
+        /// Sets a integer vector2 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetVector2(int x, int y)
         {
             GL.Uniform2(Location, x, y);
         }
 
-        public void SetUniform2(int x, int y)
-        {
-            GL.Uniform2(Location, x, y);
-        }
-
-        public void SetUniform2(params float[] values)
-        {
-            GL.Uniform2(Location, values.Length / 2, values);
-        }
-
-        public void SetUniform2(params double[] values)
-        {
-            GL.Uniform2(Location, values.Length / 2, values);
-        }
-
-        public void SetUniform2(params int[] values)
-        {
-            GL.Uniform2(Location, values.Length / 2, values);
-        }
-
-        public void SetUniform2(params uint[] values)
-        {
-            GL.Uniform2(Location, values.Length / 2, values);
-        }
-
-        public void SetUniform2(int count, ref float values)
-        {
-            GL.Uniform2(Location, count, ref values);
-        }
-
-        public void SetUniform2(int count, ref double values)
-        {
-            GL.Uniform2(Location, count, ref values);
-        }
-
-        public void SetUniform2(int count, ref uint values)
-        {
-            GL.Uniform2(Location, count, ref values);
-        }
-
-        public void SetUniform2(Vector2 vector2)
+        /// <summary>
+        /// Sets a float vector2.
+        /// </summary>
+        /// <param name="vector2"></param>
+        public void SetVector2(Vector2 vector2)
         {
             GL.Uniform2(Location, vector2);
         }
 
-        public void SetUniform2(ref Vector2 vector2)
+        /// <summary>
+        /// Sets a float vector2 by refencing.
+        /// </summary>
+        /// <param name="vector2"></param>
+        public void SetVector2(ref Vector2 vector2)
         {
             GL.Uniform2(Location, ref vector2);
+        }
+
+        /// <summary>
+        /// Sets a array of vector2.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector2(params Vector2[] values)
+        {
+            float[] newValues = new float[values.Length * 2];
+            for(int i = 0; i < values.Length; i++)
+            {
+                Vector2 val = values[i];
+                int newi = i * 2;
+                newValues[newi] = val.X;
+                newValues[newi + 1] = val.Y;
+            }
+            GL.Uniform2(Location, values.Length, newValues);
+        }
+
+        /// <summary>
+        /// Sets a float array that get converted to a vector2 array.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector2(params float[] values)
+        {
+            GL.Uniform2(Location, values.Length / 2, values);
+        }
+
+        /// <summary>
+        /// Sets a integer array that get converted to a ivector2 array.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector2(params int[] values)
+        {
+            GL.Uniform2(Location, values.Length / 2, values);
+        }
+
+        /// <summary>
+        /// Sets a unsigned integer array that get converted to a unsigned integer vector2 array.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector2(params uint[] values)
+        {
+            GL.Uniform2(Location, values.Length / 2, values);
         }
 
         #endregion
 
         #region Uniform3
 
-        public void SetUniform3(float x, float y, float z)
+        /// <summary>
+        /// Sets a float vector3 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public void SetVector3(float x, float y, float z)
         {
             GL.Uniform3(Location, x, y, z);
         }
 
-        public void SetUniform3(double x, double y, double z)
+        /// <summary>
+        /// Sets a unsigned integer vector3 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public void SetVector3(uint x, uint y, uint z)
         {
             GL.Uniform3(Location, x, y, z);
         }
 
-        public void SetUniform3(uint x, uint y, uint z)
+        /// <summary>
+        /// Sets a integer vector3 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public void SetVector3(int x, int y, int z)
         {
             GL.Uniform3(Location, x, y, z);
         }
 
-        public void SetUniform3(int x, int y, int z)
-        {
-            GL.Uniform3(Location, x, y, z);
-        }
-
-        public void SetUniform3(params float[] values)
-        {
-            GL.Uniform3(Location, values.Length / 3, values);
-        }
-
-        public void SetUniform3(params double[] values)
-        {
-            GL.Uniform3(Location, values.Length / 3, values);
-        }
-
-        public void SetUniform3(params int[] values)
-        {
-            GL.Uniform3(Location, values.Length / 3, values);
-        }
-
-        public void SetUniform3(params uint[] values)
-        {
-            GL.Uniform3(Location, values.Length / 3, values);
-        }
-
-        public void SetUniform3(int count, ref float values)
-        {
-            GL.Uniform3(Location, count, ref values);
-        }
-
-        public void SetUniform3(int count, ref double values)
-        {
-            GL.Uniform3(Location, count, ref values);
-        }
-
-        public void SetUniform3(int count, ref uint values)
-        {
-            GL.Uniform3(Location, count, ref values);
-        }
-
-        public void SetUniform3(Vector3 vector)
+        /// <summary>
+        /// Sets a vector3.
+        /// </summary>
+        /// <param name="vector"></param>
+        public void SetVector3(Vector3 vector)
         {
             GL.Uniform3(Location, vector);
         }
-
-        public void SetUniform3(ref Vector3 vector)
+        /// <summary>
+        /// Sets a vector3 by reference.
+        /// </summary>
+        /// <param name="vector"></param>
+        public void SetVector3(ref Vector3 vector)
         {
             GL.Uniform3(Location, ref vector);
         }
+
+        /// <summary>
+        /// Sets a array of vector3.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector3(params Vector3[] values)
+        {
+            float[] newValues = new float[values.Length * 3];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Vector3 val = values[i];
+                int newi = i * 3;
+                newValues[newi] = val.X;
+                newValues[newi + 1] = val.Y;
+                newValues[newi + 2] = val.Z;
+            }
+            GL.Uniform3(Location, values.Length, newValues);
+        }
+
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector3(params float[] values)
+        {
+            GL.Uniform3(Location, values.Length / 3, values);
+        }
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector3(params int[] values)
+        {
+            GL.Uniform3(Location, values.Length / 3, values);
+        }
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector3(params uint[] values)
+        {
+            GL.Uniform3(Location, values.Length / 3, values);
+        }
+
 
         #endregion
 
         #region Uniform4
 
-        public void SetUniform4(float x, float y, float z, float w)
+        /// <summary>
+        /// Sets a vector4 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="w"></param>
+        public void SetVector4(float x, float y, float z, float w)
+        {
+            GL.Uniform4(Location, x, y, z, w);
+        }
+        /// <summary>
+        /// Sets a vector4 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="w"></param>
+        public void SetVector4(uint x, uint y, uint z, uint w)
+        {
+            GL.Uniform4(Location, x, y, z, w);
+        }
+        /// <summary>
+        /// Sets a vector4 by providing the values.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="w"></param>
+        public void SetVector4(int x, int y, int z, int w)
         {
             GL.Uniform4(Location, x, y, z, w);
         }
 
-        public void SetUniform4(double x, double y, double z, double w)
-        {
-            GL.Uniform4(Location, x, y, z, w);
-        }
-
-        public void SetUniform4(uint x, uint y, uint z, uint w)
-        {
-            GL.Uniform4(Location, x, y, z, w);
-        }
-
-        public void SetUniform4(int x, int y, int z, int w)
-        {
-            GL.Uniform4(Location, x, y, z, w);
-        }
-
-        public void SetUniform4(params float[] values)
-        {
-            GL.Uniform4(Location, values.Length / 4, values);
-        }
-
-        public void SetUniform4(params double[] values)
-        {
-            GL.Uniform4(Location, values.Length / 4, values);
-        }
-
-        public void SetUniform4(params int[] values)
-        {
-            GL.Uniform4(Location, values.Length / 4, values);
-        }
-
-        public void SetUniform4(params uint[] values)
-        {
-            GL.Uniform4(Location, values.Length / 4, values);
-        }
-
-        public void SetUniform4(int count, ref float values)
-        {
-            GL.Uniform4(Location, count, ref values);
-        }
-
-        public void SetUniform4(int count, ref double values)
-        {
-            GL.Uniform4(Location, count, ref values);
-        }
-
-        public void SetUniform4(int count, ref uint values)
-        {
-            GL.Uniform4(Location, count, ref values);
-        }
-
-        public void SetUniform4(Vector4 vector)
+        /// <summary>
+        /// Sets a vector4.
+        /// </summary>
+        /// <param name="vector"></param>
+        public void SetVector4(Vector4 vector)
         {
             GL.Uniform4(Location, vector);
         }
 
-        public void SetUniform4(ref Vector4 vector)
+        /// <summary>
+        /// Sets a vector4.
+        /// </summary>
+        /// <param name="vector"></param>
+        public void SetVector4(ref Vector4 vector)
         {
             GL.Uniform4(Location, ref vector);
         }
 
-        public void SetUniform4(Color4 color)
+        /// <summary>
+        /// Sets a array of Vector4.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector4(params Vector4[] values)
         {
-            GL.Uniform4(Location, color);
+            float[] newValues = new float[values.Length * 4];
+            for (int i = 0; i < values.Length; i++)
+            {
+                Vector4 val = values[i];
+                int newi = i * 3;
+                newValues[newi] = val.X;
+                newValues[newi + 1] = val.Y;
+                newValues[newi + 2] = val.Z;
+                newValues[newi + 3] = val.W;
+            }
+            GL.Uniform3(Location, values.Length, newValues);
         }
 
-        public void SetUniform4(Quaternion quaternion)
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector4(params float[] values)
+        {
+            GL.Uniform4(Location, values.Length / 4, values);
+        }
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector4(params int[] values)
+        {
+            GL.Uniform4(Location, values.Length / 4, values);
+        }       
+        /// <summary>
+        /// Sets a array by providing the components.
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetVector4(params uint[] values)
+        {
+            GL.Uniform4(Location, values.Length / 4, values);
+        }
+
+        /// <summary>
+        /// Sets a quaternion.
+        /// </summary>
+        /// <param name="quaternion"></param>
+        public void SetQuaternion(Quaternion quaternion)
         {
             GL.Uniform4(Location, quaternion);
         }
@@ -354,26 +438,22 @@ namespace SM.OGL.Shaders
 
         #region Matrix2
 
+        /// <summary>
+        /// Sets a matrix2.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix2(Matrix2 matrix, bool transpose = false)
         {
             GL.UniformMatrix2(Location, transpose, ref matrix);
         }
 
-        public void SetMatrix2(int count, ref double value, bool transpose = false)
-        {
-            GL.UniformMatrix2(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix2(int count, ref float value, bool transpose = false)
-        {
-            GL.UniformMatrix2(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix2(int count, double[] value, bool transpose = false)
-        {
-            GL.UniformMatrix2(Location, count, transpose, value);
-        }
-
+        /// <summary>
+        /// Sets a matrix2 array.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="value"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix2(int count, float[] value, bool transpose = false)
         {
             GL.UniformMatrix2(Location, count, transpose, value);
@@ -382,27 +462,22 @@ namespace SM.OGL.Shaders
         #endregion
 
         #region Matrix3
-
+        /// <summary>
+        /// Sets a matrix3.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix3(Matrix3 matrix, bool transpose = false)
         {
             GL.UniformMatrix3(Location, transpose, ref matrix);
         }
 
-        public void SetMatrix3(int count, ref double value, bool transpose = false)
-        {
-            GL.UniformMatrix3(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix3(int count, ref float value, bool transpose = false)
-        {
-            GL.UniformMatrix3(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix3(int count, double[] value, bool transpose = false)
-        {
-            GL.UniformMatrix3(Location, count, transpose, value);
-        }
-
+        /// <summary>
+        /// Sets a matrix3 array.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="value"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix3(int count, float[] value, bool transpose = false)
         {
             GL.UniformMatrix3(Location, count, transpose, value);
@@ -412,31 +487,31 @@ namespace SM.OGL.Shaders
 
         #region Matrix4
 
+        /// <summary>
+        /// Sets a matrix4.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix4(Matrix4 matrix, bool transpose = false)
         {
             GL.UniformMatrix4(Location, transpose, ref matrix);
         }
-
+        /// <summary>
+        /// Sets a matrix4 by reference.
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix4(ref Matrix4 matrix, bool transpose = false)
         {
             GL.UniformMatrix4(Location, transpose, ref matrix);
         }
 
-        public void SetMatrix4(int count, ref double value, bool transpose = false)
-        {
-            GL.UniformMatrix4(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix4(int count, ref float value, bool transpose = false)
-        {
-            GL.UniformMatrix4(Location, count, transpose, ref value);
-        }
-
-        public void SetMatrix4(int count, double[] value, bool transpose = false)
-        {
-            GL.UniformMatrix4(Location, count, transpose, value);
-        }
-
+        /// <summary>
+        /// Sets a matrix4 array.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="value"></param>
+        /// <param name="transpose">If true, the matrix will be transposed.</param>
         public void SetMatrix4(int count, float[] value, bool transpose = false)
         {
             GL.UniformMatrix4(Location, count, transpose, value);
@@ -445,13 +520,22 @@ namespace SM.OGL.Shaders
         #endregion
 
         /// <summary>
+        /// Sets the color.
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetColor(Color4 color)
+        {
+            GL.Uniform4(Location, color);
+        }
+
+        /// <summary>
         ///     Try to sets the texture at the next possible position and tells the checkUniform, if worked or not.
         /// </summary>
         /// <param name="texture">The texture you want to add</param>
         /// <param name="checkUniform">The check uniform.</param>
         public void SetTexture(TextureBase texture, Uniform checkUniform)
         {
-            checkUniform.SetUniform1(texture != null);
+            checkUniform.SetBool(texture != null);
             if (texture != null) SetTexture(texture);
         }
 
@@ -463,7 +547,7 @@ namespace SM.OGL.Shaders
         /// <param name="checkUniform">The check uniform.</param>
         public void SetTexture(TextureBase texture, int pos, Uniform checkUniform)
         {
-            checkUniform.SetUniform1(texture != null);
+            checkUniform.SetBool(texture != null);
             if (texture != null) SetTexture(texture);
         }
 
@@ -486,7 +570,7 @@ namespace SM.OGL.Shaders
             Parent.NextTexture = texturePos + 1;
             GL.ActiveTexture(TextureUnit.Texture0 + texturePos);
             GL.BindTexture(texture.Target, texture);
-            SetUniform1(texturePos);
+            SetInt(texturePos);
         }
 
         /// <summary>

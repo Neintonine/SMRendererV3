@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using ShaderToolParser;
+using SharpDX.XInput;
 using SM.Base;
 using SM.Base.Animation;
 using SM.Base.Controls;
 using SM.Base.Drawing;
+using SM.Base.Drawing.Text;
+using SM.Base.Shaders;
 using SM.Base.Time;
+using SM.Base.Utility;
 using SM.Base.Window;
 using SM.Intergrations.ShaderTool;
 using SM.Utils.Controls;
@@ -28,25 +33,25 @@ namespace SM_TEST
     {
         static Scene scene;
         private static GLWindow window;
-        private static PolyLine line;
+        private static GameController controller;
 
-        private static ItemCollection test;
-        private static DrawParticles particles;
-
-        private static InterpolationProcess interpolation;
+        private static GameKeybindActor actor;
 
         public static STPProject portal;
-        static void Main(string[] args)
-        {
+        static void Main(string[] args){
             Font font = new Font(@".\GapSansBold.ttf")
             {
                 FontSize = 51,
-                CharSet = new char[]
-                {
-                    'I', 'A','M','T','W','O'
-                }
             };
-            font.RegenerateTexture();
+            
+            controller = new GameController(0);
+            GameKeybindHost host = new GameKeybindHost(new GameKeybindList()
+            {
+                {"g_test", context => Keyboard.IsAnyKeyPressed, context => context.ControllerState.Buttons[GamepadButtonFlags.A, true]}
+            });
+            actor = GameKeybindActor.CreateControllerActor(controller);
+            actor.ConnectHost(host);
+
 
             portal = STPProject.CreateFromZIP("portal.zip");
 
@@ -58,18 +63,45 @@ namespace SM_TEST
             {
                 ShowAxisHelper = true
             });
-            scene.Background.Color = Color4.Red;
+            //scene.Background.Color = Color4.Red;
             scene.Camera = new Camera()
             {
                 
             };
 
-            DrawText obj = new DrawText(font, "I AM\n\tTWO")
-            {};
+            SimpleShader shader = new SimpleShader("basic", AssemblyUtility.ReadAssemblyFile("SM_TEST.Default Fragment Shader1.frag"), (a, b) => {
+                a["Color"].SetColor(b.Material.Tint);
+                a["Scale"].SetFloat(b.Material.ShaderArguments.Get("Scale", 1f));
+
+            });
+            DrawObject2D obj = new DrawObject2D()
+            {
+                Material =
+                {
+                    CustomShader = shader,
+                    Tint = new Color4(1f, 0.151217f, 0.050313f, 1),
+                    ShaderArguments =
+                    {
+                        ["Scale"] = 50f
+                    }
+                }
+            };/*
+            DrawObject2D obj2 = new DrawObject2D()
+            {
+                Material =
+                {
+                    Tint = Color4.Aqua,
+                    CustomShader = shader,
+                    ShaderArguments =
+                    {
+                        ["Scale"] = 1000f
+                    }
+                }
+            };
+            obj2.Transform.Position.Set(300);*/
 
             scene.Objects.Add(obj);
 
-            window.UpdateFrame += WindowOnUpdateFrame;
             window.RenderFrame += Window_RenderFrame;
             window.Run();
 
@@ -79,12 +111,6 @@ namespace SM_TEST
         private static void Window_RenderFrame(object sender, FrameEventArgs e)
         {
             window.Title = Math.Floor(e.Time * 1000) + "ms";
-        }
-
-        private static void WindowOnUpdateFrame(object sender, FrameEventArgs e)
-        {
-            bool interactions = new GameController(0).GetState().AnyInteraction;
-            Console.WriteLine();
         }
     }
 }

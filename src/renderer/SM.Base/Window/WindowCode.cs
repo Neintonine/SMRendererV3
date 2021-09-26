@@ -60,14 +60,17 @@ namespace SM.Base.Window
         {
             window.WindowSize = new Vector2(window.Width, window.Height);
             window.AspectRatio = (float) window.Width / window.Height;
-            GL.Viewport(window.ClientRectangle);
 
-            window.CurrentRenderPipeline?.Resize();
+            if (window.WindowSize.LengthSquared == 0) return;
+            
+             GL.Viewport(window.ClientRectangle);
+
 
             PostProcessEffect.Mvp = Matrix4.CreateScale(window.Width, -window.Height, 1) *
                                     Matrix4.LookAt(Vector3.UnitZ, Vector3.Zero, Vector3.UnitY) *
                                     Matrix4.CreateOrthographic(window.Width, window.Height, .1f, 100f);
 
+            window.CurrentRenderPipeline?.Resize(window);
             window.AppliedSetup?.Resize(window);
         }
 

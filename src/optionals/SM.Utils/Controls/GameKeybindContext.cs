@@ -6,7 +6,7 @@ namespace SM.Utils.Controls
     {
         public KeyboardState KeyboardState;
         public MouseState MouseState;
-        public GameControllerState? ControllerState;
+        public GameControllerState ControllerState;
 
         public GameKeybindActor Actor;
         public GameKeybindHost Host;

@@ -18,7 +18,7 @@ layout(location = 0) out vec4 color;
 
 void main() {
 	vec3 result = texture(Bloom, vTexture).rgb;
-	if (HasAmountMap) result *= clamp(length(texture(AmountMap, TransformedTexture).rgb) * (MaxAmount - MinAmount) + MinAmount, 0, 1);
+	//if (HasAmountMap) result *= clamp(length(texture(AmountMap, TransformedTexture).rgb) * (MaxAmount - MinAmount) + MinAmount, 0, 1);
 	if (!HDR) {
 		result = vec3(1.0) - exp(-result * Exposure);
 	}

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using SM.Base.Drawing;
+using SM.Base.PostProcess;
 using SM.Base.Shaders;
 using SM.Base.Utility;
 using SM.OGL.Framebuffer;
@@ -17,6 +18,11 @@ namespace SM.Base.Window
     /// </summary>
     public abstract class RenderPipeline : IInitializable
     {
+        /// <summary>
+        /// All post processing effects should go here, that should be automaticly managed.
+        /// </summary>
+        protected List<PostProcessEffect> PostProcessEffects = new List<PostProcessEffect>();
+
         /// <summary>
         /// This contains the windows its connected to.
         /// </summary>
@@ -47,9 +53,7 @@ namespace SM.Base.Window
 
         /// <inheritdoc/>
         public virtual void Activate()
-        {
-        }
-
+        { }
         /// <inheritdoc/>
         public virtual void Initialization()
         {
@@ -73,11 +77,26 @@ namespace SM.Base.Window
         /// <summary>
         /// The event when resizing.
         /// </summary>
-        public virtual void Resize()
+        public virtual void Resize(IGenericWindow window)
         {
             Recompile();
+
+            foreach (PostProcessEffect effect in PostProcessEffects)
+            {
+                effect.ScreenSizeChanged(window);
+            }
         }
 
+        /// <summary>
+        /// Initilizes the collected post processing effects.
+        /// </summary>
+        protected void InitizePostProcessing()
+        {
+            foreach (PostProcessEffect effect in PostProcessEffects)
+            {
+                effect.Initilize(this);
+            }
+        }
 
         /// <summary>
         /// Compiles the framebuffers.
@@ -116,11 +135,11 @@ namespace SM.Base.Window
         public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
         {
             Framebuffer framebuffer = new(ConnectedWindow);
-            framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples));
+            framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples:multisamples));
 
             if (depth)
             {
-                RenderbufferAttachment depthAttach = RenderbufferAttachment.Depth;
+                RenderbufferAttachment depthAttach = RenderbufferAttachment.GenerateDepth();
                 depthAttach.Multisample = multisamples;
                 framebuffer.AppendRenderbuffer(depthAttach);
             }

@@ -18,7 +18,7 @@ namespace SM2D.Shader
 
         static void SetUniforms(UniformCollection uniforms, DrawContext context)
         {
-            uniforms["Tint"].SetUniform4(context.Material.Tint);
+            uniforms["Tint"].SetColor(context.Material.Tint);
             uniforms["Texture"].SetTexture(context.Material.Texture, uniforms["UseTexture"]);
         }
     }

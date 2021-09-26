@@ -39,7 +39,7 @@ namespace SM.Intergrations.ShaderTool
             }
         }
 
-        public override void Draw(ColorAttachment source, DrawContext context)
+        protected override void Drawing(ColorAttachment source, DrawContext context)
         {
             Arguments["_Scene"] = (TextureBase)source;
             Arguments["_MVP"] = Mvp;

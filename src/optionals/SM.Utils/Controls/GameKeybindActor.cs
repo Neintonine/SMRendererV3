@@ -12,16 +12,25 @@ namespace SM.Utils.Controls
     public struct GameKeybindActor
     {
         private GameKeybindActorType _type;
-        private GameController? _controller;
+        private GameController _controller;
 
         private GameKeybindHost _keybindHost;
 
         public GameKeybindActorType Type => _type;
-        public GameController? Controller => _controller;
+        public GameController Controller => _controller;
 
         public object[] Parameter;
 
-        private GameKeybindActor(GameKeybindActorType type, GameController? controller)
+        private GameKeybindActor(GameKeybindActorType type, GameController controller)
+        {
+            _type = type;
+            _controller = controller;
+
+            _keybindHost = null;
+
+            Parameter = new object[0];
+        }
+        private GameKeybindActor(GameKeybindActorType type, ref GameController controller)
         {
             _type = type;
             _controller = controller;
@@ -58,7 +67,7 @@ namespace SM.Utils.Controls
 
                 KeyboardState = Keyboard.GetState(),
                 MouseState = Mouse.GetState(),
-                ControllerState = Controller?.GetState(),
+                ControllerState = Controller?.GetState() ?? new GameControllerState(true),
             };
 
             return keybind[Type].Invoke(context);

@@ -22,22 +22,11 @@ namespace SM.Utils.Controls
             DPad = GameControllerStateDPad.Default;
             Buttons = GameControllerStateButtons.Default;
         }
-        internal GameControllerState(Gamepad state, ref GameController controller)
+        internal GameControllerState(Gamepad state, GameController controller)
         {
             FromConnected = true;
 
-            Thumbs = new GameControllerStateThumbs
-            {
-                Left = new Vector2(
-                    Math.Abs((float)state.LeftThumbX) < controller.Deadband ? 0 : (float)state.LeftThumbX / short.MaxValue,
-                    Math.Abs((float)state.LeftThumbY) < controller.Deadband ? 0 : (float)state.LeftThumbY / short.MaxValue),
-                Right = new Vector2(
-                    Math.Abs((float)state.RightThumbX) < controller.Deadband ? 0 : (float)state.RightThumbX / short.MaxValue,
-                    Math.Abs((float)state.RightThumbY) < controller.Deadband ? 0 : (float)state.RightThumbY / short.MaxValue),
-
-                PressedLeft = state.Buttons.HasFlag(GamepadButtonFlags.LeftThumb),
-                PressedRight = state.Buttons.HasFlag(GamepadButtonFlags.RightThumb)
-            };
+            Thumbs = new GameControllerStateThumbs(controller, state);
                 
             Triggers = new GameControllerStateTriggers()
             {
@@ -46,7 +35,7 @@ namespace SM.Utils.Controls
             };
 
             DPad = new GameControllerStateDPad(state.Buttons);
-            Buttons = new GameControllerStateButtons(state.Buttons);
+            Buttons = new GameControllerStateButtons(state.Buttons, controller);
         }
 
         public override string ToString()

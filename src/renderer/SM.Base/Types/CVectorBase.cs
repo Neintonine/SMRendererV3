@@ -1,5 +1,8 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Audio.OpenAL;
+using OpenTK.Graphics.OpenGL;
+using SM.Base.Animation;
 
 namespace SM.Base.Types
 {
@@ -46,6 +49,62 @@ namespace SM.Base.Types
         {
             float length = GetLength();
             NormalizationProcess(length);
+        }
+
+        /// <summary>
+        /// Interpolates the motion to the target.
+        /// </summary>
+        /// <param name="duration">How long the interpolation should take.</param>
+        /// <param name="to">The value it should interpolate.</param>
+        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
+        /// <param name="autoStart">Auto-starts the interpolation process.</param>
+        /// <returns>A handle to control the interpolation process.</returns>
+        public InterpolationProcess Interpolate<TInterpolateType>(TimeSpan duration, TInterpolateType to, BezierCurve? interpolationCurve = null, bool autoStart = true)
+            where TInterpolateType : struct
+        {
+            return Interpolate<TInterpolateType>(duration, ConvertToVector4(), to, interpolationCurve, autoStart);
+        }
+
+        /// <summary>
+        /// Interpolates the motion to the target.
+        /// </summary>
+        /// <param name="duration">How long the interpolation should take.</param>
+        /// <param name="from">The value it should start with.</param>
+        /// <param name="to">The value it should interpolate.</param>
+        /// <param name="interpolationCurve">The curve how he interpolates. Preset values can be found under <see cref="AnimationCurves"/>. Default: <see cref="AnimationCurves.Linear"/></param>
+        /// <param name="autoStart">Auto-starts the interpolation process.</param>
+        /// <returns>A handle to control the interpolation process.</returns>
+        public InterpolationProcess Interpolate<TInterpolateType>(TimeSpan duration, TInterpolateType from, TInterpolateType to, BezierCurve? interpolationCurve = null, bool autoStart = true)
+            where TInterpolateType : struct
+        {
+            Vector4 start = from switch
+            {
+                float f => new Vector4(f, 0, 0, 0),
+                Vector2 v2 => new Vector4(v2.X, v2.Y, 0, 0),
+                Vector3 v3 => new Vector4(v3.X, v3.Y, v3.Z, 0),
+                Vector4 v4 => v4,
+                _ => throw new Exception("[INTERPOLATION] Only float, OpenTK.Vector2, OpenTK.Vector3, OpenTK.Vector4 are allowed as types.")
+            };
+
+            return Interpolate(duration, start, to, interpolationCurve, autoStart);
+        }
+
+        internal InterpolationProcess Interpolate<TInterpolateType>(TimeSpan duration, Vector4 from, TInterpolateType to, BezierCurve? interpolationCurve = null, bool autoStart = true)
+            where TInterpolateType : struct
+        {
+            Vector4 target = to switch
+            {
+                float f => new Vector4(f, 0, 0, 0),
+                Vector2 v2 => new Vector4(v2.X, v2.Y, 0, 0),
+                Vector3 v3 => new Vector4(v3.X, v3.Y, v3.Z, 0),
+                Vector4 v4 => v4,
+                _ => throw new Exception("[INTERPOLATION] Only float, OpenTK.Vector2, OpenTK.Vector3, OpenTK.Vector4 are allowed as types.")
+            };
+
+            InterpolationProcess process = new InterpolationProcess(this, duration, from, target, interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
+            if (autoStart) process.Start();
+
+            return process;
         }
 
         /// <summary>

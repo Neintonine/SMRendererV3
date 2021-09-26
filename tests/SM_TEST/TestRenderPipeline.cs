@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics.OpenGL4;
+using SM.Base.Legacy.PostProcessing;
 using SM.Base.PostEffects;
 using SM.Base.Window;
 using SM.Intergrations.ShaderTool;
@@ -9,6 +10,7 @@ namespace SM_TEST
 {
     public class TestRenderPipeline : RenderPipeline
     {
+        private BloomEffectOld _bloomObsolete;
         private BloomEffect _bloom;
         private STPostProcessEffect _vittage;
 
@@ -17,16 +19,15 @@ namespace SM_TEST
         public override void Initialization()
         {
 
-            MainFramebuffer = CreateWindowFramebuffer(16, PixelInformation.RGBA_HDR);
+            MainFramebuffer = CreateWindowFramebuffer(0, PixelInformation.RGBA_HDR, true);
 
-            _postBuffer = CreateWindowFramebuffer(0, PixelInformation.RGBA_HDR, depth: true);
-            Framebuffers.Add(_postBuffer);
-            _bloom = new BloomEffect(_postBuffer, hdr: true, .75f)
+            _bloom = new BloomEffect(true)
             {
+                Radius = 20,
             };
-            _bloom.Initilize(this);
+            PostProcessEffects.Add(_bloom);
 
-            _vittage = new STPostProcessEffect(Program.portal.DrawNodes.Find(a => a.Variables.ContainsKey("_ViewportSize")))
+            /*_vittage = new STPostProcessEffect(Program.portal.DrawNodes.Find(a => a.Variables.ContainsKey("_ViewportSize")))
             {
                 Arguments =
                 {
@@ -36,7 +37,8 @@ namespace SM_TEST
                     {"Move", 3.33f}
                 }
             };
-            _vittage.Initilize(this);
+            _vittage.Initilize(this);*/
+            InitizePostProcessing();
 
             base.Initialization();
         }
@@ -50,16 +52,17 @@ namespace SM_TEST
             context.Scene.DrawHUD(context);
 
             GL.Disable(EnableCap.DepthTest);
-            _postBuffer.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
+            //_postBuffer.Activate(ClearBufferMask.ColorBufferBit);
+            //PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
 
-            _vittage.Draw(_postBuffer["color"], context);
-            _bloom.Draw(_postBuffer["color"], context);
+            //_vittage.Draw(MainFramebuffer["color"], context);
+            //_bloom.Draw(MainFramebuffer["color"], context);
+            _bloomObsolete.Draw(MainFramebuffer["color"], context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            PostProcessUtility.FinalizeHDR(_postBuffer["color"], .1f);
+            PostProcessUtility.FinalizeHDR(MainFramebuffer["color"], 1f);
 
-            context.Scene.DrawDebug(context);
+            //context.Scene.DrawDebug(context);
         }
     }
 }

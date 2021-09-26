@@ -1,6 +1,8 @@
 ﻿#region usings
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using SM.Base.Objects.Static;
@@ -130,9 +132,13 @@ namespace SM.Base.Drawing.Text
         {
             if (!Font.WasCompiled) Font.RegenerateTexture();
 
+            if (string.IsNullOrEmpty(_text)) return;
+
             _text = _text.Replace("\r\n", "\n").Replace("\t", "    ");
 
             _instances = new Instance[_text.Length];
+            List<Tuple<Vector2, Instance[]>> lines = new List<Tuple<Vector2, Instance[]>>();
+            List<Instance> currentLineInstances = new List<Instance>();
 
             float x = 0;
             float y = 0;
@@ -146,8 +152,13 @@ namespace SM.Base.Drawing.Text
 
                 if (_text[i] == '\n')
                 {
+                    if (currentLineInstances.Count > 0)
+                    {
+                        lines.Add(new Tuple<Vector2, Instance[]>(new Vector2(x, y), currentLineInstances.ToArray()));
+                        currentLineInstances.Clear();
+                    }
+
                     y += Font.Height;
-                    Width = Math.Max(Width, x);
                     x = 0;
                     continue;
                 }
@@ -170,32 +181,41 @@ namespace SM.Base.Drawing.Text
 
                 var matrix = Matrix4.CreateScale(parameter.Width, Font.Height, 1) *
                              Matrix4.CreateTranslation(x + parameter.Width / 2, -y, 0);
-                _instances[i] = new Instance
+                currentLineInstances.Add(_instances[i] = new Instance
                 {
                     ModelMatrix = matrix,
                     TextureMatrix = parameter.TextureMatrix
-                };
+                });
 
                 x += parameter.Advance;
             }
+            if (currentLineInstances.Count > 0)
+                lines.Add(new Tuple<Vector2, Instance[]>(new Vector2(x, y), currentLineInstances.ToArray()));
+
             Height = y + Font.Height;
-            Width = x;
+            Width = lines.Max(a => a.Item1.X);
 
             if (Origin != TextOrigin.Left)
             {
-                foreach (Instance i in _instances)
+                foreach (Tuple<Vector2, Instance[]> line in lines)
                 {
-                    if (i == null) continue;
-                    switch (Origin)
+                    
+                    foreach (Instance i in line.Item2)
                     {
-                        case TextOrigin.Center:
-                            i.ModelMatrix *= Matrix4.CreateTranslation(-Width / 2, 0, 0);
-                            break;
-                        case TextOrigin.Right:
-                            i.ModelMatrix *= Matrix4.CreateTranslation(-Width, 0, 0);
-                            break;
+                        if (i == null) continue;
+                        switch (Origin)
+                        {
+                            case TextOrigin.Center:
+                                i.ModelMatrix *= Matrix4.CreateTranslation(-line.Item1.X / 2, 0, 0);
+                                break;
+                            case TextOrigin.Right:
+                                i.ModelMatrix *= Matrix4.CreateTranslation(-line.Item1.X, 0, 0);
+                                break;
+                        }
                     }
                 }
+
+                
             }
         }
     }

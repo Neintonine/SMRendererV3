@@ -34,26 +34,7 @@ namespace SM.Base.Types
         ///     Y-component
         /// </summary>
         public float Y { get; set; }
-
-        /// <summary>
-        /// Interpolates the motion to the target.
-        /// </summary>
-        /// <param name="duration">How long the interpolation should take.</param>
-        /// <param name="to">The value it should interpolate.</param>
-        /// <param name="interpolationCurve">The curve how he interpolates.
-            /// <para>When creating a curve, its recommended the Y-component is always between 0 -> 1. But it could make cool effects if not...</para>
-            /// <para>Preset curves can be found under <see cref="AnimationCurves"/>.</para>
-            /// <para>Default: <see cref="AnimationCurves.Linear"/></para>
-        /// </param>
-        /// <returns>A handle to control the interpolation process.</returns>
-        public InterpolationProcess Interpolate(TimeSpan duration, Vector2 to, BezierCurve? interpolationCurve = null)
-        {
-            InterpolationProcess process = new InterpolationProcess(this, duration, ConvertToVector4(), new Vector4(to), interpolationCurve.GetValueOrDefault(AnimationCurves.Linear));
-            process.Start();
-
-            return process;
-        }
-
+        
         /// <inheritdoc />
         public override string ToString()
         {

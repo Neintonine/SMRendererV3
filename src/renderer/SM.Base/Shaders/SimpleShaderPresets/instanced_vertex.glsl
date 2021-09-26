@@ -1,6 +1,5 @@
 ﻿#version 330
 #define maxInstances //!instanceMax
-#define SM_SIMPLE_EXTENSION //!extension
 
 struct Instance {
     mat4 ModelMatrix;
@@ -20,10 +19,6 @@ out vec3 v_VertexPosition;
 out vec2 v_TexCoords;
 out vec4 v_Color;
 
-#if (SM_SIMPLE_EXTENSION == 1)
-void v_Extension();
-#endif
-
 void main() {
     v_Color = vec4(1);
     if (HasVColor) v_Color = a_Color;
@@ -33,7 +28,4 @@ void main() {
     v_VertexPosition = a_Position;
     gl_Position = MVP * Instances[gl_InstanceID].ModelMatrix * vec4(a_Position, 1);
 
-    #if (SM_SIMPLE_EXTENSION == 1)
-    v_Extension();
-    #endif
 }
