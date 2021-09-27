@@ -38,7 +38,7 @@ namespace SM.Base.PostEffects
             target.Activate(FramebufferTarget.DrawFramebuffer);
             GL.BlitFramebuffer(0, 0, (int) multisampledBuffers.Size.X, (int) multisampledBuffers.Size.Y, 0, 0,
                 (int) target.Size.X, (int) target.Size.Y, ClearBufferMask.ColorBufferBit,
-                BlitFramebufferFilter.Nearest);
+                BlitFramebufferFilter.Linear);
 
             target.Activate();
         }

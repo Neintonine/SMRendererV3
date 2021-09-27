@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using SM.Base.Legacy.PostProcessing;
 using SM.Base.PostEffects;
+using SM.Base.Textures;
 using SM.Base.Window;
 using SM.Intergrations.ShaderTool;
 using SM.OGL.Framebuffer;
@@ -10,20 +11,19 @@ namespace SM_TEST
 {
     public class TestRenderPipeline : RenderPipeline
     {
-        private BloomEffectOld _bloomObsolete;
         private BloomEffect _bloom;
-        private STPostProcessEffect _vittage;
 
         private Framebuffer _postBuffer;
 
         public override void Initialization()
         {
-
-            MainFramebuffer = CreateWindowFramebuffer(0, PixelInformation.RGBA_HDR, true);
+            MainFramebuffer = CreateWindowFramebuffer(8, PixelInformation.RGBA_HDR, true);
+            _postBuffer = CreateWindowFramebuffer(0, PixelInformation.RGB_HDR, false);
 
             _bloom = new BloomEffect(true)
             {
                 Radius = 20,
+                AmountMap = new Texture(new System.Drawing.Bitmap("bloom_amountMap.png"))
             };
             PostProcessEffects.Add(_bloom);
 
@@ -52,17 +52,13 @@ namespace SM_TEST
             context.Scene.DrawHUD(context);
 
             GL.Disable(EnableCap.DepthTest);
-            //_postBuffer.Activate(ClearBufferMask.ColorBufferBit);
-            //PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
+            _postBuffer.Activate(ClearBufferMask.ColorBufferBit);
+            PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
 
-            //_vittage.Draw(MainFramebuffer["color"], context);
-            //_bloom.Draw(MainFramebuffer["color"], context);
-            _bloomObsolete.Draw(MainFramebuffer["color"], context);
+            _bloom.Draw(_postBuffer["color"], context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            PostProcessUtility.FinalizeHDR(MainFramebuffer["color"], 1f);
-
-            //context.Scene.DrawDebug(context);
+            PostProcessUtility.FinalizeHDR(_postBuffer["color"], 1f);
         }
     }
 }

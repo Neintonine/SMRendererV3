@@ -77,6 +77,7 @@ namespace SM.OGL.Framebuffer
             PixelInformation = pixelInformation;
             AttachmentSize = size;
 
+            if (multisamples > 8) multisamples = 8;
             _multisamples = multisamples;
             Target = IsMultisampled ? TextureTarget.Texture2DMultisample : TextureTarget.Texture2D;
 

@@ -1,7 +1,9 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using SM.Base.Drawing;
 using SM.Base.PostProcess;
+using SM.Base.Types;
 using SM.Base.Utility;
 using SM.Base.Window;
 using SM.OGL.Framebuffer;
@@ -33,6 +35,7 @@ namespace SM.Base.PostEffects
             AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.upsample.frag")
             );
         private static readonly PostProcessShader _combineShader = new PostProcessShader(
+            new ShaderFile(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.combine.vert")),
             AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.combine.frag")
             );
 
@@ -75,6 +78,21 @@ namespace SM.Base.PostEffects
         /// The tint of the effect.
         /// </summary>
         public Color4 Color = Color4.White;
+
+        /// <summary>
+        /// An amount map specifices where the bloom effect should be visible.
+        /// <para>Reads only in the "R"-channel.</para>
+        /// </summary>
+        public TextureBase AmountMap;
+        /// <summary>
+        /// Allows you to transform the texture coordnates for <see cref="AmountMap"/>
+        /// </summary>
+        public TextureTransformation AmountMapTransform = new TextureTransformation();
+        /// <summary>
+        /// Specifices limits, how the <see cref="AmountMap"/> is read.
+        /// <para>Default: <see cref="MinMax.Default"/></para>
+        /// </summary>
+        public MinMax AmountLimits = MinMax.Default;
 
         /// <summary>
         /// This creates a more prettier bloom effect.
@@ -192,6 +210,14 @@ namespace SM.Base.PostEffects
 
                 a["scene"].SetTexture(_downsampler[0]["1"]);
                 a["bloomColor"].SetColor(_bloomColor);
+
+                if (AmountMap != null)
+                {
+                    a["amountTransform"].SetMatrix3(AmountMapTransform.GetMatrix());
+                    a["amountMap"].SetTexture(AmountMap, a["hasAmountMap"]);
+                    a["amountLimit"].SetVector2((Vector2)AmountLimits);
+
+                }
 
                 a["HDR"].SetBool(_hdr);
             });
