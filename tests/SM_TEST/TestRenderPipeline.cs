@@ -58,7 +58,7 @@ namespace SM_TEST
             _bloom.Draw(_postBuffer["color"], context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            PostProcessUtility.FinalizeHDR(_postBuffer["color"], 1f);
+            PostProcessUtility.FinalizeHDR(_postBuffer["color"], HDRColorCurve.OnlyExposure, .1f);
         }
     }
 }

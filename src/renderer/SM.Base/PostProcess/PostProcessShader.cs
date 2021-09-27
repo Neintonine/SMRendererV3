@@ -43,8 +43,13 @@ namespace SM.Base.PostProcess
         /// <summary>
         ///     Creates the shader with the default vertex shader and custom fragment.
         /// </summary>
-        public PostProcessShader(string fragment) : this(_normalVertex,
-            new ShaderFile(fragment))
+        public PostProcessShader(string fragment) : this(_normalVertex, new ShaderFile(fragment))
+        {
+        }
+        /// <summary>
+        ///     Creates the shader with the default vertex shader and custom fragment shader.
+        /// </summary>
+        public PostProcessShader(ShaderFile fragment) : this(_normalVertex, fragment)
         {
         }
 
@@ -60,7 +65,7 @@ namespace SM.Base.PostProcess
         {
         }
         /// <summary>
-        ///     Creates the shader with an vertex extension and custom fragment.
+        ///     Creates the shader with an vertex shader and custom fragment.
         /// </summary>
         /// <param name="vertex"></param>
         /// <param name="fragment"></param>
@@ -68,7 +73,12 @@ namespace SM.Base.PostProcess
         {
         }
 
-        private PostProcessShader(ShaderFile vertex, ShaderFile fragment) : base(
+        /// <summary>
+        ///     Creates the shader with an vertex shader and custom fragment.
+        /// </summary>
+        /// <param name="vertex"></param>
+        /// <param name="fragment"></param>
+        public PostProcessShader(ShaderFile vertex, ShaderFile fragment) : base(
             new ShaderFileCollection(vertex, fragment))
         {
             fragment.GLSLExtensions.Add(_fragExtensions);

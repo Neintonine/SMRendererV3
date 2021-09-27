@@ -1,4 +1,5 @@
 ﻿#version 330
+#define TYPE //!TYPE
 
 in vec2 vTexture;
 
@@ -29,7 +30,12 @@ vec3 exposure(vec3 scene) {
 void main() {
 
 	vec3 scene = texture2D(Scene, vTexture).rgb;
-	vec3 result = reinhardTone(scene);
+	vec3 result = exposure(scene);
+	#if (TYPE == 1)
+	result = reinhardTone(result);
+	#elif (TYPE == 2)
+	result = ACES(result);
+	#endif
 
 	color = vec4(pow(result, vec3(1 / Gamma)), 1);
 }

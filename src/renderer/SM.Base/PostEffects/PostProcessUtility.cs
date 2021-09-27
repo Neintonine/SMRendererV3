@@ -4,18 +4,33 @@ using OpenTK.Graphics.OpenGL4;
 using SM.Base.PostProcess;
 using SM.Base.Utility;
 using SM.OGL.Framebuffer;
+using SM.OGL.Shaders;
+using System.Collections.Generic;
 
 #endregion
 
 namespace SM.Base.PostEffects
 {
+    public enum HDRColorCurve
+    {
+        OnlyExposure,
+        Reinhard,
+        ACES
+    }
+
     /// <summary>
     /// This class has some utility for render pipelines 
     /// </summary>
     public static class PostProcessUtility
     {
-        private static readonly PostProcessShader _hdrExposureShader =
-            new PostProcessShader(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".finalize_hdr.glsl"));
+        private static readonly string _finalizeHdrCode = AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".finalize_hdr.glsl");
+
+        private static readonly Dictionary<HDRColorCurve, PostProcessShader> _hdrExposureShader = new Dictionary<HDRColorCurve, PostProcessShader>()
+        {
+            { HDRColorCurve.OnlyExposure, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "0" } } }) },
+            { HDRColorCurve.Reinhard, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "1" } } }) },
+            { HDRColorCurve.ACES, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "2" } } }) },
+        };
 
         private static readonly PostProcessShader _gammaShader =
             new PostProcessShader(
@@ -48,9 +63,9 @@ namespace SM.Base.PostEffects
         /// </summary>
         /// <param name="attachment"></param>
         /// <param name="exposure"></param>
-        public static void FinalizeHDR(ColorAttachment attachment, float exposure)
+        public static void FinalizeHDR(ColorAttachment attachment, HDRColorCurve colorCurve = HDRColorCurve.ACES, float exposure = 1)
         {
-            _hdrExposureShader.Draw(u =>
+            _hdrExposureShader[colorCurve].Draw(u =>
             {
                 u["Gamma"].SetFloat(Gamma);
                 u["Exposure"].SetFloat(exposure);
