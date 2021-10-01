@@ -8,7 +8,7 @@ vec4 GetRenderColorOffset(vec2);
 
 
 vec3 upsample_filter_high() {
-	vec4 d = renderedTextureTexelSize.xyxy * vec4(1, 1,-1,0);
+	vec4 d = renderedTextureTexelSize.xyxy * vec4(1, 1,-1,0) * sampleSize;
 
 	vec3 s;
 	// Line + 1

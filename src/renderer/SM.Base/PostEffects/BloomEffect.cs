@@ -17,6 +17,14 @@ using System.Threading.Tasks;
 
 namespace SM.Base.PostEffects
 {
+    enum BloomEffectShaderType
+    {
+        Filtering,
+        Downsampling,
+        Upsampling,
+        Combine
+    }
+
     /// <summary>
     /// The recommended bloom effect, that looks way better than the old one.
     /// <para>Based on Blender's implermentation, which is based on COD: Infinite Warfare.</para>
@@ -38,12 +46,46 @@ namespace SM.Base.PostEffects
             new ShaderFile(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.combine.vert")),
             AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.combine.frag")
             );
-
+         
         static BloomEffect()
         {
             _upsampleShader.ShaderFiles.Fragment[0].GLSLExtensions.Add(samplingFile);
             _combineShader.ShaderFiles.Fragment[0].GLSLExtensions.Add(samplingFile);
         }
+
+        /*
+        private static readonly string bloomFile = AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.frag");
+        private static readonly ShaderFile combineVertex = new ShaderFile(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".bloom.combine.vert"));
+
+        static Dictionary<bool, PostProcessShader[]> _ppShaders = new Dictionary<bool, PostProcessShader[]>(2);
+            
+        static PostProcessShader[] GetShaders(bool high)
+        {
+            if (_ppShaders.ContainsKey(high)) return _ppShaders[high];
+
+            PostProcessShader[] shaders;
+            _ppShaders.Add(high, shaders = new PostProcessShader[4]);
+
+            for(int i = 0; i < 4; i++)
+            {
+                ShaderFile file = new ShaderFile(bloomFile)
+                {
+                    Defines =
+                    {
+                        "ACTION_"+((BloomEffectShaderType)i).ToString().ToUpper(),
+                    }
+                };
+                if (high) file.Defines.Add("HIGH");
+
+                PostProcessShader shader;
+                if (i == 3) shader = new PostProcessShader(vertex: combineVertex, file);
+                else shader = new PostProcessShader(file);
+
+                shaders[i] = shader;
+            }
+
+            return shaders;
+        }*/
 
         const int MAXBLOOMSTEPS = 8;
         const float INTENSITY = .1f;
@@ -52,6 +94,7 @@ namespace SM.Base.PostEffects
 
         private List<Framebuffer> _downsampler;
         private List<Framebuffer> _upsample;
+        private PostProcessShader[] shaders;
 
         private int _iterations;
         private float _sampleSize;
@@ -98,9 +141,12 @@ namespace SM.Base.PostEffects
         /// This creates a more prettier bloom effect.
         /// </summary>
         /// <param name="hdr">This allows to enable hdr returns.</param>
-        public BloomEffect(bool hdr = false)
+        /// <param name="highSetting">If set true, it will use the high quality settings.</param>
+        public BloomEffect(bool hdr = false, bool highSetting = true)
         {
             _hdr = hdr;
+            //shaders = GetShaders(highSetting);
+            shaders = new[] { _filterShader, _downsampleShader, _upsampleShader, _combineShader };
         }
         /// <inheritdoc/>
         protected override void InitProcess() => CreateFramebuffers();
@@ -168,7 +214,7 @@ namespace SM.Base.PostEffects
 
             // Filtering
             _downsampler[0].Activate(true);
-            _filterShader.Draw(source, col =>
+            shaders[0].Draw(source, col =>
             {
                 col["ThresholdCurve"].SetVector4(_thresholdCurve);
             });
@@ -180,7 +226,7 @@ namespace SM.Base.PostEffects
                 ColorAttachment downsampleSource = last;
                 Framebuffer downsampleTarget = _downsampler[i];
                 downsampleTarget.Activate(true);
-                _downsampleShader.Draw(downsampleSource);
+                shaders[1].Draw(downsampleSource);
 
                 last = downsampleTarget["0"];
             }
@@ -193,7 +239,7 @@ namespace SM.Base.PostEffects
                 
                 upsampleTarget.Activate(true);
 
-                _upsampleShader.Draw(last, (a) =>
+                shaders[2].Draw(last, (a) =>
                 {
                     if (last != null) a["baseBuffer"].SetTexture(downsampleSource);
                     a["sampleSize"].SetFloat(_sampleSize);
@@ -204,7 +250,7 @@ namespace SM.Base.PostEffects
 
             // combine
             target.Activate(true);
-            _combineShader.Draw(last, (a) =>
+            shaders[3].Draw(last, (a) =>
             {
                 a["sampleSize"].SetFloat(_sampleSize);
 

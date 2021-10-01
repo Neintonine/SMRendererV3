@@ -16,6 +16,8 @@ namespace SM.OGL.Shaders
         /// <inheritdoc />
         protected override bool AutoCompile { get; set; } = true;
 
+        public bool ErrorInShader { get; private set; }
+
         /// <summary>
         ///     Contains the different files for the shader.
         /// </summary>
@@ -102,12 +104,17 @@ namespace SM.OGL.Shaders
         public void Load()
         {
             _id = GL.CreateProgram();
+            Uniforms = new UniformCollection { ParentShader = this };
 
-            ShaderFiles.Append(this);
+            ErrorInShader = !ShaderFiles.Append(this);
+            if (ErrorInShader)
+            {
+                GL.DeleteProgram(_id);
+                return;
+            }
             GL.LinkProgram(_id);
             ShaderFiles.Detach(this);
 
-            Uniforms = new UniformCollection {ParentShader = this};
             Uniforms.Import(this);
 
             GLDebugging.CheckGLErrors($"A error occured at shader creation for '{GetType()}': %code%");

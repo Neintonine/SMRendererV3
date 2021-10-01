@@ -14,11 +14,13 @@ namespace SM.OGL.Shaders
     public class ShaderFile : GLObject
     {
         private string _data;
-
+                
         /// <summary>
         ///     Contains other shader files to allow access to their functions.
         /// </summary>
         public List<ShaderFile> GLSLExtensions = new List<ShaderFile>();
+
+        public List<string> Defines = new List<string>();
 
         /// <summary>
         ///     Gets/Sets the name for this shader file.
@@ -63,21 +65,44 @@ namespace SM.OGL.Shaders
                 _data = _data.Replace("//!" + kvp.Key, kvp.Value);
         }
         
-        internal void Compile(GenericShader shader, ShaderType type)
+        internal bool Compile(GenericShader shader, ShaderType type)
         {
             if (_id < 0)
             {
                 GenerateSource();
 
                 _id = GL.CreateShader(type);
-                GL.ShaderSource(_id, _data);
+                if (Defines.Count > 0)
+                {
+                    string defineString = "";
+                    foreach(string define in Defines)
+                    {
+                        defineString += "#define " + define + Environment.NewLine;
+                    }
+
+                    GL.ShaderSource(_id, 2, new string[] { defineString, _data }, new int[] { defineString.Length, _data.Length });
+                } else GL.ShaderSource(_id, _data);
                 GL.CompileShader(_id);
             }
 
-            GL.AttachShader(shader, _id);
-            GLDebugging.CheckGLErrors($"Error at loading shader file: '{shader.GetType()}', '{type}', %code%");
+            GL.GetShader(_id, ShaderParameter.CompileStatus, out int compileStatus);
+            if (compileStatus != 1)
+            {
+                GL.GetShader(_id, ShaderParameter.InfoLogLength, out int loglength);
 
-            for (var i = 0; i < GLSLExtensions.Count; i++) GLSLExtensions[i].Compile(shader, type);
+                GLCustomActions.AtWarning?.Invoke($"Shader '{ToString()}' doesn't compile correctly.\nReason:" + GL.GetShaderInfoLog(_id));
+
+                GL.DeleteShader(_id);
+                return false;
+            }
+
+            GL.AttachShader(shader, _id);
+
+
+            for (var i = 0; i < GLSLExtensions.Count; i++) { 
+                if (!GLSLExtensions[i].Compile(shader, type)) return false; 
+            }
+            return true;
         }
 
         /// <inheritdoc />

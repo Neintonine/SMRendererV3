@@ -37,6 +37,7 @@ namespace SM.Base.Shaders
         /// <param name="context">The context</param>
         public virtual void Draw(DrawContext context)
         {
+            if (ErrorInShader) return;
             context.Shader.Activate();
 
             context.Mesh.Activate();

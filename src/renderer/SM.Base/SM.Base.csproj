@@ -170,6 +170,8 @@
     <EmbeddedResource Include="PostEffects\Shaders\bloom\combine.frag" />
     <EmbeddedResource Include="PostEffects\Shaders\bloom\sampling.frag" />
     <EmbeddedResource Include="PostEffects\Shaders\bloom\combine.vert" />
+    <EmbeddedResource Include="PostEffects\Shaders\bloom.frag" />
+    <EmbeddedResource Include="PostEffects\Shaders\hdr_curves.frag" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

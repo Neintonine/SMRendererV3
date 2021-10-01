@@ -20,7 +20,7 @@ namespace SM_TEST
             MainFramebuffer = CreateWindowFramebuffer(8, PixelInformation.RGBA_HDR, true);
             _postBuffer = CreateWindowFramebuffer(0, PixelInformation.RGB_HDR, false);
 
-            _bloom = new BloomEffect(true)
+            _bloom = new BloomEffect(true, true)
             {
                 Radius = 20,
                 AmountMap = new Texture(new System.Drawing.Bitmap("bloom_amountMap.png"))

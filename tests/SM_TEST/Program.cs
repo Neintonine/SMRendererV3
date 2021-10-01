@@ -110,7 +110,7 @@ namespace SM_TEST
 
         private static void Window_RenderFrame(object sender, FrameEventArgs e)
         {
-            window.Title = Math.Floor(e.Time * 1000) + "ms";
+            window.Title = Math.Round(e.Time * 1000,2) + "ms";
         }
     }
 }

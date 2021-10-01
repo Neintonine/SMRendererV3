@@ -23,13 +23,14 @@ namespace SM.Base.PostEffects
     /// </summary>
     public static class PostProcessUtility
     {
+        public static readonly ShaderFile HDRCurves = new ShaderFile(AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".hdr_curves.frag"));
         private static readonly string _finalizeHdrCode = AssemblyUtility.ReadAssemblyFile(SMRenderer.PostProcessPath + ".finalize_hdr.glsl");
 
         private static readonly Dictionary<HDRColorCurve, PostProcessShader> _hdrExposureShader = new Dictionary<HDRColorCurve, PostProcessShader>()
         {
-            { HDRColorCurve.OnlyExposure, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "0" } } }) },
-            { HDRColorCurve.Reinhard, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "1" } } }) },
-            { HDRColorCurve.ACES, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { StringOverrides = { { "TYPE", "2" } } }) },
+            { HDRColorCurve.OnlyExposure, new PostProcessShader(new ShaderFile(_finalizeHdrCode) {GLSLExtensions = { HDRCurves } }) },
+            { HDRColorCurve.Reinhard, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { GLSLExtensions = { HDRCurves }, Defines = { "TYPE_REINHARD" } }) },
+            { HDRColorCurve.ACES, new PostProcessShader(new ShaderFile(_finalizeHdrCode) { GLSLExtensions = { HDRCurves }, Defines = { "TYPE_ACES" } }) },
         };
 
         private static readonly PostProcessShader _gammaShader =

@@ -113,6 +113,8 @@ namespace SM.Base.PostProcess
         /// <param name="setUniformAction"></param>        
         public void Draw(Action<UniformCollection> setUniformAction)
         {
+            if (ErrorInShader) return;
+            
             Activate();
             Plate.Object.Activate();
 

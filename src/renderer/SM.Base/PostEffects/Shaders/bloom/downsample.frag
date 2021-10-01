@@ -2,7 +2,6 @@
 
 uniform vec2 renderedTextureTexelSize;
 
-vec4 GetRenderColor();
 vec4 GetRenderColorOffset(vec2);
 
 float getBrightness(vec3 col) {

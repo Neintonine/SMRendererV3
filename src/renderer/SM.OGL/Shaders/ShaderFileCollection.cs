@@ -68,17 +68,19 @@ namespace SM.OGL.Shaders
         ///     Appends the files to the shader.
         /// </summary>
         /// <param name="shader"></param>
-        internal void Append(GenericShader shader)
+        internal bool Append(GenericShader shader)
         {
             foreach (ShaderFile file in Vertex) 
-                file.Compile(shader, ShaderType.VertexShader);
+                if (!file.Compile(shader, ShaderType.VertexShader)) return false;
 
             if (Geometry != null) 
                 foreach (ShaderFile file in Geometry)
-                    file.Compile(shader, ShaderType.GeometryShader);
+                    if (!file.Compile(shader, ShaderType.GeometryShader)) return false;
 
-            foreach (ShaderFile file in Fragment) 
-                file.Compile(shader, ShaderType.FragmentShader);
+            foreach (ShaderFile file in Fragment)
+                if (!file.Compile(shader, ShaderType.FragmentShader)) return false;
+
+            return true;
         }
 
         /// <summary>
