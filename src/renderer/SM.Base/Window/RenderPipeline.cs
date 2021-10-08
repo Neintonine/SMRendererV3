@@ -54,14 +54,23 @@ namespace SM.Base.Window
         /// <inheritdoc/>
         public virtual void Activate()
         { }
-        /// <inheritdoc/>
-        public virtual void Initialization()
+        public void Initialization()
         {
-            if (MainFramebuffer != null) { 
+            InitializationProcess();
+
+            InitizePostProcessing();
+            if (MainFramebuffer != null)
+            {
                 Framebuffers.Add(MainFramebuffer);
                 MainFramebuffer.Name = GetType().Name + ".MainFramebuffer";
             }
             DefaultShader ??= SMRenderer.DefaultMaterialShader;
+        }
+
+        /// <inheritdoc/>
+        protected virtual void InitializationProcess()
+        {
+            
         }
 
         internal void Render(ref DrawContext context)
@@ -132,9 +141,15 @@ namespace SM.Base.Window
         /// <summary>
         /// This creates a finished setup for a framebuffer.
         /// </summary>
-        public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
+        public Framebuffer CreateWindowFramebuffer(int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true) =>
+            CreateWindowFramebuffer(ConnectedWindow, multisamples, pixelInformation, depth);
+
+        /// <summary>
+        /// This creates a finished setup for a framebuffer.
+        /// </summary>
+        public static Framebuffer CreateWindowFramebuffer(IFramebufferWindow window, int multisamples = 0, PixelInformation? pixelInformation = null, bool depth = true)
         {
-            Framebuffer framebuffer = new(ConnectedWindow);
+            Framebuffer framebuffer = new Framebuffer(window);
             framebuffer.Append("color", new ColorAttachment(0, pixelInformation.GetValueOrDefault(PixelInformation.RGBA_LDR), multisamples:multisamples));
 
             if (depth)

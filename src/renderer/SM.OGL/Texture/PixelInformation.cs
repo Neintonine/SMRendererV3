@@ -14,7 +14,7 @@ namespace SM.OGL.Texture
         /// <summary>
         /// RGB without Alpha channel, High Dynamic Range (0 - n)
         /// </summary>
-        public static PixelInformation RGB_HDR = new PixelInformation(PixelInternalFormat.Rgb16f, PixelFormat.Rgb, PixelType.Float);
+        public static PixelInformation RGB_HDR = new PixelInformation(PixelInternalFormat.R11fG11fB10f, PixelFormat.Rgb, PixelType.Float);
         /// <summary>
         /// RGB with Alpha channel, Low Dynamic Range (0 - 1)
         /// </summary>

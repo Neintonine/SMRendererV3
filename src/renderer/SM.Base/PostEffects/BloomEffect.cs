@@ -188,8 +188,6 @@ namespace SM.Base.PostEffects
             {
                 texSize /= 2;
 
-
-
                 f = new Framebuffer(texSize);
                 f.Append("0", new ColorAttachment(0, pixel));
                 _downsampler.Add(f);

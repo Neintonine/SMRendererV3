@@ -16,6 +16,7 @@ namespace SM.Intergrations.ShaderTool
     public class STPostProcessEffect : PostProcessEffect
     {
         private STPostProcessShader _shader;
+        private Framebuffer tempFramebuffer;
 
         public ShaderArguments Arguments;
 
@@ -39,13 +40,29 @@ namespace SM.Intergrations.ShaderTool
             }
         }
 
+        protected override void InitProcess()
+        {
+            base.InitProcess();
+            tempFramebuffer = Pipeline.CreateWindowFramebuffer(0, PixelInformation.RGB_HDR, false);
+            tempFramebuffer.Compile();
+        }
+
+        public override void ScreenSizeChanged(IGenericWindow window)
+        {
+            tempFramebuffer.Recompile();
+        }
+
         protected override void Drawing(ColorAttachment source, DrawContext context)
         {
             Arguments["_Scene"] = (TextureBase)source;
             Arguments["_MVP"] = Mvp;
             Arguments["_ViewportSize"] = context.Window.WindowSize;
 
+            source.ConnectedFramebuffer.CopyTo(tempFramebuffer);
+            tempFramebuffer.Activate();
+
             _shader.Draw(Arguments);
+            tempFramebuffer.CopyTo(source.ConnectedFramebuffer);
         }
     }
 }

@@ -14,11 +14,13 @@ namespace SM_TEST
         private BloomEffect _bloom;
 
         private Framebuffer _postBuffer;
+        private STPostProcessEffect _vittage;
 
-        public override void Initialization()
+        protected override void InitializationProcess()
         {
             MainFramebuffer = CreateWindowFramebuffer(8, PixelInformation.RGBA_HDR, true);
             _postBuffer = CreateWindowFramebuffer(0, PixelInformation.RGB_HDR, false);
+            Framebuffers.Add(_postBuffer);
 
             _bloom = new BloomEffect(true, true)
             {
@@ -27,7 +29,7 @@ namespace SM_TEST
             };
             PostProcessEffects.Add(_bloom);
 
-            /*_vittage = new STPostProcessEffect(Program.portal.DrawNodes.Find(a => a.Variables.ContainsKey("_ViewportSize")))
+            _vittage = new STPostProcessEffect(Program.portal.DrawNodes.Find(a => a.Variables.ContainsKey("_ViewportSize")))
             {
                 Arguments =
                 {
@@ -37,10 +39,7 @@ namespace SM_TEST
                     {"Move", 3.33f}
                 }
             };
-            _vittage.Initilize(this);*/
-            InitizePostProcessing();
-
-            base.Initialization();
+            PostProcessEffects.Add(_vittage);
         }
 
         protected override void RenderProcess(ref DrawContext context)
@@ -56,6 +55,7 @@ namespace SM_TEST
             PostProcessUtility.ResolveMultisampledBuffers(MainFramebuffer, _postBuffer);
 
             _bloom.Draw(_postBuffer["color"], context);
+            _vittage.Draw(_postBuffer["color"], context);
             Framebuffer.Screen.Activate(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             PostProcessUtility.FinalizeHDR(_postBuffer["color"], HDRColorCurve.OnlyExposure, .1f);

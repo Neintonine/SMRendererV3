@@ -63,7 +63,7 @@ namespace SM_TEST
             {
                 ShowAxisHelper = true
             });
-            //scene.Background.Color = Color4.Red;
+            scene.Background.Color = Color4.DarkGray;
             scene.Camera = new Camera()
             {
                 
